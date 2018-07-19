@@ -15,17 +15,17 @@ If you have heard of qualitative research, then you are likely to have heard of 
 
 ## Version 0.1 Roadmap
 
-| Feature                            | Status |     |     |     |
-| ---------------------------------- | :----: | :-: | --- | --- |
-| typescript integration             |   ✅   |     |     |     |
-| mobx integration                   |   ❌   |     |     |     |
-| local persistence                  |   ❌   |     |     |     |
-| react router v4 integration        |   ❌   |     |     |     |
-| plain-text parsing                 |   ❌   |     |     |     |
-| Word doc parsing                   |   ❌   |     |     |     |
-| select-text-to-code                |   ❌   |     |     |     |
-| code book overview/update/deletion |   ❌   |     |     |     |
-| code book output                   |   ❌   |     |     |     |
+| Feature                            | Status |
+| ---------------------------------- | :----: |
+| typescript integration             |   ✅   |
+| mobx integration                   |   ❌   |
+| local persistence                  |   ❌   |
+| react router v4 integration        |   ❌   |
+| plain-text parsing                 |   ❌   |
+| Word doc parsing                   |   ❌   |
+| select-text-to-code                |   ❌   |
+| code book overview/update/deletion |   ❌   |
+| code book output                   |   ❌   |
 
 ## Contribution
 
