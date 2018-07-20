@@ -1,13 +1,12 @@
 import {Provider} from 'mobx-react'
-import DevTools from 'mobx-react-devtools'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 import codeBookStore from './stores/codebook'
 
 import App from './App'
 
+import 'normalize.css'
 import './index.css'
 import registerServiceWorker from './registerServiceWorker'
 
@@ -17,10 +16,7 @@ const store = {
 
 const router = (
   <Provider {...store}>
-    <Router>
-      <Route path="/" component={App} exact={true} />
-    </Router>
-    <DevTools />
+    <App />
   </Provider>
 )
 

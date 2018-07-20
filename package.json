@@ -3,18 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.7.0",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
+    "normalize.css": "^8.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-helmet": "^5.2.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts-ts": "2.16.0",
     "styled-components": "^3.3.3"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "start": "BROWSER=none react-app-rewired start --scripts-version react-scripts-ts",
+    "build": "react-app-rewired build --scripts-version react-scripts-ts",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
@@ -23,8 +25,21 @@
     "@types/node": "^10.5.2",
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
+    "@types/react-helmet": "^5.0.6",
     "@types/react-router-dom": "^4.2.7",
+    "awesome-typescript-loader": "^5.2.0",
+    "babel-plugin-import": "^1.8.0",
     "mobx-react-devtools": "^6.0.1",
+    "react-app-rewire-import": "^1.0.1",
+    "react-app-rewire-less": "^2.1.2",
+    "react-app-rewire-mobx": "^1.0.8",
+    "react-app-rewire-scss": "^1.0.2",
+    "react-app-rewire-styled-components": "^3.0.2",
+    "react-app-rewire-typescript": "^2.0.2",
+    "react-app-rewired": "^1.5.2",
+    "react-scripts": "^1.1.4",
+    "react-scripts-ts": "2.16.0",
+    "ts-import-plugin": "^1.5.4",
     "typescript": "^2.9.2"
   }
 }
