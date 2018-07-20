@@ -18,9 +18,9 @@ If you have heard of qualitative research, then you are likely to have heard of 
 | Feature                            | Status |
 | ---------------------------------- | :----: |
 | typescript integration             |   ✅   |
-| mobx integration                   |   ❌   |
+| mobx integration                   |   ✅   |
 | local persistence                  |   ❌   |
-| react router v4 integration        |   ❌   |
+| react router v4 integration        |   ✅   |
 | plain-text parsing                 |   ❌   |
 | Word doc parsing                   |   ❌   |
 | select-text-to-code                |   ❌   |
