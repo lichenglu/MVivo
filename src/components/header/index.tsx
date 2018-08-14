@@ -31,7 +31,7 @@ class Header extends React.PureComponent<IHeaderProps> {
     const {items} = this.props
     return (
       <CustomHeader>
-        <CustomIcon />
+        {/* <CustomIcon /> */}
         <CustomMenu theme="dark" mode="horizontal" style={{lineHeight: '64px'}}>
           {items.map(({key, title}) => <Menu.Item key={key}>{title}</Menu.Item>)}
         </CustomMenu>

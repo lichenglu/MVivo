@@ -1,7 +1,7 @@
 import DevTools from 'mobx-react-devtools'
 import * as React from 'react'
 import {Helmet} from 'react-helmet'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Route, RouteProps, withRouter} from 'react-router-dom'
 import styled from 'styled-components'
 
 // components
@@ -18,12 +18,13 @@ const ContentContainer = styled.div`
   padding: 24px;
 `
 
-class App extends React.Component {
+class App extends React.Component<RouteProps> {
   get items() {
     return [{key: 'home', title: 'Home'}]
   }
 
   public render(): JSX.Element {
+    console.log(this.props.location)
     return (
       <Container>
         <Helmet titleTemplate="MVivo - %s" />
@@ -39,4 +40,4 @@ class App extends React.Component {
   }
 }
 
-export default App
+export default withRouter(props => <App {...props} />)
