@@ -48,26 +48,26 @@ export class Api {
   /**
    * Gets a list of repos.
    */
-  // async getRepo(repo: string): Promise<Types.GetRepoResult> {
-  //   // make the api call
-  //   const response: ApiResponse<any> = await this.apisauce.get(`/repos/${repo}`)
+  public async getRepo(repo: string): Promise<Types.GetRepoResult> {
+    // make the api call
+    const response: ApiResponse<any> = await this.apisauce.get(`/repos/${repo}`)
 
-  //   // the typical ways to die when calling an api
-  //   if (!response.ok) {
-  //     const problem = getGeneralApiProblem(response)
-  //     if (problem) return problem
-  //   }
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
 
-  //   // transform the data into the format we are expecting
-  //   try {
-  //     const resultRepo: Types.Repo = {
-  //       id: response.data.id,
-  //       name: response.data.name,
-  //       owner: response.data.owner.login,
-  //     }
-  //     return { kind: "ok", repo: resultRepo }
-  //   } catch {
-  //     return { kind: "bad-data" }
-  //   }
-  // }
+    // transform the data into the format we are expecting
+    try {
+      const resultRepo: Types.Repo = {
+        id: response.data.id,
+        name: response.data.name,
+        owner: response.data.owner.login,
+      }
+      return { kind: "ok", repo: resultRepo }
+    } catch {
+      return { kind: "bad-data" }
+    }
+  }
 }

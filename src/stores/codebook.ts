@@ -1,28 +1,31 @@
 import { types } from "mobx-state-tree"
+import * as uuid from 'uuid';
 
 export const Code = types.model('Code', {
   definition: types.string,
-  id: types.string,
+  id: types.optional(types.identifier, uuid()),
   name: types.string,
 })
 
 export const CodeBook = types.model('CodeBook', {
-  codes: types.maybeNull(types.array(Code)),
-  id: types.string,
+  codes: types.optional(types.array(Code), []),
+  id: types.optional(types.identifier, uuid()),
   name: types.string,
 })
 
 export const CodeBookStore = types
   .model("CodeBookStore", {
-      codeBooks: types.maybeNull(types.map(CodeBook)),
-      currentCodeBookID: types.maybeNull(types.string),
+      codeBooks: types.optional(types.map(CodeBook), {}),
   })
   .views(self => ({
-    get currentCodeBook() {
-      if (!self.codeBooks || !self.currentCodeBookID) {
-        return null
-      }
-      return self.codeBooks.get(self.currentCodeBookID)
+    codeBookOf(id: string) {
+      return self.codeBooks.get(id)
+    }
+  }))
+  .actions(self => ({
+    createCodeBook(data: { name: string, codes?: Array<typeof Code.Type> }) {
+      const codeBook = CodeBook.create(data);
+      self.codeBooks.set(codeBook.id, codeBook);
     }
   }))
 

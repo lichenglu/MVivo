@@ -5,10 +5,7 @@ import { CodeBookStore } from "./codebook"
  * An RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  codeBooks: types.optional(CodeBookStore, () => ({
-      codeBooks: null,
-      currentCodeBookID: null,
-  })),
+  codeBookStore: types.optional(CodeBookStore, {}),
 })
 
 /**

@@ -1,4 +1,4 @@
-import * as env from "../../app/environment-variables"
+import * as env from "../../lib/env/environment-variables"
 
 /**
  * The options used to configure the API.
@@ -19,6 +19,6 @@ export interface ApiConfig {
  * The default configuration for the app.
  */
 export const DEFAULT_API_CONFIG: ApiConfig = {
-  url: env.API || "https://api.github.com",
   timeout: 10000,
+  url: env.API || "DEFAULT_API_BASE",
 }

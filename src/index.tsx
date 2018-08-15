@@ -1,25 +1,57 @@
-import {Provider} from 'mobx-react'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import { Provider } from "mobx-react";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import codeBookStore from './stores/codebook'
+import App from "./App";
+import { RootStore } from "./stores/root-store";
+import { setupRootStore } from "./stores/setup-root-store";
 
-import App from './App'
+import "normalize.css";
+import "./index.css";
+import registerServiceWorker from "./registerServiceWorker";
 
-import 'normalize.css'
-import './index.css'
-import registerServiceWorker from './registerServiceWorker'
-
-const store = {
-  codeBookStore
+interface RootComponentState {
+	rootStore?: RootStore;
 }
 
-const router = (
-  <Provider {...store}>
-    <App />
-  </Provider>
-)
+class RootComponent extends React.PureComponent<{}, RootComponentState> {
+	public async componentDidMount() {
+		this.setState({
+			rootStore: await setupRootStore()
+		});
+	}
 
-ReactDOM.render(router, document.getElementById('root') as HTMLElement)
+	public render() {
+		const rootStore = this.state && this.state.rootStore;
+		// Before we show the app, we have to wait for out state to be ready.
+		// In the meantime, don't render anything. This will be the background
+		// color set in native by rootView's background color.
+		//
+		// This step should be completely covered over by the splash screen though.
+		//
+		// You're welcome to swap in your own component to render if your boot up
+		// sequence is too slow though.
+		if (!rootStore) {
+			return null;
+		}
 
-registerServiceWorker()
+		// otherwise, we're ready to render the app
+		// --- am: begin list of stores ---
+		const otherStores = {};
+		// --- am: end list of stores ---
+		return (
+			<Router>
+				<Provider rootStore={rootStore} {...otherStores}>
+					<App />
+				</Provider>
+			</Router>
+		);
+	}
+}
+
+ReactDOM.render(<RootComponent />, document.getElementById(
+	"root"
+) as HTMLElement);
+
+registerServiceWorker();

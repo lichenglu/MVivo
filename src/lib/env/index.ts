@@ -9,10 +9,10 @@ export class Environment {
   /**
    * Reactotron is only available in dev.
    */
-  public readonly reactotron: Reactotron
+  public reactotron: Reactotron
 
   /**
    * Our api.
    */
-  public readonly api: Api
+  public api: Api
 }

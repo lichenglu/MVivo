@@ -22,7 +22,6 @@ if (__DEV__) {
   console.tron = Tron // attach reactotron to `console.tron`
 } else {
   // attach a mock so if things sneaky by our __DEV__ guards, we won't crash.
-  // @ts-ignore
   console.tron = {
     clear: noop,
     configure: noop,
