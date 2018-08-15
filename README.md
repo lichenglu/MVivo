@@ -15,18 +15,20 @@ If you have heard of qualitative research, then you are likely to have heard of 
 
 ## Version 0.1 Roadmap
 
-| Feature                            | Status |
-| ---------------------------------- | :----: |
-| typescript integration             |   ✅   |
-| mobx integration                   |   ✅   |
-| local persistence (localStorage)   |   ✅   |
-| local persistence (PouchDB). TBD   |   ❌   |
-| react router v4 integration        |   ✅   |
-| plain-text parsing                 |   ❌   |
-| Word doc parsing                   |   ❌   |
-| select-text-to-code                |   ❌   |
-| code book overview/update/deletion |   ❌   |
-| code book output                   |   ❌   |
+| Feature                                      | Status |
+| -------------------------------------------- | :----: |
+| typescript integration                       |   ✅   |
+| mobx integration                             |   ✅   |
+| local persistence (localStorage)             |   ✅   |
+| local persistence (PouchDB). TBD             |   ❌   |
+| react router v4 integration                  |   ✅   |
+| UI - WorkSpace: creation, updating, deletion |   ❌   |
+| UI - WorkSpace: list view                    |   ❌   |
+| plain-text parsing                           |   ❌   |
+| Word doc parsing                             |   ❌   |
+| select-text-to-code                          |   ❌   |
+| code book overview/update/deletion           |   ❌   |
+| code book output                             |   ❌   |
 
 ## Contribution
 
