@@ -2,15 +2,15 @@ import { types } from "mobx-state-tree"
 
 import { assignUUID } from './utils';
 
-export const Code = types.model('Code', {
+const Code = types.model('Code', {
   definition: types.string,
   id: types.identifier,
   name: types.string,
 })
 .preProcessSnapshot(assignUUID)
 
-export const CodeBook = types.model('CodeBook', {
-  codes: types.optional(types.array(Code), []),
+const CodeBook = types.model('CodeBook', {
+  codes: types.optional(types.array(types.reference(Code)), []),
   id: types.identifier,
   name: types.string,
 })
@@ -19,6 +19,7 @@ export const CodeBook = types.model('CodeBook', {
 export const CodeBookStore = types
   .model("CodeBookStore", {
       codeBooks: types.optional(types.map(CodeBook), {}),
+      codes: types.optional(types.map(Code), {}),
   })
   .views(self => ({
     codeBookOf(id: string) {
@@ -26,11 +27,15 @@ export const CodeBookStore = types
     }
   }))
   .actions(self => ({
-    createCodeBook(data: { name: string, codes?: Array<typeof Code.Type> }) {
+    createCodeBook(data: { name: string, codes?: Codes }) {
       const codeBook = CodeBook.create(data);
       self.codeBooks.put(codeBook);
     }
   }))
+
+export type Code = typeof Code.SnapshotType
+export type Codes = typeof CodeBook.SnapshotType['codes']
+export type CodeBook = typeof CodeBook.SnapshotType
 
 // export class CodeBookStore {
 //   @observable public currentCodeBookID: string
