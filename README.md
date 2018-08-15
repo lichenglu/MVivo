@@ -19,7 +19,8 @@ If you have heard of qualitative research, then you are likely to have heard of 
 | ---------------------------------- | :----: |
 | typescript integration             |   ✅   |
 | mobx integration                   |   ✅   |
-| local persistence (PouchDB)                  |   ❌   |
+| local persistence (localStorage)   |   ✅   |
+| local persistence (PouchDB). TBD   |   ❌   |
 | react router v4 integration        |   ✅   |
 | plain-text parsing                 |   ❌   |
 | Word doc parsing                   |   ❌   |
