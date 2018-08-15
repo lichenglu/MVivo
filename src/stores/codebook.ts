@@ -1,23 +1,34 @@
-import {action, computed, observable} from 'mobx'
+import { types } from "mobx-state-tree"
 
-export class CodeBookStore {
-  @observable public currentCodeBookID: string
-  @observable public codeBooks: Map<string, ICodeBook> = observable.map()
+import { assignUUID } from './utils';
 
-  @computed
-  get currentCodeBook() {
-    return this.codeBooks.get(this.currentCodeBookID)
-  }
+export const CodeModel = types.model('Code', {
+  definition: types.string,
+  id: types.identifier,
+  name: types.string,
+})
+.preProcessSnapshot(assignUUID)
 
-  @action
-  public addCodeBook(codeBook: ICodeBook) {
-    this.codeBooks.set(codeBook.id, codeBook)
-  }
+export const CodeBookModel = types.model('CodeBook', {
+  codes: types.optional(types.array(types.reference(CodeModel)), []),
+  id: types.identifier,
+  name: types.string,
+})
+.preProcessSnapshot(assignUUID)
 
-  @action
-  public deleteCodeBookByID(id: string) {
-    this.codeBooks.delete(id)
-  }
-}
+export const CodeBookStore = types
+  .model("CodeBookStore", {
+      codeBooks: types.optional(types.map(CodeBookModel), {}),
+      codes: types.optional(types.map(CodeModel), {}),
+  })
+  .views(self => ({
+    codeBookOf(id: string) {
+      return self.codeBooks.get(id)
+    }
+  }))
 
-export default new CodeBookStore()
+export type Code = typeof CodeModel.Type
+export type CodeBook = typeof CodeBookModel.Type
+export type CodeSnapshot = typeof CodeModel.SnapshotType
+export type CodesSnapshot = typeof CodeBookModel.SnapshotType['codes']
+export type CodeBookSnapshot = typeof CodeBookModel.SnapshotType
