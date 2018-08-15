@@ -12,9 +12,10 @@ interface HomeProps {
 @observer
 class Home extends React.Component<HomeProps> {
 	public onCreateCodeBook = () => {
-		this.props.rootStore.codeBookStore.createCodeBook({
-			name: "test book"
+		const workSpace = this.props.rootStore.createWorkSpace({
+			name: "WorkSpace 1"
 		});
+		this.props.rootStore.setWorkSpace(workSpace.id);
 	};
 
 	public render(): JSX.Element {
