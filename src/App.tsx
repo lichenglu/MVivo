@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Header from "./components/header";
 
 // containers
-import Home from "./containers/home";
+import WorkSpace from "./containers/workspace";
 
 const Container = styled.div`
 	min-width: 100vw;
@@ -29,7 +29,7 @@ class App extends React.Component<RouteProps> {
 				<Helmet titleTemplate="MVivo - %s" />
 				<Header items={this.items} />
 				<ContentContainer>
-					<Route path="/" component={Home} exact={true} />
+					<Route path="/" component={WorkSpace} exact={true} />
 				</ContentContainer>
 			</Container>
 		);
