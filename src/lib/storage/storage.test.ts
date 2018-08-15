@@ -11,7 +11,7 @@ const mockRemoveItem = jest.fn()
 const mockClear = jest.fn()
 
 // replace AsyncStorage
-jest.mock("AsyncStorage", () => ({
+jest.mock("./storage", () => ({
   clear: mockClear,
   getItem: mockGetItem,
   removeItem: mockRemoveItem,

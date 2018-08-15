@@ -4,8 +4,7 @@ import * as ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./App";
-import { RootStore } from "./stores/root-store";
-import { setupRootStore } from "./stores/setup-root-store";
+import { RootStore, setupRootStore } from "./stores";
 
 import "normalize.css";
 import "./index.css";
