@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
+import { hot } from "react-hot-loader";
 import { Route, RouteProps, withRouter } from "react-router-dom";
 import styled from "styled-components";
 
@@ -36,4 +37,4 @@ class App extends React.Component<RouteProps> {
 	}
 }
 
-export default withRouter(props => <App {...props} />);
+export default hot(module)(withRouter(props => <App {...props} />));
