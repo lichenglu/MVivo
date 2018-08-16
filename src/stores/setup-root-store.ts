@@ -42,7 +42,7 @@ export async function setupRootStore() {
   if (!ENABLE_PERSISTENCE) {
     await storage.remove(ROOT_STATE_STORAGE_KEY)
   }
-
+  
   onSnapshot(rootStore, snapshot => storage.save(ROOT_STATE_STORAGE_KEY, snapshot))
   
   return rootStore

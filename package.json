@@ -18,7 +18,7 @@
 		"uuid": "^3.3.2"
 	},
 	"scripts": {
-		"start": "BROWSER=none react-app-rewired start --scripts-version react-scripts-ts",
+		"start": "react-app-rewired start --scripts-version react-scripts-ts",
 		"build": "react-app-rewired build --scripts-version react-scripts-ts",
 		"test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
 		"eject": "react-app-rewired eject --scripts-version react-scripts-ts"

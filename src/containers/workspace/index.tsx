@@ -8,6 +8,9 @@ import { RootStore } from "../../stores/root-store";
 // components
 import CreateWSModal from "./components/createModal";
 import EmptyView from "./components/emptyView";
+import WorkspaceList from "./components/workspaceList";
+
+import Fab from "../../components/fab";
 
 interface HomeProps {
 	rootStore: RootStore;
@@ -43,6 +46,14 @@ class Home extends React.Component<HomeProps, HomeState> {
 		return this.props.rootStore.codeBookStore.codeBookList;
 	}
 
+	get workspaces() {
+		return this.props.rootStore.workSpaceStore.workSpaceList;
+	}
+
+	get hasWorkSpace() {
+		return this.props.rootStore.workSpaceStore.hasWorkSpace;
+	}
+
 	public render(): JSX.Element {
 		const { wsModalVisible } = this.state;
 
@@ -51,14 +62,15 @@ class Home extends React.Component<HomeProps, HomeState> {
 				<Helmet>
 					<title>Home</title>
 				</Helmet>
+				{this.hasWorkSpace && <Fab onClick={this.toggleWSModalFactory(true)} />}
 				<CreateWSModal
 					visible={wsModalVisible}
 					codeBooks={this.codeBooks}
 					onClose={this.toggleWSModalFactory(false)}
 					onSubmit={this.onCreateWorkSpace}
 				/>
-				{this.props.rootStore.workSpaceStore.hasWorkSpace ? (
-					<Button>Hello World</Button>
+				{this.hasWorkSpace ? (
+					<WorkspaceList workspaces={this.workspaces} />
 				) : (
 					<EmptyView onClick={this.toggleWSModalFactory(true)} />
 				)}

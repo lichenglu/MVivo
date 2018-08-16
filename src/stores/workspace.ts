@@ -1,5 +1,5 @@
 import { values } from 'mobx';
-import { types } from "mobx-state-tree"
+import { getSnapshot, types } from "mobx-state-tree"
 
 import { CodeBook, CodeBookModel } from './codebook';
 import { assignUUID } from './utils';
@@ -35,7 +35,7 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
 })
 .views(self => ({
     get workSpaceList() {
-        return values(self.workSpaces)
+        return values(self.workSpaces).map((ws: WorkSpace) => getSnapshot(ws))
     },
     get hasWorkSpace() {
         return this.workSpaceList.length > 0
@@ -50,6 +50,7 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
         if (this.workSpaceList.length > 0) {
             return this.workSpaceList[0]
         }
+        return null
     },
     workSpaceBy(id: string) {
         return self.workSpaces.get(id)
