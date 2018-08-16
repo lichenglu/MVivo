@@ -1,8 +1,7 @@
-import { Avatar, Card, Icon } from "antd";
 import * as React from "react";
 import styled from "styled-components";
 
-import { WorkSpaceSnapshot } from "../../../stores";
+import { WorkSpaceSnapshot } from "~/stores";
 
 import WorkspaceCard from "./workspaceCard";
 
@@ -16,12 +15,20 @@ const Container = styled.div`
 
 interface WorkSpaceListProps {
 	workspaces: WorkSpaceSnapshot[];
+	onEdit?: (params: any) => void;
+	onSelectExtraAction?: (
+		params: AntClickParam & { workSpaceID: string }
+	) => void;
 }
 
-export default ({ workspaces }: WorkSpaceListProps) => (
+export default ({ workspaces, onSelectExtraAction }: WorkSpaceListProps) => (
 	<Container>
 		{workspaces.map(ws => (
-			<WorkspaceCard key={ws.id} data={ws} />
+			<WorkspaceCard
+				key={ws.id}
+				data={ws}
+				onSelectExtraAction={onSelectExtraAction}
+			/>
 		))}
 	</Container>
 );

@@ -1,11 +1,12 @@
 import { Button } from "antd";
+import { ButtonProps } from "antd/lib/button/button";
 import * as React from "react";
 import styled from "styled-components";
 
 import Plus from "../assets/plus_circle.svg";
 
-// @ts-ignore
-const Fab = styled(Button)`
+// TODO: better way to type
+const Fab = styled<any>(Button)`
 	&&&& {
 		position: absolute;
 		bottom: 5%;
@@ -25,7 +26,7 @@ const CustIcon = styled(Plus)`
 	height: 80%;
 `;
 
-export default (props: any) => (
+export default (props: ButtonProps) => (
 	<Fab type="primary" shape="circle" {...props}>
 		<CustIcon />
 	</Fab>

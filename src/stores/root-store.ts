@@ -33,12 +33,14 @@ export const RootStoreModel = types.model("RootStore").props({
 
       return workSpace;
   },
-  setWorkSpace(id: string) {
-    const workspace = self.workSpaceStore.workSpaces.get(id);
-    if (workspace) {
-      self.workSpaceStore.currentWorkSpace = workspace;
+  deleteWorkSpaceBy(id: string) {
+    self.workSpaceStore.workSpaces.delete(id)
+    if (self.workSpaceStore.currentWorkSpace && self.workSpaceStore.currentWorkSpace.id === id) {
+      self.workSpaceStore.setWorkSpaceBy('')
     }
-    return workspace
+  },
+  setWorkSpaceBy(id: string) {
+    return self.workSpaceStore.setWorkSpaceBy(id)
   }
 }))
 

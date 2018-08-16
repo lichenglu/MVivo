@@ -1,15 +1,19 @@
-import { Avatar, Card, Icon, Popover } from "antd";
+import { Avatar, Card, Dropdown, Icon, Menu } from "antd";
 import * as color from "color";
 import * as React from "react";
+import { compose, withHandlers } from "recompose";
 import styled from "styled-components";
 
-import { WorkSpaceSnapshot } from "../../../stores";
-import { Colors } from "../../../themes";
+import { WorkSpaceSnapshot } from "~/stores";
+import { Colors, Styles } from "~/themes";
 
 interface WorkSpaceCardProps {
 	data: WorkSpaceSnapshot;
-	onEdit?: () => void;
-	onRequestMoreAction?: () => void;
+	onEdit?: (params: any) => void;
+	onSelectExtraAction?: (
+		params: AntClickParam & { workSpaceID: string }
+	) => void;
+	handleAction?: (params: AntClickParam & { workSpaceID: string }) => void;
 }
 
 const Container = styled.div`
@@ -20,6 +24,7 @@ const Container = styled.div`
 	margin-right: 0.5rem;
 	margin-left: 0.5rem;
 	float: left;
+	${Styles.hoverWithShadow()};
 
 	@media (min-width: 500px) {
 		flex: 0.5;
@@ -32,17 +37,12 @@ const Container = styled.div`
 	}
 `;
 
-const Action = styled.p`
-	// @ts-ignore
-	color: ${props => (props.important ? Colors.paleRed : Colors.blue)};
-	cursor: pointer;
-	width: 100%;
-	margin: 0;
-	padding: 0.3rem 0;
-	border-bottom: solid 1px ${Colors.borderGray.toString()};
+const Action = styled.a<{ important?: boolean }>`
+	&&&& {
+		color: ${props => (props.important ? Colors.paleRed : Colors.blue)};
+	}
 	&:hover {
 		color: ${props =>
-			// @ts-ignore
 			props.important
 				? color(Colors.paleRed)
 						.darken(0.4)
@@ -54,18 +54,12 @@ const Action = styled.p`
 	}
 `;
 
-const ActionContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-`;
-
 const actions = [
 	{ key: "share", text: "Share" },
 	{ key: "delete", text: "Delete", important: true }
 ];
 
-export default ({ data, onEdit, onRequestMoreAction }: WorkSpaceCardProps) => (
+const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
 	<Container>
 		<Card
 			cover={
@@ -76,24 +70,22 @@ export default ({ data, onEdit, onRequestMoreAction }: WorkSpaceCardProps) => (
 			}
 			actions={[
 				<Icon key="edit" type="edit" onClick={onEdit} />,
-				<Popover
+				<Dropdown
 					key="ellipsis"
-					placement="bottom"
-					title={"Action"}
-					content={
-						<ActionContainer>
+					placement="bottomCenter"
+					overlay={
+						<Menu onClick={handleAction}>
 							{actions.map(action => (
-								// @ts-ignore
-								<Action key={action.key} important={action.important}>
-									{action.text}
-								</Action>
+								<Menu.Item key={action.key}>
+									<Action important={action.important}>{action.text}</Action>
+								</Menu.Item>
 							))}
-						</ActionContainer>
+						</Menu>
 					}
-					trigger="click"
+					trigger={["click"]}
 				>
-					<Icon type="ellipsis" onClick={onRequestMoreAction} />
-				</Popover>
+					<Icon type="ellipsis" />
+				</Dropdown>
 			]}
 		>
 			<Card.Meta
@@ -102,8 +94,21 @@ export default ({ data, onEdit, onRequestMoreAction }: WorkSpaceCardProps) => (
 				// 	<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
 				// }
 				title={data.name}
-				description={data.description}
+				description={data.description || "No description"}
 			/>
 		</Card>
 	</Container>
 );
+
+const enhance = compose<WorkSpaceCardProps, WorkSpaceCardProps>(
+	withHandlers({
+		handleAction: ({ data, onSelectExtraAction }) => (
+			params: AntClickParam
+		) => {
+			if (!onSelectExtraAction) return;
+			onSelectExtraAction({ ...params, workSpaceID: data.id });
+		}
+	})
+);
+
+export default enhance(WordSpaceCard);

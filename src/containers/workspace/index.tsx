@@ -1,16 +1,15 @@
-import { Button, notification } from "antd";
+import { notification } from "antd";
 import { inject, observer } from "mobx-react";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 
-import { RootStore } from "../../stores/root-store";
+import { RootStore } from "~/stores/root-store";
 
 // components
+import Fab from "~/components/fab";
 import CreateWSModal from "./components/createModal";
 import EmptyView from "./components/emptyView";
 import WorkspaceList from "./components/workspaceList";
-
-import Fab from "../../components/fab";
 
 interface HomeProps {
 	rootStore: RootStore;
@@ -29,7 +28,7 @@ class Home extends React.Component<HomeProps, HomeState> {
 
 	public onCreateWorkSpace = (data: any) => {
 		const workSpace = this.props.rootStore.createWorkSpace(data);
-		this.props.rootStore.setWorkSpace(workSpace.id);
+		this.props.rootStore.setWorkSpaceBy(workSpace.id);
 		this.toggleWSModalFactory(false)();
 		notification.open({
 			description: `You have just created a workspace named ${
@@ -37,6 +36,20 @@ class Home extends React.Component<HomeProps, HomeState> {
 			}. It is also saved locally so that you can still see it when you refresh the browser`,
 			message: "New workspace successfully created"
 		});
+	};
+
+	public onSelectExtraAction = (
+		params: AntClickParam & { workSpaceID: string }
+	) => {
+		switch (params.key) {
+			case "delete":
+				this.props.rootStore.deleteWorkSpaceBy(params.workSpaceID);
+				break;
+			case "share":
+				break;
+			default:
+				break;
+		}
 	};
 
 	public toggleWSModalFactory = (toggle: boolean) => () =>
@@ -70,7 +83,10 @@ class Home extends React.Component<HomeProps, HomeState> {
 					onSubmit={this.onCreateWorkSpace}
 				/>
 				{this.hasWorkSpace ? (
-					<WorkspaceList workspaces={this.workspaces} />
+					<WorkspaceList
+						workspaces={this.workspaces}
+						onSelectExtraAction={this.onSelectExtraAction}
+					/>
 				) : (
 					<EmptyView onClick={this.toggleWSModalFactory(true)} />
 				)}

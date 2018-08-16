@@ -63,6 +63,15 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
     createDocument(data: DocumentSnapshot) {
         const document = WorkSpaceModel.create(data);
         self.documents.put(document)
+    },
+    setWorkSpaceBy(id: string) {
+        const workspace = self.workSpaces.get(id);
+        if (workspace) {
+          self.currentWorkSpace = workspace;
+        } else {
+            self.currentWorkSpace = undefined;
+        }
+        return workspace
     }
 }))
 
