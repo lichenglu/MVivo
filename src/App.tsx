@@ -16,9 +16,14 @@ import { routeConstants } from "./lib/constants";
 const Container = styled.div`
 	min-width: 100vw;
 	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
 `;
 const ContentContainer = styled.div`
 	padding: 24px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
 `;
 
 class App extends React.Component {

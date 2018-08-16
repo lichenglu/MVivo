@@ -1,7 +1,8 @@
 const tsImportPluginFactory = require("ts-import-plugin");
 const { injectBabelPlugin, compose, getLoader } = require("react-app-rewired");
-const rewireReactHotLoader = require("react-app-rewire-hot-loader");
 const rewireTypescript = require("react-app-rewire-typescript");
+const rewireReactHotLoader = require("react-app-rewire-hot-loader");
+const rewireSvgReactLoader = require("react-app-rewire-svg-react-loader");
 const rewireLess = require("react-app-rewire-less");
 const rewireStyledComponents = require("react-app-rewire-styled-components");
 const rewireMobX = require("react-app-rewire-mobx");
@@ -12,6 +13,7 @@ module.exports = function override(config, env) {
 	config = compose(
 		rewireTypescript,
 		rewireReactHotLoader,
+		rewireSvgReactLoader,
 		rewireStyledComponents,
 		rewireMobX,
 		rewireLess

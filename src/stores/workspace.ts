@@ -1,7 +1,7 @@
 import { values } from 'mobx';
 import { types } from "mobx-state-tree"
 
-import { CodeBookModel } from './codebook';
+import { CodeBook, CodeBookModel } from './codebook';
 import { assignUUID } from './utils';
 
 export const DocumentModel = types.model('Document', {
@@ -13,10 +13,19 @@ export const DocumentModel = types.model('Document', {
 
 export const WorkSpaceModel = types.model('WorkSpace', {
     codeBook: types.maybe(types.reference(CodeBookModel)),
+    description: types.optional(types.string, ''),
     document: types.maybe(types.reference(DocumentModel)),
     id: types.identifier,
     name: types.string,
-}) 
+})
+.actions(self => ({
+    setCodeBook(book?: CodeBook) {
+        self.codeBook = book;
+    },
+    setDocument(documentT?: Document) {
+        self.document = documentT;
+    }
+})) 
 .preProcessSnapshot(assignUUID)
 
 export const WorkSpaceStore = types.model('WorkSpaceStore', {
@@ -28,6 +37,9 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
     get workSpaceList() {
         return values(self.workSpaces)
     },
+    get hasWorkSpace() {
+        return this.workSpaceList.length > 0
+    },
     get safeCurrentWorkSpace() {
         // If there is a selected workspace, then we prioritize it
         // if not, and there is/are workspaces, then we return the first
@@ -38,6 +50,12 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
         if (this.workSpaceList.length > 0) {
             return this.workSpaceList[0]
         }
+    },
+    workSpaceBy(id: string) {
+        return self.workSpaces.get(id)
+    },
+    documentBy(id: string) {
+        return self.documents.get(id)
     }
 }))
 .actions(self => ({

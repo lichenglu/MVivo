@@ -6,6 +6,9 @@
 	"rules": {
 		"no-console": false,
 		"interface-name": false,
-		"curly": false
+		"curly": false,
+		"object-literal-sort-keys": {
+			"severity": "warning"
+		}
 	}
 }

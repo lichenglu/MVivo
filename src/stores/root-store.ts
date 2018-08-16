@@ -15,18 +15,22 @@ export const RootStoreModel = types.model("RootStore").props({
     self.codeBookStore.codeBooks.put(codeBook);
     return codeBook;
   },
-  createWorkSpace(data: { name: string, codeBook?: CodeBookSnapshot, document?: DocumentSnapshot }) {
+  createWorkSpace(data: { name: string, description?: string, codeBookID?: string, documentID?: string }) {
+
       const workSpace = WorkSpaceModel.create(data);
-      self.workSpaceStore.workSpaces.put(workSpace)
-
-      if (data.document) {
-        self.workSpaceStore.createDocument(data.document)
-      }
-
-      if (data.codeBook) {
-        this.createCodeBook(data.codeBook)
+      
+      if (data.codeBookID) {
+        const codeBook = self.codeBookStore.codeBookBy(data.codeBookID)
+        workSpace.setCodeBook(codeBook);
       }
       
+      if (data.documentID) {
+        const documentT = self.workSpaceStore.documentBy(data.documentID)
+        workSpace.setDocument(documentT);
+      }
+
+      self.workSpaceStore.workSpaces.put(workSpace)
+
       return workSpace;
   },
   setWorkSpace(id: string) {

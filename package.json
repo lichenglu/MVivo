@@ -24,6 +24,7 @@
 		"eject": "react-app-rewired eject --scripts-version react-scripts-ts"
 	},
 	"devDependencies": {
+		"@types/color": "^3.0.0",
 		"@types/jest": "^23.3.1",
 		"@types/node": "^10.7.0",
 		"@types/react": "^16.4.10",
@@ -41,6 +42,7 @@
 		"react-app-rewire-mobx": "^1.0.8",
 		"react-app-rewire-scss": "^1.0.2",
 		"react-app-rewire-styled-components": "^3.0.2",
+		"react-app-rewire-svg-react-loader": "github:codebandits/react-app-rewire-svg-react-loader",
 		"react-app-rewire-typescript": "^2.0.2",
 		"react-app-rewired": "^1.5.2",
 		"react-hot-loader": "^4.3.4",
