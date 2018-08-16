@@ -6,6 +6,8 @@ const rewireLess = require("react-app-rewire-less");
 const rewireStyledComponents = require("react-app-rewire-styled-components");
 const rewireMobX = require("react-app-rewire-mobx");
 
+const color = require("color");
+
 module.exports = function override(config, env) {
 	config = compose(
 		rewireTypescript,
@@ -38,6 +40,12 @@ module.exports = function override(config, env) {
 	config = rewireLess.withLoaderOptions({
 		javascriptEnabled: true,
 		modifyVars: {
+			"@menu-bg": color("#f8f8f8"),
+			"@menu-item-color": color("#f8f8f8")
+				.alpha(0.5)
+				.darken(0.5),
+			"@menu-highlight-color": "#1088ae",
+			"@menu-item-active-bg": color("#1088ae").lighten(0.4)
 			// '@primary-color': 'red'
 		}
 	})(config, env);

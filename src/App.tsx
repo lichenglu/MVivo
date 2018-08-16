@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { hot } from "react-hot-loader";
-import { Route, RouteProps, withRouter } from "react-router-dom";
+import { Route } from "react-router-dom";
 import styled from "styled-components";
 
 // components
@@ -9,6 +9,9 @@ import Header from "./components/header";
 
 // containers
 import WorkSpace from "./containers/workspace";
+
+// utils
+import { routeConstants } from "./lib/constants";
 
 const Container = styled.div`
 	min-width: 100vw;
@@ -18,23 +21,29 @@ const ContentContainer = styled.div`
 	padding: 24px;
 `;
 
-class App extends React.Component<RouteProps> {
+class App extends React.Component {
 	get items() {
-		return [{ key: "home", title: "Home" }];
+		return [
+			{ key: "workspaces", title: "Work Spaces", path: routeConstants.root },
+			{ key: "codebooks", title: "Code Books", path: routeConstants.codebooks }
+		];
 	}
 
 	public render(): JSX.Element {
-		console.log(this.props);
 		return (
 			<Container>
 				<Helmet titleTemplate="MVivo - %s" />
 				<Header items={this.items} />
 				<ContentContainer>
-					<Route path="/" component={WorkSpace} exact={true} />
+					<Route
+						path={routeConstants.root}
+						component={WorkSpace}
+						exact={true}
+					/>
 				</ContentContainer>
 			</Container>
 		);
 	}
 }
 
-export default hot(module)(withRouter(props => <App {...props} />));
+export default hot(module)(App);
