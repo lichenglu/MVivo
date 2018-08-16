@@ -1,8 +1,10 @@
-import { Avatar, Card, Icon } from "antd";
+import { Avatar, Card, Icon, Popover } from "antd";
+import * as color from "color";
 import * as React from "react";
 import styled from "styled-components";
 
 import { WorkSpaceSnapshot } from "../../../stores";
+import { Colors } from "../../../themes";
 
 interface WorkSpaceCardProps {
 	data: WorkSpaceSnapshot;
@@ -30,6 +32,39 @@ const Container = styled.div`
 	}
 `;
 
+const Action = styled.p`
+	// @ts-ignore
+	color: ${props => (props.important ? Colors.paleRed : Colors.blue)};
+	cursor: pointer;
+	width: 100%;
+	margin: 0;
+	padding: 0.3rem 0;
+	border-bottom: solid 1px ${Colors.borderGray.toString()};
+	&:hover {
+		color: ${props =>
+			// @ts-ignore
+			props.important
+				? color(Colors.paleRed)
+						.darken(0.4)
+						.toString()
+				: color(Colors.blue)
+						.darken(0.4)
+						.toString()};
+		transition: 0.5s;
+	}
+`;
+
+const ActionContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+const actions = [
+	{ key: "share", text: "Share" },
+	{ key: "delete", text: "Delete", important: true }
+];
+
 export default ({ data, onEdit, onRequestMoreAction }: WorkSpaceCardProps) => (
 	<Container>
 		<Card
@@ -41,7 +76,24 @@ export default ({ data, onEdit, onRequestMoreAction }: WorkSpaceCardProps) => (
 			}
 			actions={[
 				<Icon key="edit" type="edit" onClick={onEdit} />,
-				<Icon key="ellipsis" type="ellipsis" onClick={onRequestMoreAction} />
+				<Popover
+					key="ellipsis"
+					placement="bottom"
+					title={"Action"}
+					content={
+						<ActionContainer>
+							{actions.map(action => (
+								// @ts-ignore
+								<Action key={action.key} important={action.important}>
+									{action.text}
+								</Action>
+							))}
+						</ActionContainer>
+					}
+					trigger="click"
+				>
+					<Icon type="ellipsis" onClick={onRequestMoreAction} />
+				</Popover>
 			]}
 		>
 			<Card.Meta

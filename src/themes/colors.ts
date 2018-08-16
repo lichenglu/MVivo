@@ -13,6 +13,7 @@ export default {
 	coal: '#2d2d2d',
 	bloodOrange: '#fb5f26',
 	surfGreen: '#a3d9c4',
+	blue: "#1088ae",
 	get surfGreenDark() {
 		return color(this.surfGreen).alpha(0.8);
 	},
