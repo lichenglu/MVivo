@@ -17,6 +17,16 @@ If you have heard of qualitative research, then you are likely to have heard of 
 
 You can see version 0.1's roadmap [here](https://github.com/lichenglu/MVivo/issues/4)
 
+## Development
+
+Currently, it is quite straightforward, as I have not introduced the backend part to the repo.
+
+```
+cd to PROJECT-DIR
+npm i
+npm start
+```
+
 ## Contribution
 
 Pull requests are welcomed, though you might not know what you can do currently. But please contact me at li.chenglu@utexas.edu if you know NVivo, and would like to have a free version of it.
