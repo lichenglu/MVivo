@@ -6,4 +6,5 @@ declare global {
     type AntClickParam = ClickParam
     type AntUploadChangeParam = UploadChangeParam
     type RouteCompProps<P> = RouteComponentProps<P>
+    type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 }

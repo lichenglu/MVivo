@@ -11,7 +11,7 @@ function getBase64(text: Blob, callback: (res: FileReader["result"]) => void) {
 }
 
 interface UploaderProps {
-	onCompleteUpload: (text: string) => void;
+	onCompleteUpload: (data: { text: string; name: string }) => void;
 }
 
 interface UploaderState {
@@ -19,28 +19,20 @@ interface UploaderState {
 }
 
 const StyledDragger = styled(Dragger)`
-    width: 100%;
-    height: 80%
-	margin: auto;
-    flex: 0.1;
-
-    &&&&& .anticon-inbox {
-        font-size: 4rem
-    }
+	&&&&& .anticon-inbox {
+		font-size: 4rem;
+	}
 
 	@media (min-width: 500px) {
-        width: 80%;
-        &&&&& .anticon-inbox {
-            font-size: 6rem
-        }
-    }
-    
-    @media (min-width: 960px) {
-        width: 50%;
-        height: 50%;
-        &&&&& .anticon-inbox {
-            font-size: 8rem
-        }
+		&&&&& .anticon-inbox {
+			font-size: 6rem;
+		}
+	}
+
+	@media (min-width: 960px) {
+		&&&&& .anticon-inbox {
+			font-size: 8rem;
+		}
 	}
 `;
 
@@ -63,7 +55,10 @@ export default class Uploader extends React.PureComponent<
 				this.setState({
 					loading: false
 				});
-				this.props.onCompleteUpload(text);
+				this.props.onCompleteUpload({
+					text,
+					name: info.file.originFileObj ? info.file.originFileObj.name : "N/A"
+				});
 			});
 		} else if (status === "error") {
 			message.error(`${info.file.name} file upload failed.`);

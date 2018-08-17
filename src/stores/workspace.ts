@@ -60,9 +60,10 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
     }
 }))
 .actions(self => ({
-    createDocument(data: DocumentSnapshot) {
-        const document = WorkSpaceModel.create(data);
+    createDocument(data: Omit<DocumentSnapshot, 'id'>) {
+        const document = DocumentModel.create(data);
         self.documents.put(document)
+        return document
     },
     setWorkSpaceBy(id: string) {
         const workspace = self.workSpaces.get(id);

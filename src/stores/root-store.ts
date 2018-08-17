@@ -2,6 +2,8 @@ import { types } from "mobx-state-tree"
 import { CodeBookModel, CodeBookSnapshot, CodeBookStore, CodesSnapshot } from "./codebook"
 import { DocumentSnapshot, WorkSpaceModel, WorkSpaceStore, } from "./workspace"
 
+export * from './codebook';
+export * from './workspace';
 /**
  * An RootStore model.
  */

@@ -26,7 +26,8 @@ If you have heard of qualitative research, then you are likely to have heard of 
 | UI - WorkSpace: creation           |   ✅   |
 | UI - WorkSpace: updating           |   ❌   |
 | UI - WorkSpace: deletion           |   ✅   |
-| plain-text parsing                 |   ❌   |
+| plain-text parsing - file upload   |   ✅   |
+| plain-text parsing - copy & paste  |   ❌   |
 | Word doc parsing                   |   ❌   |
 | select-text-to-code                |   ❌   |
 | code book overview/update/deletion |   ❌   |
