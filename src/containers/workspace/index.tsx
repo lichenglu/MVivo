@@ -9,6 +9,10 @@ import { WorkSpace } from "./workspace";
 export default () => (
 	<Switch>
 		<Route exact={true} path={routeConstants.root} component={WorkSpace} />
-		<Route path={routeConstants.workspaceDetail} component={WorkSpaceDetail} />
+		<Route
+			exact={true}
+			path={routeConstants.workspaceDetail}
+			component={WorkSpaceDetail}
+		/>
 	</Switch>
 );

@@ -54,8 +54,8 @@ export class WorkSpaceDetail extends React.Component<
 			);
 			this.workspace.setDocument(documentT);
 			notification.success({
-				message: "Document uploaded!",
-				description: "Now you are all set to start coding!"
+				description: "Now you are all set to start coding!",
+				message: "Document uploaded!"
 			});
 		}
 	};
