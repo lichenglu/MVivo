@@ -1,4 +1,5 @@
-import { types } from "mobx-state-tree"
+import { values } from "mobx"
+import { getSnapshot, types } from "mobx-state-tree"
 
 import { assignUUID } from './utils';
 
@@ -22,8 +23,11 @@ export const CodeBookStore = types
       codes: types.optional(types.map(CodeModel), {}),
   })
   .views(self => ({
-    codeBookOf(id: string) {
+    codeBookBy(id: string) {
       return self.codeBooks.get(id)
+    },
+    get codeBookList() {
+      return values(self.codeBooks).map((book: CodeBook) => getSnapshot(book))
     }
   }))
 

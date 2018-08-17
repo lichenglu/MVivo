@@ -2,6 +2,8 @@ import { types } from "mobx-state-tree"
 import { CodeBookModel, CodeBookSnapshot, CodeBookStore, CodesSnapshot } from "./codebook"
 import { DocumentSnapshot, WorkSpaceModel, WorkSpaceStore, } from "./workspace"
 
+export * from './codebook';
+export * from './workspace';
 /**
  * An RootStore model.
  */
@@ -15,26 +17,32 @@ export const RootStoreModel = types.model("RootStore").props({
     self.codeBookStore.codeBooks.put(codeBook);
     return codeBook;
   },
-  createWorkSpace(data: { name: string, codeBook?: CodeBookSnapshot, document?: DocumentSnapshot }) {
+  createWorkSpace(data: { name: string, description?: string, codeBookID?: string, documentID?: string }) {
+
       const workSpace = WorkSpaceModel.create(data);
-      self.workSpaceStore.workSpaces.put(workSpace)
-
-      if (data.document) {
-        self.workSpaceStore.createDocument(data.document)
-      }
-
-      if (data.codeBook) {
-        this.createCodeBook(data.codeBook)
+      
+      if (data.codeBookID) {
+        const codeBook = self.codeBookStore.codeBookBy(data.codeBookID)
+        workSpace.setCodeBook(codeBook);
       }
       
+      if (data.documentID) {
+        const documentT = self.workSpaceStore.documentBy(data.documentID)
+        workSpace.setDocument(documentT);
+      }
+
+      self.workSpaceStore.workSpaces.put(workSpace)
+
       return workSpace;
   },
-  setWorkSpace(id: string) {
-    const workspace = self.workSpaceStore.workSpaces.get(id);
-    if (workspace) {
-      self.workSpaceStore.currentWorkSpace = workspace;
+  deleteWorkSpaceBy(id: string) {
+    self.workSpaceStore.workSpaces.delete(id)
+    if (self.workSpaceStore.currentWorkSpace && self.workSpaceStore.currentWorkSpace.id === id) {
+      self.workSpaceStore.setWorkSpaceBy('')
     }
-    return workspace
+  },
+  setWorkSpaceBy(id: string) {
+    return self.workSpaceStore.setWorkSpaceBy(id)
   }
 }))
 

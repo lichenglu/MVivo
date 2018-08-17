@@ -3,13 +3,18 @@
 		"baseUrl": ".",
 		"outDir": "build/dist",
 		"module": "esnext",
-		"target": "es5",
-		"lib": ["es6", "dom"],
+		"target": "es6",
+		"lib": ["es2017", "dom"],
 		"sourceMap": true,
 		"allowJs": true,
 		"jsx": "react",
 		"moduleResolution": "node",
 		"rootDir": "src",
+		"paths": {
+			// module mapping
+			// https://github.com/wmonk/create-react-app-typescript/pull/303
+			"~/*": ["src/*"]
+		},
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,
 		"noImplicitThis": true,

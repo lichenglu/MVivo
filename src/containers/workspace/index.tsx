@@ -1,34 +1,18 @@
-import { Button } from "antd";
-import { inject, observer } from "mobx-react";
 import * as React from "react";
-import { Helmet } from "react-helmet";
+import { Route, Switch } from "react-router-dom";
 
-import { RootStore } from "../../stores/root-store";
+import { routeConstants } from "~/lib/constants";
 
-interface HomeProps {
-	rootStore: RootStore;
-}
-@inject("rootStore")
-@observer
-class Home extends React.Component<HomeProps> {
-	public onCreateCodeBook = () => {
-		const workSpace = this.props.rootStore.createWorkSpace({
-			name: "WorkSpace 1"
-		});
-		this.props.rootStore.setWorkSpace(workSpace.id);
-	};
+import { WorkSpaceDetail } from "./detail";
+import { WorkSpace } from "./workspace";
 
-	public render(): JSX.Element {
-		console.log(this.props);
-		return (
-			<div>
-				<Helmet>
-					<title>Home</title>
-				</Helmet>
-				<Button onClick={this.onCreateCodeBook}>Hello World</Button>
-			</div>
-		);
-	}
-}
-
-export default Home;
+export default () => (
+	<Switch>
+		<Route exact={true} path={routeConstants.root} component={WorkSpace} />
+		<Route
+			exact={true}
+			path={routeConstants.workspaceDetail}
+			component={WorkSpaceDetail}
+		/>
+	</Switch>
+);

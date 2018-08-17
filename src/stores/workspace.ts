@@ -1,7 +1,7 @@
 import { values } from 'mobx';
-import { types } from "mobx-state-tree"
+import { getSnapshot, types } from "mobx-state-tree"
 
-import { CodeBookModel } from './codebook';
+import { CodeBook, CodeBookModel } from './codebook';
 import { assignUUID } from './utils';
 
 export const DocumentModel = types.model('Document', {
@@ -13,10 +13,19 @@ export const DocumentModel = types.model('Document', {
 
 export const WorkSpaceModel = types.model('WorkSpace', {
     codeBook: types.maybe(types.reference(CodeBookModel)),
+    description: types.optional(types.string, ''),
     document: types.maybe(types.reference(DocumentModel)),
     id: types.identifier,
     name: types.string,
-}) 
+})
+.actions(self => ({
+    setCodeBook(book?: CodeBook) {
+        self.codeBook = book;
+    },
+    setDocument(documentT?: Document) {
+        self.document = documentT;
+    }
+})) 
 .preProcessSnapshot(assignUUID)
 
 export const WorkSpaceStore = types.model('WorkSpaceStore', {
@@ -26,7 +35,10 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
 })
 .views(self => ({
     get workSpaceList() {
-        return values(self.workSpaces)
+        return values(self.workSpaces).map((ws: WorkSpace) => getSnapshot(ws))
+    },
+    get hasWorkSpace() {
+        return this.workSpaceList.length > 0
     },
     get safeCurrentWorkSpace() {
         // If there is a selected workspace, then we prioritize it
@@ -38,12 +50,29 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
         if (this.workSpaceList.length > 0) {
             return this.workSpaceList[0]
         }
+        return null
+    },
+    workSpaceBy(id: string) {
+        return self.workSpaces.get(id)
+    },
+    documentBy(id: string) {
+        return self.documents.get(id)
     }
 }))
 .actions(self => ({
-    createDocument(data: DocumentSnapshot) {
-        const document = WorkSpaceModel.create(data);
+    createDocument(data: Omit<DocumentSnapshot, 'id'>) {
+        const document = DocumentModel.create(data);
         self.documents.put(document)
+        return document
+    },
+    setWorkSpaceBy(id: string) {
+        const workspace = self.workSpaces.get(id);
+        if (workspace) {
+          self.currentWorkSpace = workspace;
+        } else {
+            self.currentWorkSpace = undefined;
+        }
+        return workspace
     }
 }))
 

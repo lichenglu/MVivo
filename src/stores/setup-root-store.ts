@@ -1,16 +1,17 @@
 import { onSnapshot } from "mobx-state-tree"
 import { RootStore, RootStoreModel } from "./root-store"
 
-import { Environment } from "../lib/env"
-import * as storage from "../lib/storage"
-import { Api } from "../services/api"
-import { Reactotron } from "../services/reactotron"
+import { Environment } from "~/lib/env"
+import * as storage from "~/lib/storage"
+import { Api } from "~/services/api"
+import { Reactotron } from "~/services/reactotron"
 
 /**
  * The key we'll be saving our state as within async storage.
  */
 const ROOT_STATE_STORAGE_KEY = "root"
 const __DEV__ = process.env.NODE_ENV
+const ENABLE_PERSISTENCE = process.env.ENABLE_PERSISTENCE
 
 /**
  * Setup the root state.
@@ -21,6 +22,7 @@ export async function setupRootStore() {
 
   // prepare the environment that will be associated with the RootStore.
   const env = await createEnvironment()
+  
   try {
     // load data from storage
     data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
@@ -37,9 +39,12 @@ export async function setupRootStore() {
     env.reactotron.setRootStore(rootStore, data)
   }
 
-  // track changes & save to storage
+  if (!ENABLE_PERSISTENCE) {
+    await storage.remove(ROOT_STATE_STORAGE_KEY)
+  }
+  
   onSnapshot(rootStore, snapshot => storage.save(ROOT_STATE_STORAGE_KEY, snapshot))
-
+  
   return rootStore
 }
 
