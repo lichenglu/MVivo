@@ -40,11 +40,7 @@ class App extends React.Component {
 				<Helmet titleTemplate="MVivo - %s" />
 				<Header items={this.items} />
 				<ContentContainer>
-					<Route
-						path={routeConstants.root}
-						component={WorkSpace}
-						exact={true}
-					/>
+					<Route path={routeConstants.root} component={WorkSpace} />
 				</ContentContainer>
 			</Container>
 		);

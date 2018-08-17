@@ -25,7 +25,7 @@ If you have heard of qualitative research, then you are likely to have heard of 
 | UI - WorkSpace: list view          |   ✅   |
 | UI - WorkSpace: creation           |   ✅   |
 | UI - WorkSpace: updating           |   ❌   |
-| UI - WorkSpace: deletion           |   ❌   |
+| UI - WorkSpace: deletion           |   ✅   |
 | plain-text parsing                 |   ❌   |
 | Word doc parsing                   |   ❌   |
 | select-text-to-code                |   ❌   |

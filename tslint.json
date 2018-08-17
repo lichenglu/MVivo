@@ -9,6 +9,7 @@
 		"curly": false,
 		"object-literal-sort-keys": {
 			"severity": "warning"
-		}
+		},
+		"jsx-no-lambda": false
 	}
 }

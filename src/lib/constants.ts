@@ -1,4 +1,5 @@
 export const routeConstants = {
 	codebooks: "/codebooks",
-	root: "/"
+	root: "/",
+	workspaceDetail: "/workspace/:id"
 };

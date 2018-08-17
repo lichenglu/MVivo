@@ -1,6 +1,7 @@
 import { Avatar, Card, Dropdown, Icon, Menu } from "antd";
 import * as color from "color";
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { compose, withHandlers } from "recompose";
 import styled from "styled-components";
 
@@ -54,6 +55,10 @@ const Action = styled.a<{ important?: boolean }>`
 	}
 `;
 
+const CardCover = styled.div`
+	pointer: cursor;
+`;
+
 const actions = [
 	{ key: "share", text: "Share" },
 	{ key: "delete", text: "Delete", important: true }
@@ -63,10 +68,15 @@ const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
 	<Container>
 		<Card
 			cover={
-				<img
-					alt="cover image"
-					src="https://source.unsplash.com/800x450/?research"
-				/>
+				<CardCover>
+					<Link to={`/workspace/${data.id}`}>
+						<img
+							alt="cover image"
+							src="https://source.unsplash.com/800x450/?research"
+							style={{ width: "100%", height: "100%" }}
+						/>
+					</Link>
+				</CardCover>
 			}
 			actions={[
 				<Icon key="edit" type="edit" onClick={onEdit} />,
