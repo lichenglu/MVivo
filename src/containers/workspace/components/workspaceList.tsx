@@ -14,16 +14,16 @@ const Container = styled.div`
 `;
 
 interface WorkSpaceListProps {
-	workspaces: WorkSpaceSnapshot[];
+	workSpaces: WorkSpaceSnapshot[];
 	onEdit?: (params: any) => void;
 	onSelectExtraAction?: (
 		params: AntClickParam & { workSpaceID: string }
 	) => void;
 }
 
-export default ({ workspaces, onSelectExtraAction }: WorkSpaceListProps) => (
+export default ({ workSpaces, onSelectExtraAction }: WorkSpaceListProps) => (
 	<Container>
-		{workspaces.map(ws => (
+		{workSpaces.map(ws => (
 			<WorkspaceCard
 				key={ws.id}
 				data={ws}

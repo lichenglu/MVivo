@@ -1,6 +1,4 @@
 import * as React from "react";
-
-import Plus from "../../../assets/plus.svg";
 import EmptyPlaceholder from "../../../components/emptyPlaceholder";
 
 export default (props: any) => (

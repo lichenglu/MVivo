@@ -7,9 +7,9 @@ import { RootStore } from "~/stores/root-store";
 
 // components
 import Fab from "~/components/fab";
-import CreateWSModal from "./components/createModal";
-import EmptyView from "./components/emptyView";
-import WorkspaceList from "./components/workspaceList";
+import CreateWSModal from "~/containers/workspace/components/createModal";
+import EmptyView from "~/containers/workspace/components/emptyView";
+import WorkspaceList from "~/containers/workspace/components/workspaceList";
 
 interface WorkSpaceProps {
 	rootStore: RootStore;
@@ -59,7 +59,7 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
 		return this.props.rootStore.codeBookStore.codeBookList;
 	}
 
-	get workspaces() {
+	get workSpaces() {
 		return this.props.rootStore.workSpaceStore.workSpaceList;
 	}
 
@@ -84,7 +84,7 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
 				/>
 				{this.hasWorkSpace ? (
 					<WorkspaceList
-						workspaces={this.workspaces}
+						workSpaces={this.workSpaces}
 						onSelectExtraAction={this.onSelectExtraAction}
 					/>
 				) : (

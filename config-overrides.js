@@ -10,6 +10,7 @@ const rewireMobX = require("react-app-rewire-mobx");
 const color = require("color");
 
 module.exports = function override(config, env) {
+	// https://github.com/timarney/react-app-rewired/issues/218
 	config.entry.unshift("babel-polyfill");
 
 	config = compose(
