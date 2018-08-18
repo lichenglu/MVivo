@@ -8,6 +8,7 @@ import { RootStore, setupRootStore } from "./stores";
 
 import "normalize.css";
 import "./index.css";
+
 import registerServiceWorker from "./registerServiceWorker";
 
 interface RootComponentState {

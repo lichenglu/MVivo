@@ -6,6 +6,7 @@
 		"antd": "^3.8.1",
 		"apisauce": "^0.16.0",
 		"color": "^3.0.0",
+		"draft-js": "^0.10.5",
 		"mobx": "^5.0.3",
 		"mobx-react": "^5.2.5",
 		"normalize.css": "^8.0.0",
@@ -26,6 +27,7 @@
 	},
 	"devDependencies": {
 		"@types/color": "^3.0.0",
+		"@types/draft-js": "^0.10.24",
 		"@types/jest": "^23.3.1",
 		"@types/node": "^10.7.0",
 		"@types/react": "^16.4.10",
@@ -36,6 +38,7 @@
 		"@types/uuid": "^3.4.3",
 		"awesome-typescript-loader": "^5.2.0",
 		"babel-plugin-import": "^1.8.0",
+		"babel-polyfill": "^6.26.0",
 		"mobx-react-devtools": "^6.0.2",
 		"mobx-state-tree": "^3.1.1",
 		"react-app-rewire-hot-loader": "^1.0.1",
