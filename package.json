@@ -7,6 +7,7 @@
 		"apisauce": "^0.16.0",
 		"color": "^3.0.0",
 		"draft-js": "^0.10.5",
+		"localforage": "^1.7.2",
 		"mobx": "^5.0.3",
 		"mobx-react": "^5.2.5",
 		"normalize.css": "^8.0.0",
