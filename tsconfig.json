@@ -24,6 +24,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true
   },
+  "parcelTsPluginOptions": {},
   "exclude": [
     "node_modules",
     "build",

@@ -7,7 +7,6 @@ import App from '~/App'
 import {RootStore, setupRootStore} from '~/stores'
 
 import 'normalize.css'
-import './index.css'
 
 import registerServiceWorker from '~/registerServiceWorker'
 
