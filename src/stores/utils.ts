@@ -1,4 +1,4 @@
-import * as uuid from 'uuid';
+import uuid from 'uuid';
 
 // @ts-ignore
 export function assignUUID(snapshot) {

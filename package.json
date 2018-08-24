@@ -1,67 +1,56 @@
 {
-	"name": "mvivo",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"antd": "^3.8.1",
-		"apisauce": "^0.16.0",
-		"color": "^3.0.0",
-		"draft-js": "^0.10.5",
-		"localforage": "^1.7.2",
-		"mobx": "^5.0.3",
-		"mobx-react": "^5.2.5",
-		"normalize.css": "^8.0.0",
-		"react": "^16.4.1",
-		"react-dom": "^16.4.1",
-		"react-helmet": "^5.2.0",
-		"react-router": "^4.3.1",
-		"react-router-dom": "^4.3.1",
-		"recompose": "^0.28.2",
-		"styled-components": "^3.4.2",
-		"uuid": "^3.3.2"
-	},
-	"scripts": {
-		"start": "react-app-rewired start --scripts-version react-scripts-ts",
-		"build": "react-app-rewired build --scripts-version react-scripts-ts",
-		"test": "react-app-rewired test --scripts-version react-scripts-ts --env=jsdom",
-		"eject": "react-app-rewired eject --scripts-version react-scripts-ts"
-	},
-	"devDependencies": {
-		"@types/color": "^3.0.0",
-		"@types/draft-js": "^0.10.24",
-		"@types/jest": "^23.3.1",
-		"@types/node": "^10.7.0",
-		"@types/react": "^16.4.10",
-		"@types/react-dom": "^16.0.7",
-		"@types/react-helmet": "^5.0.7",
-		"@types/react-router-dom": "^4.3.0",
-		"@types/recompose": "^0.26.4",
-		"@types/uuid": "^3.4.3",
-		"awesome-typescript-loader": "^5.2.0",
-		"babel-plugin-import": "^1.8.0",
-		"babel-polyfill": "^6.26.0",
-		"mobx-react-devtools": "^6.0.2",
-		"mobx-state-tree": "^3.1.1",
-		"react-app-rewire-hot-loader": "^1.0.1",
-		"react-app-rewire-import": "^1.0.1",
-		"react-app-rewire-less": "^2.1.2",
-		"react-app-rewire-mobx": "^1.0.8",
-		"react-app-rewire-scss": "^1.0.2",
-		"react-app-rewire-styled-components": "^3.0.2",
-		"react-app-rewire-svg-react-loader": "github:codebandits/react-app-rewire-svg-react-loader",
-		"react-app-rewire-typescript": "^2.0.2",
-		"react-app-rewired": "^1.5.2",
-		"react-hot-loader": "^4.3.4",
-		"react-scripts": "^1.1.4",
-		"react-scripts-ts": "2.17.0",
-		"reactotron-mst": "^2.1.0",
-		"reactotron-react-js": "^2.1.0",
-		"ts-import-plugin": "^1.5.4",
-		"typescript": "^3.0.1"
-	},
-	"jest": {
-		"moduleNameMapper": {
-			"^~/(.*)$": "<rootDir>/src/$1"
-		}
-	}
+  "name": "mvivo",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.8.2",
+    "apisauce": "^0.16.0",
+    "color": "^3.0.0",
+    "draft-js": "^0.10.5",
+    "localforage": "^1.7.2",
+    "mobx": "^5.0.4",
+    "mobx-react": "^5.2.5",
+    "normalize.css": "^8.0.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-helmet": "^5.2.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-svg-inline": "^2.1.1",
+    "recompose": "^0.28.2",
+    "styled-components": "^3.4.5",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "start": "parcel src/index.html",
+    "prebuild": "rm -rf dist/",
+    "build": "parcel build src/index.html"
+  },
+  "devDependencies": {
+    "@types/color": "^3.0.0",
+    "@types/draft-js": "^0.10.24",
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.9.1",
+    "@types/react": "^16.4.11",
+    "@types/react-dom": "^16.0.7",
+    "@types/react-helmet": "^5.0.7",
+    "@types/react-router-dom": "^4.3.0",
+    "@types/react-svg-inline": "^2.1.1",
+    "@types/recompose": "^0.26.4",
+    "@types/uuid": "^3.4.3",
+    "babel-plugin-import": "^1.8.0",
+    "babel-preset-react-app": "^3.1.2",
+    "less": "^2.7.3",
+    "mobx-state-tree": "^3.2.3",
+    "parcel-bundler": "^1.9.7",
+    "reactotron-mst": "^2.1.0",
+    "reactotron-react-js": "^2.1.1",
+    "ts-import-plugin": "^1.5.4",
+    "typescript": "^3.0.1"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^~/(.*)$": "<rootDir>/src/$1"
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import * as color from 'color';
+import Color from 'color';
 
 export default {
 	ivoryWhite: "#f8f8f8",
@@ -15,7 +15,7 @@ export default {
 	surfGreen: '#a3d9c4',
 	blue: "#1088ae",
 	get surfGreenDark() {
-		return color(this.surfGreen).alpha(0.8);
+		return Color(this.surfGreen).alpha(0.8);
 	},
 	banner: '#f4f4f4', // 244, 244, 244
 	text: '#E0D7E5', // 224, 215, 229
@@ -24,10 +24,10 @@ export default {
 	textPlaceholder: 'rgb(216, 216, 216)',
 	shadowGray: '#ccc', // 204, 204, 204
 	get borderGray() {
-		return color(this.shadowGray).alpha(0.3);
+		return Color(this.shadowGray).alpha(0.3);
 	},
 	get tranparentBlack() {
-		return color(this.textBlack).alpha(0.7);
+		return Color(this.textBlack).alpha(0.7);
 	},
 	paleRed: '#dd5042',
 	pink: '#fa8f89',
