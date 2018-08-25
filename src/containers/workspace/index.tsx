@@ -6,6 +6,8 @@ import { routeConstants } from "~/lib/constants";
 import { WorkSpaceDetail } from "./detail";
 import { WorkSpace } from "./workSpace";
 
+export * from "./components";
+
 export default () => (
 	<Switch>
 		<Route exact={true} path={routeConstants.root} component={WorkSpace} />

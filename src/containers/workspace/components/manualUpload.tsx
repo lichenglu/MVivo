@@ -45,6 +45,7 @@ const ManualUpload = ({
 			/>
 		</Form.Item>
 		<Form.Item required label="Document Text:">
+			{/* Change textarea to rich text editor */}
 			<TextArea
 				autosize={{ minRows: 32, maxRows: 64 }}
 				placeholder="Paste your text-to-be-coded here"

@@ -9,6 +9,7 @@ import { RootStore } from "~/stores/root-store";
 // components
 import ManualUpload from "./components/manualUpload";
 import Uploader from "./components/upload";
+import WorkStation from "./components/workStation.js";
 
 interface WorkSpaceDetailProps extends RouteCompProps<{ id: string }> {
 	rootStore: RootStore;
@@ -96,7 +97,7 @@ export class WorkSpaceDetail extends React.Component<
 					<title>WorkSpace Detail</title>
 				</Helmet>
 				{this.hasDocument ? (
-					<p>Hello World</p>
+					<WorkStation />
 				) : (
 					<UploadContainer>
 						{!manualInputDocument && (
