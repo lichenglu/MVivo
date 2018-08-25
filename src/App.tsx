@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { hot } from 'react-hot-loader';
 import { Route } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -46,4 +47,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default hot(module)(App);

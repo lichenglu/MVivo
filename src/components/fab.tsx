@@ -1,10 +1,10 @@
-import {Button} from 'antd'
-import {ButtonProps} from 'antd/lib/button/button'
-import React from 'react'
-import SVGInline from 'react-svg-inline'
-import styled from 'styled-components'
+import { Button } from 'antd';
+import { ButtonProps } from 'antd/lib/button/button';
+import React from 'react';
+import SVGInline from 'react-svg-inline';
+import styled from 'styled-components';
 
-import Plus from '../assets/plus_circle.svg'
+import Plus from '../assets/plus_circle.svg';
 
 // TODO: better way to type
 const Fab = styled<any>(Button)`
@@ -20,15 +20,10 @@ const Fab = styled<any>(Button)`
     align-items: center;
     overflow: hidden;
   }
-`
-
-const CustIcon = styled(SVGInline)`
-  width: 100%;
-  height: 100%;
-`
+`;
 
 export default (props: ButtonProps) => (
   <Fab type="primary" shape="circle" {...props}>
-    <CustIcon svg={Plus} />
+    <SVGInline width="100%" height="100%" svg={Plus} />
   </Fab>
-)
+);

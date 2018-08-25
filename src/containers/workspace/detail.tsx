@@ -1,20 +1,20 @@
-import {notification} from 'antd'
-import {inject, observer} from 'mobx-react'
-import React from 'react'
-import {Helmet} from 'react-helmet'
-import styled from 'styled-components'
+import { notification } from 'antd';
+import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import styled from 'styled-components';
 
-import {RootStore} from '~/stores/root-store'
+import { RootStore } from '~/stores/root-store';
 
 // components
-import Uploader from './components/upload'
+import Uploader from './components/upload';
 
-interface WorkSpaceDetailProps extends RouteCompProps<{id: string}> {
-  rootStore: RootStore
+interface WorkSpaceDetailProps extends RouteCompProps<{ id: string }> {
+  rootStore: RootStore;
 }
 
 interface WorkSpaceDetailState {
-  manualInputDocument: boolean
+  manualInputDocument: boolean;
 }
 
 const UploadContainer = styled.div`
@@ -31,47 +31,52 @@ const UploadContainer = styled.div`
 		width: 50%;
 		height: 50%;
 	}
-`
+`;
 
 const Switch = styled.a`
   margin-top: 0.5rem;
   float: right;
-`
+`;
 @inject('rootStore')
 @observer
-export class WorkSpaceDetail extends React.Component<WorkSpaceDetailProps, WorkSpaceDetailState> {
+export class WorkSpaceDetail extends React.Component<
+  WorkSpaceDetailProps,
+  WorkSpaceDetailState
+> {
   public state = {
-    manualInputDocument: false
-  }
+    manualInputDocument: false,
+  };
 
-  public onCompleteUpload = (data: {text: string; name: string}) => {
+  public onCompleteUpload = (data: { text: string; name: string }) => {
     if (this.workspace) {
-      const documentT = this.props.rootStore.workSpaceStore.createDocument(data)
-      this.workspace.setDocument(documentT)
+      const documentT = this.props.rootStore.workSpaceStore.createDocument(
+        data
+      );
+      this.workspace.setDocument(documentT);
       notification.success({
         description: 'Now you are all set to start coding!',
-        message: 'Document uploaded!'
-      })
+        message: 'Document uploaded!',
+      });
     }
-  }
+  };
 
   public onSwitchUploadMode = () =>
-    this.setState({manualInputDocument: !this.state.manualInputDocument})
+    this.setState({ manualInputDocument: !this.state.manualInputDocument });
 
   get workspace() {
-    const workspaceID = this.props.match.params.id
-    return this.props.rootStore.workSpaceStore.workSpaceBy(workspaceID)
+    const workspaceID = this.props.match.params.id;
+    return this.props.rootStore.workSpaceStore.workSpaceBy(workspaceID);
   }
 
   get hasDocument() {
-    if (!this.workspace) return false
-    if (!this.workspace.document) return false
-    return !!this.workspace.document.id
+    if (!this.workspace) return false;
+    if (!this.workspace.document) return false;
+    return !!this.workspace.document.id;
   }
 
   public render(): JSX.Element | null {
     // if (!this.workspace) return null;
-    const {manualInputDocument} = this.state
+    const { manualInputDocument } = this.state;
 
     return (
       <React.Fragment>
@@ -89,6 +94,6 @@ export class WorkSpaceDetail extends React.Component<WorkSpaceDetailProps, WorkS
           </UploadContainer>
         )}
       </React.Fragment>
-    )
+    );
   }
 }
