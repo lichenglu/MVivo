@@ -1,71 +1,74 @@
-import {notification} from 'antd'
-import {inject, observer} from 'mobx-react'
-import React from 'react'
-import {Helmet} from 'react-helmet'
+import { notification } from 'antd';
+import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { Helmet } from 'react-helmet';
 
-import {RootStore} from '~/stores/root-store'
+import { RootStore } from '~/stores/root-store';
 
 // components
-import Fab from '~/components/fab'
-import CreateWSModal from './components/createModal'
-import EmptyView from './components/emptyView'
-import WorkspaceList from './components/workspaceList'
+import Fab from '~/components/fab';
+import CreateWSModal from '~/containers/workspace/components/createModal';
+import EmptyView from '~/containers/workspace/components/emptyView';
+import WorkspaceList from '~/containers/workspace/components/workspaceList';
 
 interface WorkSpaceProps {
-  rootStore: RootStore
+  rootStore: RootStore;
 }
 
 interface WorkSpaceState {
-  wsModalVisible: boolean
+  wsModalVisible: boolean;
 }
 
 @inject('rootStore')
 @observer
 export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
   public state = {
-    wsModalVisible: false
-  }
+    wsModalVisible: false,
+  };
 
   public onCreateWorkSpace = (data: any) => {
-    const workSpace = this.props.rootStore.createWorkSpace(data)
-    this.props.rootStore.setWorkSpaceBy(workSpace.id)
-    this.toggleWSModalFactory(false)()
+    const workSpace = this.props.rootStore.createWorkSpace(data);
+    this.props.rootStore.setWorkSpaceBy(workSpace.id);
+    this.toggleWSModalFactory(false)();
     notification.open({
       description: `You have just created a workspace named ${
         workSpace.name
       }. It is also saved locally so that you can still see it when you refresh the browser`,
-      message: 'New workspace successfully created'
-    })
-  }
+      message: 'New workspace successfully created',
+    });
+  };
 
-  public onSelectExtraAction = (params: AntClickParam & {workSpaceID: string}) => {
+  public onSelectExtraAction = (
+    params: AntClickParam & { workSpaceID: string }
+  ) => {
     switch (params.key) {
       case 'delete':
-        this.props.rootStore.deleteWorkSpaceBy(params.workSpaceID)
-        break
+        this.props.rootStore.deleteWorkSpaceBy(params.workSpaceID);
+        break;
       case 'share':
-        break
+        break;
       default:
-        break
+        break;
     }
-  }
+  };
 
-  public toggleWSModalFactory = (toggle: boolean) => () => this.setState({wsModalVisible: toggle})
+  public toggleWSModalFactory = (toggle: boolean) => () =>
+    this.setState({ wsModalVisible: toggle });
 
   get codeBooks() {
-    return this.props.rootStore.codeBookStore.codeBookList
+    return this.props.rootStore.codeBookStore.codeBookList;
   }
 
-  get workspaces() {
-    return this.props.rootStore.workSpaceStore.workSpaceList
+  get workSpaces() {
+    return this.props.rootStore.workSpaceStore.workSpaceList;
   }
 
   get hasWorkSpace() {
-    return this.props.rootStore.workSpaceStore.hasWorkSpace
+    return this.props.rootStore.workSpaceStore.hasWorkSpace;
   }
 
   public render(): JSX.Element {
-    const {wsModalVisible} = this.state
+    const { wsModalVisible } = this.state;
 
     return (
       <React.Fragment>
@@ -81,13 +84,13 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
         />
         {this.hasWorkSpace ? (
           <WorkspaceList
-            workspaces={this.workspaces}
+            workSpaces={this.workSpaces}
             onSelectExtraAction={this.onSelectExtraAction}
           />
         ) : (
           <EmptyView onClick={this.toggleWSModalFactory(true)} />
         )}
       </React.Fragment>
-    )
+    );
   }
 }

@@ -41,8 +41,8 @@ export const WorkSpaceStore = types.model('WorkSpaceStore', {
         return this.workSpaceList.length > 0
     },
     get safeCurrentWorkSpace() {
-        // If there is a selected workspace, then we prioritize it
-        // if not, and there is/are workspaces, then we return the first
+        // If there is a selected workSpace, then we prioritize it
+        // if not, and there is/are workSpaces, then we return the first
         // one
         if (self.currentWorkSpace) {
             return self.currentWorkSpace
