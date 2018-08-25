@@ -1,4 +1,4 @@
-import * as localForage from 'localforage';
+import localForage from 'localforage';
 
 import { DEFAULT_STORAGE_CONFIG } from './storage-config';
 
