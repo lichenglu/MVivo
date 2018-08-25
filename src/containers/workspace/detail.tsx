@@ -1,10 +1,10 @@
-import { message, notification } from "antd";
-import { inject, observer } from "mobx-react";
-import * as React from "react";
-import { Helmet } from "react-helmet";
-import styled from "styled-components";
+import { message, notification } from 'antd';
+import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import styled from 'styled-components';
 
-import { RootStore } from "~/stores/root-store";
+import { RootStore } from '~/stores/root-store';
 
 // components
 import ManualUpload from "./components/manualUpload";
@@ -12,11 +12,11 @@ import Uploader from "./components/upload";
 import WorkStation from "./components/workStation.js";
 
 interface WorkSpaceDetailProps extends RouteCompProps<{ id: string }> {
-	rootStore: RootStore;
+  rootStore: RootStore;
 }
 
 interface WorkSpaceDetailState {
-	manualInputDocument: boolean;
+  manualInputDocument: boolean;
 }
 
 const UploadContainer = styled.div`
@@ -51,12 +51,12 @@ const Switch = styled.a`
 @inject("rootStore")
 @observer
 export class WorkSpaceDetail extends React.Component<
-	WorkSpaceDetailProps,
-	WorkSpaceDetailState
+  WorkSpaceDetailProps,
+  WorkSpaceDetailState
 > {
-	public state = {
-		manualInputDocument: false
-	};
+  public state = {
+    manualInputDocument: false,
+  };
 
 	public onCompleteUpload = (data: { text: string; name: string }) => {
 		if (this.workSpace) {
@@ -73,8 +73,8 @@ export class WorkSpaceDetail extends React.Component<
 		}
 	};
 
-	public onSwitchUploadMode = () =>
-		this.setState({ manualInputDocument: !this.state.manualInputDocument });
+  public onSwitchUploadMode = () =>
+    this.setState({ manualInputDocument: !this.state.manualInputDocument });
 
 	get workSpace() {
 		const workSpaceID = this.props.match.params.id;
