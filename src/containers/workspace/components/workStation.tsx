@@ -1,10 +1,14 @@
 // Cannot use typescript because of a lack of typing
-import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
-import React from 'react';
 import { Input } from 'antd';
-import Editor, { createEditorStateWithText } from 'draft-js-plugins-editor';
+import { convertToRaw, Editor, EditorState, Modifier } from 'draft-js';
+import React from 'react';
 import styled from 'styled-components';
 
+import {
+  codingDecorator,
+  createEditorStateWithText,
+  getSelectedTextFromEditor,
+} from '~/services/draft-utils';
 import { Colors } from '~/themes';
 
 const Container = styled.div`
@@ -32,21 +36,64 @@ const SideContainer = styled.div`
   height: 100%;
 `;
 
-const text =
+const initialText =
   'In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … ';
 
-export default class WorkStation extends React.Component {
-  state = {
-    editorState: createEditorStateWithText(text),
+interface WorkStationState {
+  editorState: EditorState;
+}
+
+export default class WorkStation extends React.Component<{}, WorkStationState> {
+  public state = {
+    editorState: createEditorStateWithText({
+      text: initialText,
+      decorator: codingDecorator,
+    }),
   };
 
-  onChange = editorState => {
-    this.setState({
-      editorState,
-    });
+  private editor: Editor | null;
+
+  public onChange = (editorState: EditorState) => {
+    this.setState(
+      {
+        editorState,
+      },
+      () => this.onSelectText(this.state.editorState)
+    );
   };
 
-  render() {
+  public onSelectText = (editorState: EditorState) => {
+    const { text } = getSelectedTextFromEditor(editorState);
+    if (text) {
+      const contentState = editorState.getCurrentContent();
+      const selectionState = editorState.getSelection();
+      const contentStateWithEntity = contentState.createEntity(
+        'BUFFERED_CODE',
+        'MUTABLE',
+        {}
+      );
+      const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+      const updatedContentState = Modifier.applyEntity(
+        contentStateWithEntity,
+        selectionState,
+        entityKey
+      );
+      this.setState({
+        editorState: EditorState.push(
+          editorState,
+          updatedContentState,
+          'apply-entity'
+        ),
+      });
+    }
+  };
+
+  public logState = () => {
+    const content = this.state.editorState.getCurrentContent();
+    console.log(convertToRaw(content));
+  };
+
+  public render() {
     return (
       <Container>
         <Editor
@@ -56,7 +103,6 @@ export default class WorkStation extends React.Component {
             this.editor = element;
           }}
         />
-
         <SideContainer>
           <Input />
         </SideContainer>
