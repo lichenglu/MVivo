@@ -1,11 +1,18 @@
 // Cannot use typescript because of a lack of typing
 import { Input } from 'antd';
-import { convertToRaw, Editor, EditorState, Modifier } from 'draft-js';
+import {
+  convertToRaw,
+  Editor,
+  EditorState,
+  Modifier,
+  SelectionState,
+} from 'draft-js';
 import React from 'react';
 import styled from 'styled-components';
 
 import {
   codingDecorator,
+  createBufferedCode,
   createEditorStateWithText,
   getSelectedTextFromEditor,
 } from '~/services/draft-utils';
@@ -52,6 +59,7 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
   };
 
   private editor: Editor | null;
+  private previousSelection: SelectionState;
 
   public onChange = (editorState: EditorState) => {
     this.setState(
@@ -67,14 +75,20 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
     if (text) {
       const contentState = editorState.getCurrentContent();
       const selectionState = editorState.getSelection();
-      const contentStateWithEntity = contentState.createEntity(
-        'BUFFERED_CODE',
-        'MUTABLE',
-        {}
-      );
+      const contentStateWithEntity = createBufferedCode(contentState);
       const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+
+      let bufferedContentState = contentStateWithEntity;
+      if (this.previousSelection) {
+        bufferedContentState = Modifier.applyEntity(
+          contentStateWithEntity,
+          this.previousSelection,
+          null
+        );
+      }
+      this.previousSelection = selectionState;
       const updatedContentState = Modifier.applyEntity(
-        contentStateWithEntity,
+        bufferedContentState,
         selectionState,
         entityKey
       );
@@ -94,6 +108,7 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
   };
 
   public render() {
+    this.logState();
     return (
       <Container>
         <Editor

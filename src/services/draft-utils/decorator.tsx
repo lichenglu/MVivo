@@ -31,7 +31,11 @@ export interface DecaratorComponentProps {
 
 const BufferedCodeText = styled.span`
   background-color: #afb2b7;
-  color: #f8f8f8;
+  color: #fff;
+  &:hover {
+    background-color: #a0a0a0;
+    transition: 0.3s;
+  }
 `;
 export const BufferedCode = (props: DecaratorComponentProps) => {
   return (
