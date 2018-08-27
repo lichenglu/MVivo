@@ -1,6 +1,7 @@
 // Cannot use typescript because of a lack of typing
 import { Input } from 'antd';
 import {
+  ContentBlock,
   convertToRaw,
   Editor,
   EditorState,
@@ -20,7 +21,7 @@ import {
   createNormalCode,
   getSelectedTextFromEditor,
   removeInlineStylesFromSelection,
-  removeInlineStylesOfBlock,
+  removeInlineStylesOfBlocks,
 } from '~/services/draft-utils';
 import { Colors } from '~/themes';
 
@@ -133,29 +134,36 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
       });
 
       const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-      const selectionKey = selection.getAnchorKey();
-      const block = contentState.getBlockForKey(selectionKey);
-      const blockKey = block.getKey();
 
-      console.log(entityKey);
       let updatedContentState = contentStateWithEntity;
-      block.findStyleRanges(
-        character => {
-          return character.getStyle().has('buffered');
-        },
-        (start, end) => {
-          updatedContentState = Modifier.applyEntity(
-            updatedContentState,
-            new SelectionState({
+
+      const blocks = contentState.getBlockMap();
+      blocks.forEach((block: ContentBlock) => {
+        const blockKey = block.getKey();
+        block.findStyleRanges(
+          character => {
+            return character.getStyle().has('buffered');
+          },
+          (start, end) => {
+            const bufferedSelection = new SelectionState({
               anchorOffset: start,
               anchorKey: blockKey,
               focusOffset: end,
               focusKey: blockKey,
-            }),
-            entityKey
-          );
-        }
-      );
+            });
+            updatedContentState = Modifier.applyEntity(
+              updatedContentState,
+              bufferedSelection,
+              entityKey
+            );
+            // updatedContentState = Modifier.setBlockData(
+            //   updatedContentState,
+            //   bufferedSelection,
+            //   block
+            // );
+          }
+        );
+      });
 
       const editorWithEntity = EditorState.push(
         editorState,
@@ -163,10 +171,8 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
         'apply-entity'
       );
 
-      const cleanEditorState = removeInlineStylesOfBlock(
-        editorWithEntity,
-        customStyleMap
-      );
+      const cleanEditorState = removeInlineStylesOfBlocks(editorWithEntity);
+      console.log(cleanEditorState);
 
       this.setState({
         editorState: EditorState.moveSelectionToEnd(cleanEditorState),

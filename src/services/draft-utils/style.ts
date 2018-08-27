@@ -1,4 +1,4 @@
-import { EditorState, Modifier, RichUtils, SelectionState } from 'draft-js';
+import { ContentBlock, EditorState, Modifier, SelectionState } from 'draft-js';
 
 export function removeInlineStylesFromSelection(
   editorState: EditorState
@@ -17,35 +17,48 @@ export function removeInlineStylesFromSelection(
 
 export function removeInlineStylesOfBlock(
   editorState: EditorState,
-  styleMap: object
+  blockKey?: string
 ): EditorState {
-  let contentState = editorState.getCurrentContent();
+  const contentState = editorState.getCurrentContent();
   const selectionState = editorState.getSelection();
   const selectionKey = selectionState.getAnchorKey();
+  const currentStyles = editorState.getCurrentInlineStyle();
 
-  const block = contentState.getBlockForKey(selectionKey);
-  const blockKey = block.getKey();
+  const block = blockKey
+    ? contentState.getBlockForKey(blockKey)
+    : contentState.getBlockForKey(selectionKey);
+  const _blockKey = block.getKey();
 
-  contentState = Object.keys(styleMap).reduce((state, style) => {
-    return Modifier.removeInlineStyle(
-      state,
+  let nextContentState = contentState;
+  currentStyles.forEach((style: string) => {
+    nextContentState = Modifier.removeInlineStyle(
+      nextContentState,
       new SelectionState({
         anchorOffset: 0,
-        anchorKey: blockKey,
+        anchorKey: _blockKey,
         focusOffset: block.getLength(),
-        focusKey: blockKey,
-        isBackward: false,
-        hasFocus: selectionState.getHasFocus(),
+        focusKey: _blockKey,
       }),
       style
     );
-  }, contentState);
+  });
 
   const nextEditorState = EditorState.push(
     editorState,
-    contentState,
+    nextContentState,
     'change-inline-style'
   );
 
   return EditorState.acceptSelection(nextEditorState, selectionState);
+}
+
+export function removeInlineStylesOfBlocks(editorState: EditorState) {
+  const contentState = editorState.getCurrentContent();
+  const blocks = contentState.getBlockMap();
+  let nextEditorState = editorState;
+  blocks.forEach((block: ContentBlock) => {
+    const blockKey = block.getKey();
+    nextEditorState = removeInlineStylesOfBlock(nextEditorState, blockKey);
+  });
+  return nextEditorState;
 }
