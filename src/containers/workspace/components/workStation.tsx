@@ -5,8 +5,11 @@ import {
   Editor,
   EditorState,
   Modifier,
+  RichUtils,
   SelectionState,
 } from 'draft-js';
+import 'draft-js/dist/Draft.css';
+import randomColor from 'randomcolor';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -14,7 +17,10 @@ import {
   codingDecorator,
   createBufferedCode,
   createEditorStateWithText,
+  createNormalCode,
   getSelectedTextFromEditor,
+  removeInlineStylesFromSelection,
+  removeInlineStylesOfBlock,
 } from '~/services/draft-utils';
 import { Colors } from '~/themes';
 
@@ -29,6 +35,7 @@ const Container = styled.div`
     flex: 0.8;
     max-height: 100%;
     overflow-y: auto;
+    font-size: 1rem;
   }
 `;
 
@@ -44,10 +51,23 @@ const SideContainer = styled.div`
 `;
 
 const initialText =
-  'In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … ';
+  'In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text …\n In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text …\n In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … ';
 
+const colorPalette = randomColor({
+  luminosity: 'light',
+  format: 'rgb',
+  count: 20,
+});
+
+const customStyleMap = {
+  buffered: {
+    color: '#fff',
+    backgroundColor: '#afb2b7',
+  },
+};
 interface WorkStationState {
   editorState: EditorState;
+  codeInput: string;
 }
 
 export default class WorkStation extends React.Component<{}, WorkStationState> {
@@ -56,10 +76,10 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
       text: initialText,
       decorator: codingDecorator,
     }),
+    codeInput: '',
   };
 
   private editor: Editor | null;
-  private previousSelection: SelectionState;
 
   public onChange = (editorState: EditorState) => {
     this.setState(
@@ -72,33 +92,26 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
 
   public onSelectText = (editorState: EditorState) => {
     const { text } = getSelectedTextFromEditor(editorState);
-    if (text) {
-      const contentState = editorState.getCurrentContent();
-      const selectionState = editorState.getSelection();
-      const contentStateWithEntity = createBufferedCode(contentState);
-      const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    if (text && text.trim().length > 5) {
+      const selection = editorState.getSelection();
+      const currentStyle = editorState.getCurrentInlineStyle();
 
-      let bufferedContentState = contentStateWithEntity;
-      if (this.previousSelection) {
-        bufferedContentState = Modifier.applyEntity(
-          contentStateWithEntity,
-          this.previousSelection,
-          null
+      const cleanEditorState = removeInlineStylesFromSelection(editorState);
+      // If the color is being toggled on, apply it.
+      let nextEditorState = cleanEditorState;
+
+      if (!currentStyle.has('buffered')) {
+        nextEditorState = RichUtils.toggleInlineStyle(
+          nextEditorState,
+          'buffered'
         );
       }
-      this.previousSelection = selectionState;
-      const updatedContentState = Modifier.applyEntity(
-        bufferedContentState,
-        selectionState,
-        entityKey
-      );
-      this.setState({
-        editorState: EditorState.push(
-          editorState,
-          updatedContentState,
-          'apply-entity'
-        ),
-      });
+
+      if (nextEditorState) {
+        this.setState({
+          editorState: EditorState.moveSelectionToEnd(nextEditorState),
+        });
+      }
     }
   };
 
@@ -107,6 +120,63 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
     console.log(convertToRaw(content));
   };
 
+  public onCreateNewCode = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    const { editorState, codeInput } = this.state;
+
+    if (codeInput.trim()) {
+      const selection = editorState.getSelection();
+      const contentState = editorState.getCurrentContent();
+      const contentStateWithEntity = createNormalCode(contentState, {
+        bgColor: colorPalette[Math.floor(Math.random() * colorPalette.length)],
+      });
+
+      const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+      const selectionKey = selection.getAnchorKey();
+      const block = contentState.getBlockForKey(selectionKey);
+      const blockKey = block.getKey();
+
+      console.log(entityKey);
+      let updatedContentState = contentStateWithEntity;
+      block.findStyleRanges(
+        character => {
+          return character.getStyle().has('buffered');
+        },
+        (start, end) => {
+          updatedContentState = Modifier.applyEntity(
+            updatedContentState,
+            new SelectionState({
+              anchorOffset: start,
+              anchorKey: blockKey,
+              focusOffset: end,
+              focusKey: blockKey,
+            }),
+            entityKey
+          );
+        }
+      );
+
+      const editorWithEntity = EditorState.push(
+        editorState,
+        updatedContentState,
+        'apply-entity'
+      );
+
+      const cleanEditorState = removeInlineStylesOfBlock(
+        editorWithEntity,
+        customStyleMap
+      );
+
+      this.setState({
+        editorState: EditorState.moveSelectionToEnd(cleanEditorState),
+      });
+    }
+  };
+
+  public onTypeCode = (e: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ codeInput: e.target.value });
+
   public render() {
     this.logState();
     return (
@@ -114,12 +184,16 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
         <Editor
           editorState={this.state.editorState}
           onChange={this.onChange}
+          customStyleMap={customStyleMap}
           ref={element => {
             this.editor = element;
           }}
         />
         <SideContainer>
-          <Input />
+          <Input
+            onPressEnter={this.onCreateNewCode}
+            onChange={this.onTypeCode}
+          />
         </SideContainer>
       </Container>
     );
