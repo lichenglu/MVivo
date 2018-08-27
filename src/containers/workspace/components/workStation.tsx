@@ -38,6 +38,17 @@ const Container = styled.div`
     overflow-y: auto;
     font-size: 1rem;
   }
+
+  // Hacky way of using styles that react does not support for inline style
+  // https://github.com/facebook/draft-js/issues/957#issuecomment-359076343
+  &&&& div.public-DraftEditor-content [style*='stroke-dashoffset: 0'] {
+    color: #fff;
+    background-color: #afb2b7;
+    &:hover {
+      background-color: #a0a0a0;
+      transition: 0.3s;
+    }
+  }
 `;
 
 const SideContainer = styled.div`
@@ -62,8 +73,7 @@ const colorPalette = randomColor({
 
 const customStyleMap = {
   buffered: {
-    color: '#fff',
-    backgroundColor: '#afb2b7',
+    strokeDashoffset: '0',
   },
 };
 interface WorkStationState {
@@ -98,9 +108,9 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
       const currentStyle = editorState.getCurrentInlineStyle();
 
       const cleanEditorState = removeInlineStylesFromSelection(editorState);
-      // If the color is being toggled on, apply it.
       let nextEditorState = cleanEditorState;
 
+      // If the color is being toggled on, apply it.
       if (!currentStyle.has('buffered')) {
         nextEditorState = RichUtils.toggleInlineStyle(
           nextEditorState,
@@ -110,7 +120,7 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
 
       if (nextEditorState) {
         this.setState({
-          editorState: EditorState.moveSelectionToEnd(nextEditorState),
+          editorState: nextEditorState,
         });
       }
     }
@@ -156,11 +166,6 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
               bufferedSelection,
               entityKey
             );
-            // updatedContentState = Modifier.setBlockData(
-            //   updatedContentState,
-            //   bufferedSelection,
-            //   block
-            // );
           }
         );
       });
@@ -172,7 +177,6 @@ export default class WorkStation extends React.Component<{}, WorkStationState> {
       );
 
       const cleanEditorState = removeInlineStylesOfBlocks(editorWithEntity);
-      console.log(cleanEditorState);
 
       this.setState({
         editorState: EditorState.moveSelectionToEnd(cleanEditorState),
