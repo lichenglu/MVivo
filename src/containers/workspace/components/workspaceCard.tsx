@@ -1,18 +1,20 @@
-import {Avatar, Card, Dropdown, Icon, Menu} from 'antd'
-import Color from 'color'
-import React from 'react'
-import {Link} from 'react-router-dom'
-import {compose, withHandlers} from 'recompose'
-import styled from 'styled-components'
+import { Avatar, Card, Dropdown, Icon, Menu } from 'antd';
+import Color from 'color';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { compose, withHandlers } from 'recompose';
+import styled from 'styled-components';
 
-import {WorkSpaceSnapshot} from '~/stores'
-import {Colors, Styles} from '~/themes'
+import { WorkSpaceSnapshot } from '~/stores';
+import { Colors, Styles } from '~/themes';
 
 interface WorkSpaceCardProps {
-  data: WorkSpaceSnapshot
-  onEdit?: (params: any) => void
-  onSelectExtraAction?: (params: AntClickParam & {workSpaceID: string}) => void
-  handleAction?: (params: AntClickParam & {workSpaceID: string}) => void
+  data: WorkSpaceSnapshot;
+  onEdit?: (params: any) => void;
+  onSelectExtraAction?: (
+    params: AntClickParam & { workSpaceID: string }
+  ) => void;
+  handleAction?: (params: AntClickParam & { workSpaceID: string }) => void;
 }
 
 const Container = styled.div`
@@ -34,32 +36,35 @@ const Container = styled.div`
     flex: 0.25;
     width: calc(25% - 1rem);
   }
-`
+`;
 
-const Action = styled.a<{important?: boolean}>`
+const Action = styled.a<{ important?: boolean }>`
   &&&& {
     color: ${props => (props.important ? Colors.paleRed : Colors.blue)};
   }
   &:hover {
     color: ${props =>
       props.important
-        ? color(Colors.paleRed)
+        ? Color(Colors.paleRed)
             .darken(0.4)
             .toString()
-        : color(Colors.blue)
+        : Color(Colors.blue)
             .darken(0.4)
             .toString()};
     transition: 0.5s;
   }
-`
+`;
 
 const CardCover = styled.div`
   pointer: cursor;
-`
+`;
 
-const actions = [{key: 'share', text: 'Share'}, {key: 'delete', text: 'Delete', important: true}]
+const actions = [
+  { key: 'share', text: 'Share' },
+  { key: 'delete', text: 'Delete', important: true },
+];
 
-const WordSpaceCard = ({data, onEdit, handleAction}: WorkSpaceCardProps) => (
+const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
   <Container>
     <Card
       cover={
@@ -68,7 +73,7 @@ const WordSpaceCard = ({data, onEdit, handleAction}: WorkSpaceCardProps) => (
             <img
               alt="cover image"
               src="https://source.unsplash.com/800x450/?research"
-              style={{width: '100%', height: '100%'}}
+              style={{ width: '100%', height: '100%' }}
             />
           </Link>
         </CardCover>
@@ -90,7 +95,7 @@ const WordSpaceCard = ({data, onEdit, handleAction}: WorkSpaceCardProps) => (
           trigger={['click']}
         >
           <Icon type="ellipsis" />
-        </Dropdown>
+        </Dropdown>,
       ]}
     >
       <Card.Meta
@@ -103,15 +108,17 @@ const WordSpaceCard = ({data, onEdit, handleAction}: WorkSpaceCardProps) => (
       />
     </Card>
   </Container>
-)
+);
 
 const enhance = compose<WorkSpaceCardProps, WorkSpaceCardProps>(
   withHandlers({
-    handleAction: ({data, onSelectExtraAction}) => (params: AntClickParam) => {
-      if (!onSelectExtraAction) return
-      onSelectExtraAction({...params, workSpaceID: data.id})
-    }
+    handleAction: ({ data, onSelectExtraAction }) => (
+      params: AntClickParam
+    ) => {
+      if (!onSelectExtraAction) return;
+      onSelectExtraAction({ ...params, workSpaceID: data.id });
+    },
   })
-)
+);
 
-export default enhance(WordSpaceCard)
+export default enhance(WordSpaceCard);

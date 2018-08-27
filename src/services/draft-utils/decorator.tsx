@@ -66,6 +66,7 @@ export const BufferedCode = (props: DecaratorComponentProps) => {
 
 export interface NormalCodeTextProps {
   bgColor: string;
+  codeID: string;
 }
 
 const NormalCodeText = styled.span<NormalCodeTextProps>`

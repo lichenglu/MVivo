@@ -1,10 +1,11 @@
 import { message, notification } from 'antd';
 import { inject, observer } from 'mobx-react';
+import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
-import { RootStore } from '~/stores/root-store';
+import { CodeModel, CodeSnapshot, RootStore } from '~/stores/root-store';
 
 // components
 import ManualUpload from './components/manualUpload';
@@ -63,6 +64,15 @@ export class WorkSpaceDetail extends React.Component<
       const documentT = this.props.rootStore.workSpaceStore.createDocument(
         data
       );
+
+      let codeBook = this.workSpace.codeBook;
+      if (!codeBook) {
+        codeBook = this.props.rootStore.createCodeBook({
+          name: `${this.workSpace.id}_code_book`,
+        });
+        this.workSpace.setCodeBook(codeBook);
+      }
+
       this.workSpace.setDocument(documentT);
       notification.success({
         description: 'Now you are all set to start coding!',
@@ -76,9 +86,33 @@ export class WorkSpaceDetail extends React.Component<
   public onSwitchUploadMode = () =>
     this.setState({ manualInputDocument: !this.state.manualInputDocument });
 
+  public onCreateCode = (data: {
+    name: string;
+    definition?: string;
+    bgColor?: string;
+    tint?: string;
+  }) => {
+    if (this.workSpace && this.workSpace.codeBook) {
+      const code = CodeModel.create(data);
+      this.props.rootStore.codeBookStore.createCodeAndAddTo(
+        this.workSpace.codeBook.id,
+        code
+      );
+      return getSnapshot(code);
+    }
+    return null;
+  };
+
   get workSpace() {
     const workSpaceID = this.props.match.params.id;
     return this.props.rootStore.workSpaceStore.workSpaceBy(workSpaceID);
+  }
+
+  get codeList() {
+    if (this.workSpace && this.workSpace.codeBook) {
+      return this.workSpace.codeBook.codeList;
+    }
+    return [];
   }
 
   get hasDocument() {
@@ -97,7 +131,10 @@ export class WorkSpaceDetail extends React.Component<
           <title>WorkSpace Detail</title>
         </Helmet>
         {this.hasDocument ? (
-          <WorkStation />
+          <WorkStation
+            codeList={this.codeList}
+            onCreateCode={this.onCreateCode}
+          />
         ) : (
           <UploadContainer>
             {!manualInputDocument && (

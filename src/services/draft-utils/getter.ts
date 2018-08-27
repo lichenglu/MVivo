@@ -2,7 +2,7 @@ import { EditorState } from 'draft-js';
 
 export const getSelectedTextFromEditor = (
   editorState: EditorState
-): { text: string; start: number; end: number } => {
+): { text: string; start: number; end: number, anchorKey: string } => {
   const selectionState = editorState.getSelection();
   const anchorKey = selectionState.getAnchorKey();
   const currentContent = editorState.getCurrentContent();
@@ -11,5 +11,5 @@ export const getSelectedTextFromEditor = (
   const end = selectionState.getEndOffset();
   const selectedText = currentContentBlock.getText().slice(start, end);
 
-  return { text: selectedText, start, end };
+  return { text: selectedText, start, end, anchorKey };
 };
