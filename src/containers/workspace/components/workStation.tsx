@@ -1,5 +1,4 @@
 // Cannot use typescript because of a lack of typing
-import { AutoComplete } from 'antd';
 import {
   ContentBlock,
   convertToRaw,
@@ -25,6 +24,9 @@ import {
 } from '~/services/draft-utils';
 import { CodeSnapshot } from '~/stores';
 import { Colors } from '~/themes';
+
+// components
+import { AutoComplete } from './autoComplete';
 
 const Container = styled.div`
   display: flex;
@@ -87,7 +89,7 @@ interface WorkStationProps {
 interface WorkStationState {
   editorState: EditorState;
   codeInput: string;
-  dataSource: string[];
+  dataSource: AntDataSourceItemObject[];
 }
 
 export default class WorkStation extends React.Component<
@@ -104,6 +106,14 @@ export default class WorkStation extends React.Component<
   };
 
   private editor: Editor | null;
+
+  public componentDidUpdate(prevProps) {
+    if (prevProps.codeList !== this.props.codeList) {
+      this.setState({
+        dataSource: [...this.codes],
+      });
+    }
+  }
 
   public onChange = (editorState: EditorState) => {
     this.setState(
@@ -201,37 +211,41 @@ export default class WorkStation extends React.Component<
     });
   };
 
-  public onSelectCode = (value: string, option: AntAutoCompleteOption) => {
+  public onSelectCode = (id: string, option: AntAutoCompleteOption) => {
     const { codeList, onCreateCode } = this.props;
-    if (value.trim()) {
+    const { codeInput } = this.state;
+    if (id.trim()) {
       let code;
       if (codeList) {
-        code = codeList.find(c => c.name === value);
+        code = codeList.find(c => c.id === id || c.name === codeInput);
       }
       if (!code) {
-        code = onCreateCode({ name: value });
+        code = onCreateCode({ name: codeInput });
       }
       this.onMapTextToCode(code);
     }
   };
 
-  public onTypeCode = (value: string) =>
+  public onSearchCode = (inputVal: string) => {
     this.setState({
       dataSource: [
-        ...this.codes.filter((code: string) => code.includes(value)),
-        value,
-      ],
+        ...this.codes.filter(code => code.text.includes(inputVal)),
+        inputVal && { text: inputVal, value: 'null' },
+      ].filter(d => !!d),
+      codeInput: inputVal,
     });
+  };
 
-  get codes() {
+  get codes(): Array<AntDataSourceItemObject & CodeSnapshot> {
     const { codeList } = this.props;
     if (!codeList) return [];
-    return codeList.map(code => code.name);
+    return codeList.map(code => ({ ...code, value: code.id, text: code.name }));
   }
 
   public render() {
     this.logState();
-    const { dataSource } = this.state;
+    const { dataSource, codeInput } = this.state;
+
     return (
       <Container>
         <Editor
@@ -242,11 +256,13 @@ export default class WorkStation extends React.Component<
             this.editor = element;
           }}
         />
+
         <SideContainer>
           <AutoComplete
             onSelect={this.onSelectCode}
-            onSearch={this.onTypeCode}
+            onSearch={this.onSearchCode}
             dataSource={dataSource}
+            value={codeInput}
             allowClear
           />
         </SideContainer>

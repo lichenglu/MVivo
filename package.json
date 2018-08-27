@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.8.2",
+    "antd": "^3.8.4",
     "apisauce": "^0.16.0",
     "color": "^3.0.0",
     "draft-js": "^0.10.5",
