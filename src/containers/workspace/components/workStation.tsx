@@ -65,8 +65,10 @@ const SideContainer = styled.div`
   height: 100%;
 `;
 
-const initialText =
-  'In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text …\n In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text …\n In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … In this editor a toolbar shows up once you select part of the text … ';
+// dev
+import editor from '~/fixtures/editor.json';
+
+const initialText = editor.initialText;
 
 const customStyleMap = {
   buffered: {
@@ -89,7 +91,7 @@ interface WorkStationProps {
 interface WorkStationState {
   editorState: EditorState;
   codeInput: string;
-  dataSource: AntDataSourceItemObject[];
+  dataSource: CodeSnapshot[];
 }
 
 export default class WorkStation extends React.Component<
@@ -107,7 +109,7 @@ export default class WorkStation extends React.Component<
 
   private editor: Editor | null;
 
-  public componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps: WorkStationProps) {
     if (prevProps.codeList !== this.props.codeList) {
       this.setState({
         dataSource: [...this.codes],
@@ -214,37 +216,48 @@ export default class WorkStation extends React.Component<
   public onSelectCode = (id: string, option: AntAutoCompleteOption) => {
     const { codeList, onCreateCode } = this.props;
     const { codeInput } = this.state;
+
     if (id.trim()) {
       let code;
       if (codeList) {
-        code = codeList.find(c => c.id === id || c.name === codeInput);
+        code = codeList.find(c => c.id === id);
       }
       if (!code) {
         code = onCreateCode({ name: codeInput });
       }
       this.onMapTextToCode(code);
+      if (code) {
+        this.setState({ codeInput: code.name });
+      }
     }
   };
 
   public onSearchCode = (inputVal: string) => {
+    const hasName =
+      this.codes.filter(code => code.name === inputVal).length === 1;
+    const filteredCodes = this.codes.filter(code =>
+      code.name.includes(inputVal)
+    );
+    const nextDataSource = hasName
+      ? filteredCodes
+      : filteredCodes
+          .concat([inputVal && { name: inputVal, id: inputVal }])
+          .filter(d => !!d);
     this.setState({
-      dataSource: [
-        ...this.codes.filter(code => code.text.includes(inputVal)),
-        inputVal && { text: inputVal, value: 'null' },
-      ].filter(d => !!d),
+      dataSource: nextDataSource,
       codeInput: inputVal,
     });
   };
 
-  get codes(): Array<AntDataSourceItemObject & CodeSnapshot> {
+  get codes(): CodeSnapshot[] {
     const { codeList } = this.props;
     if (!codeList) return [];
-    return codeList.map(code => ({ ...code, value: code.id, text: code.name }));
+    return codeList;
   }
 
   public render() {
     this.logState();
-    const { dataSource, codeInput } = this.state;
+    const { dataSource } = this.state;
 
     return (
       <Container>
@@ -262,7 +275,6 @@ export default class WorkStation extends React.Component<
             onSelect={this.onSelectCode}
             onSearch={this.onSearchCode}
             dataSource={dataSource}
-            value={codeInput}
             allowClear
           />
         </SideContainer>

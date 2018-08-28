@@ -29,9 +29,8 @@ const StyledAutoComplete = styled(AntAutoComplete)`
   width: 100%;
 `;
 
-type AutoCompleteOptionProps = CodeSnapshot & {
-  text: string;
-  value: string;
+type AutoCompletionProps = Omit<AntAutoCompleteProps, 'dataSource'> & {
+  dataSource: CodeSnapshot[];
 };
 
 export const AutoComplete = ({
@@ -39,18 +38,18 @@ export const AutoComplete = ({
   onSearch,
   dataSource,
   ...rest
-}: any) => {
+}: AutoCompletionProps) => {
   return (
     <StyledAutoComplete
       onSelect={onSelect}
       onSearch={onSearch}
       optionLabelProp={'text'}
-      dataSource={dataSource.map(({ value, text, bgColor }) => (
-        <Option key={value}>
+      dataSource={dataSource.map(({ bgColor, id, name }) => (
+        <Option key={id} value={id} title={name}>
           <ContentContainer>
             {bgColor && <ColorGrid bgColor={bgColor} />}
             {!bgColor && <CreationHint>Create Code: </CreationHint>}
-            <span>{text}</span>
+            <span>{name}</span>
           </ContentContainer>
         </Option>
       ))}
