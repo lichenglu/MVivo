@@ -39,9 +39,9 @@ export async function setupRootStore() {
     env.reactotron.setRootStore(rootStore, data)
   }
 
-  if (!ENABLE_PERSISTENCE) {
-    await storage.remove(ROOT_STATE_STORAGE_KEY)
-  }
+  // if (!ENABLE_PERSISTENCE) {
+  //   await storage.remove(ROOT_STATE_STORAGE_KEY)
+  // }
   
   onSnapshot(rootStore, snapshot => storage.save(ROOT_STATE_STORAGE_KEY, snapshot))
   
