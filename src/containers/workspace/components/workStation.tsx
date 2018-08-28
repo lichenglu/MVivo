@@ -18,6 +18,7 @@ import {
   createBufferedCode,
   createEditorStateWithText,
   createNormalCode,
+  getCodeCounts,
   getSelectedTextFromEditor,
   removeInlineStylesFromSelection,
   removeInlineStylesOfBlocks,
@@ -27,6 +28,7 @@ import { Colors } from '~/themes';
 
 // components
 import { AutoComplete } from './autoComplete';
+import { UsedCodeTags } from './usedCodeTags';
 
 const Container = styled.div`
   display: flex;
@@ -117,7 +119,7 @@ export default class WorkStation extends React.Component<
     }
   }
 
-  public onChange = (editorState: EditorState) => {
+  public onEditorChange = (editorState: EditorState) => {
     this.setState(
       {
         editorState,
@@ -227,7 +229,9 @@ export default class WorkStation extends React.Component<
       }
       this.onMapTextToCode(code);
       if (code) {
-        this.setState({ codeInput: code.name });
+        this.setState({
+          codeInput: code.name,
+        });
       }
     }
   };
@@ -241,7 +245,9 @@ export default class WorkStation extends React.Component<
     const nextDataSource = hasName
       ? filteredCodes
       : filteredCodes
+          // @ts-ignore
           .concat([inputVal && { name: inputVal, id: inputVal }])
+          // @ts-ignore
           .filter(d => !!d);
     this.setState({
       dataSource: nextDataSource,
@@ -249,21 +255,34 @@ export default class WorkStation extends React.Component<
     });
   };
 
-  get codes(): CodeSnapshot[] {
+  get codes(): Array<CodeSnapshot & { count?: number }> {
     const { codeList } = this.props;
     if (!codeList) return [];
-    return codeList;
+
+    let codeCounts = {};
+    if (this.state) {
+      const { editorState } = this.state;
+      codeCounts = getCodeCounts(editorState);
+    }
+
+    return codeList.map(code => ({
+      ...code,
+      count: codeCounts[code.id] || 0,
+    }));
+  }
+
+  get sortedCodes() {
+    return this.codes.sort((a, b) => b.count - a.count);
   }
 
   public render() {
-    this.logState();
-    const { dataSource } = this.state;
-
+    const { editorState, dataSource } = this.state;
+    console.log(this.codes);
     return (
       <Container>
         <Editor
-          editorState={this.state.editorState}
-          onChange={this.onChange}
+          editorState={editorState}
+          onChange={this.onEditorChange}
           customStyleMap={customStyleMap}
           ref={element => {
             this.editor = element;
@@ -275,7 +294,13 @@ export default class WorkStation extends React.Component<
             onSelect={this.onSelectCode}
             onSearch={this.onSearchCode}
             dataSource={dataSource}
+            placeholder="Type to search codes or create a new one"
             allowClear
+          />
+          <UsedCodeTags
+            codes={this.sortedCodes}
+            onClick={() => console.log('onClick')}
+            onClose={() => console.log('onClose')}
           />
         </SideContainer>
       </Container>
