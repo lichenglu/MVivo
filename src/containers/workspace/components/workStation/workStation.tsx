@@ -1,6 +1,7 @@
 // Cannot use typescript because of a lack of typing
 import {
   ContentBlock,
+  ContentState,
   convertToRaw,
   Editor,
   EditorState,
@@ -49,6 +50,8 @@ interface WorkStationProps {
       tint?: string;
     }
   ) => CodeSnapshot | null;
+  onUpdateEditorContent: (contentState: ContentState) => void;
+  editorContent?: ContentState | null;
 }
 
 interface WorkStationState {
@@ -61,14 +64,22 @@ export class WorkStation extends React.Component<
   WorkStationProps,
   WorkStationState
 > {
-  public state = {
-    editorState: createEditorStateWithText({
-      text: initialText,
-      decorator: codingDecorator,
-    }),
-    codeInput: '',
-    dataSource: this.codes,
-  };
+  constructor(props: WorkStationProps) {
+    super(props);
+
+    let editorState = EditorState.createEmpty(codingDecorator);
+    if (props.editorContent) {
+      editorState = EditorState.createWithContent(
+        props.editorContent,
+        codingDecorator
+      );
+    }
+    this.state = {
+      editorState,
+      codeInput: '',
+      dataSource: this.codes,
+    };
+  }
 
   private editor: Editor | null;
 
@@ -170,6 +181,9 @@ export class WorkStation extends React.Component<
     );
 
     const cleanEditorState = removeInlineStylesOfBlocks(editorWithEntity);
+
+    // TODO: Refactor to auto save
+    this.props.onUpdateEditorContent(cleanEditorState.getCurrentContent());
 
     this.setState({
       editorState: EditorState.moveSelectionToEnd(cleanEditorState),

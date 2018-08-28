@@ -1,4 +1,5 @@
 import { message, notification } from 'antd';
+import { ContentState } from 'draft-js';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
@@ -103,9 +104,20 @@ export class WorkSpaceDetail extends React.Component<
     return null;
   };
 
+  public onUpdateEditorContent = (contentState: ContentState) => {
+    if (this.document) {
+      this.document.updateEditorState(contentState);
+    }
+  };
+
   get workSpace() {
     const workSpaceID = this.props.match.params.id;
     return this.props.rootStore.workSpaceStore.workSpaceBy(workSpaceID);
+  }
+
+  get document() {
+    if (!this.workSpace) return null;
+    return this.workSpace.document;
   }
 
   get codeList() {
@@ -116,9 +128,8 @@ export class WorkSpaceDetail extends React.Component<
   }
 
   get hasDocument() {
-    if (!this.workSpace) return false;
-    if (!this.workSpace.document) return false;
-    return !!this.workSpace.document.id;
+    if (!this.document) return false;
+    return !!this.document.id;
   }
 
   public render(): JSX.Element | null {
@@ -134,6 +145,8 @@ export class WorkSpaceDetail extends React.Component<
           <WorkStation
             codeList={this.codeList}
             onCreateCode={this.onCreateCode}
+            onUpdateEditorContent={this.onUpdateEditorContent}
+            editorContent={this.document && this.document.editorContentState}
           />
         ) : (
           <UploadContainer>
