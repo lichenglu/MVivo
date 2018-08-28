@@ -1,9 +1,4 @@
-import {
-  ContentState,
-  convertFromRaw,
-  convertToRaw,
-  RawDraftContentState,
-} from 'draft-js';
+import { ContentState, convertFromRaw, convertToRaw } from 'draft-js';
 import { values } from 'mobx';
 import { getSnapshot, types } from 'mobx-state-tree';
 
@@ -12,12 +7,12 @@ import { assignUUID } from './utils';
 
 const DraftContentState = types.custom<string, ContentState>({
   name: 'DraftEditorContent',
-  fromSnapshot(state: string): ContentState {
-    if (!state) return null;
+  fromSnapshot(state?: string): ContentState {
+    if (!state) return;
     return convertFromRaw(JSON.parse(state));
   },
-  toSnapshot(state: ContentState): string {
-    if (!state) return null;
+  toSnapshot(state?: ContentState): string {
+    if (!state) return;
     return JSON.stringify(convertToRaw(state));
   },
   isTargetType: (value: ContentState | string) => {

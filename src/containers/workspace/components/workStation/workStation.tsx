@@ -60,6 +60,9 @@ interface WorkStationState {
   dataSource: CodeSnapshot[];
 }
 
+// TODO:
+// 1. Solve jumping cursor
+// 2. autocomplete value
 export class WorkStation extends React.Component<
   WorkStationProps,
   WorkStationState
@@ -204,6 +207,7 @@ export class WorkStation extends React.Component<
       }
       this.onMapTextToCode(code);
       if (code) {
+        console.log(code);
         this.setState({
           codeInput: code.name,
         });
@@ -251,7 +255,7 @@ export class WorkStation extends React.Component<
   }
 
   public render() {
-    const { editorState, dataSource } = this.state;
+    const { editorState, dataSource, codeInput } = this.state;
 
     return (
       <Container>

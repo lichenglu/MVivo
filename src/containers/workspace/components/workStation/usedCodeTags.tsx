@@ -6,6 +6,7 @@ import { CodeSnapshot } from '~/stores';
 
 const Container = styled.div`
   margin-top: 1rem;
+  width: 100%;
 `;
 
 const StyledTag = styled(Tag)`
