@@ -10,7 +10,7 @@ import { CodeModel, CodeSnapshot, RootStore } from '~/stores/root-store';
 // components
 import ManualUpload from './components/manualUpload';
 import Uploader from './components/upload';
-import WorkStation from './components/workStation';
+import { WorkStation } from './components/workStation';
 
 interface WorkSpaceDetailProps extends RouteCompProps<{ id: string }> {
   rootStore: RootStore;
