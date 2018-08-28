@@ -12,7 +12,6 @@ import 'draft-js/dist/Draft.css';
 import React from 'react';
 import styled from 'styled-components';
 
-import { colorPalette } from '~/lib/colorPalette';
 import {
   codingDecorator,
   createBufferedCode,
@@ -171,7 +170,7 @@ export default class WorkStation extends React.Component<
     const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = createNormalCode(contentState, {
-      bgColor: colorPalette[Math.floor(Math.random() * colorPalette.length)],
+      bgColor: code.bgColor,
       codeID: code.id,
     });
 

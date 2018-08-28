@@ -1,9 +1,11 @@
 import Color from 'color';
 import { CompositeDecorator, ContentBlock, ContentState } from 'draft-js';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import styled from 'styled-components';
 
 import { DraftDecorator } from '~/lib/constants';
+import { RootStore } from '~/stores/root-store';
 
 export type Strategy = (
   contentBlock: ContentBlock,
@@ -86,15 +88,33 @@ const NormalCodeText = styled.span<NormalCodeTextProps>`
         .toString()};
   }
 `;
-export const NormalCode = (props: DecaratorComponentProps) => {
-  const entity = props.contentState.getEntity(props.entityKey);
-  const data: NormalCodeTextProps = entity.getData();
-  return (
-    <NormalCodeText data-offset-key={props.offsetkey} {...data}>
-      {props.children}
-    </NormalCodeText>
-  );
-};
+
+const CodeName = styled.span`
+  font-size: 0.6rem;
+  background-color: transparent;
+`;
+
+// TODO: think of a more elegant way to get rid of mobx injection
+// so as to make the component dummy
+export const NormalCode = inject('rootStore')(
+  (props: DecaratorComponentProps & { rootStore: RootStore }) => {
+    const entity = props.contentState.getEntity(props.entityKey);
+    const data: NormalCodeTextProps = entity.getData();
+    const code = props.rootStore.codeBookStore.codes.get(data.codeID);
+    return code ? (
+      <NormalCodeText
+        data-offset-key={props.offsetkey}
+        bgColor={code.bgColor}
+        codeID={code.id}
+      >
+        <CodeName>{`[@${code.name}]`}</CodeName>
+        {props.children}
+      </NormalCodeText>
+    ) : (
+      props.children
+    );
+  }
+);
 
 export const codingDecorator = new CompositeDecorator([
   {
