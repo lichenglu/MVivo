@@ -1,6 +1,6 @@
 import { ContentState } from 'draft-js';
 import { values } from 'mobx';
-import { applySnapshot, getSnapshot, onSnapshot, types } from 'mobx-state-tree';
+import { getSnapshot, types } from 'mobx-state-tree';
 
 import { CodeBook, CodeBookModel } from './codebook';
 import { assignUUID, DraftContentState } from './utils';
@@ -13,11 +13,6 @@ export const DocumentModel = types
     editorContentState: types.maybe(DraftContentState),
   })
   .actions(self => ({
-    afterCreate() {
-      onSnapshot(self, snapshot => {
-        console.log(snapshot);
-      });
-    },
     updateEditorState(contentState: ContentState) {
       self.editorContentState = contentState;
     },

@@ -44,7 +44,6 @@ export async function setupRootStore() {
   // }
 
   onSnapshot(rootStore, snapshot => {
-    console.log(snapshot);
     storage.save(ROOT_STATE_STORAGE_KEY, snapshot);
   });
 

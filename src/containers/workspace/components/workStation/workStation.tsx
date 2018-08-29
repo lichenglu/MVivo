@@ -186,7 +186,6 @@ export class WorkStation extends React.Component<
     const cleanEditorState = removeInlineStylesOfBlocks(editorWithEntity);
 
     // TODO: Refactor to auto save
-    // console.log(convertToRaw(cleanEditorState.getCurrentContent()));
     this.props.onUpdateEditorContent(cleanEditorState.getCurrentContent());
 
     this.setState({

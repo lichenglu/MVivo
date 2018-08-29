@@ -1,12 +1,12 @@
 import { message, notification } from 'antd';
-import { ContentState, convertToRaw } from 'draft-js';
+import { ContentState } from 'draft-js';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
-import { CodeModel, CodeSnapshot, RootStore } from '~/stores/root-store';
+import { CodeModel, RootStore } from '~/stores/root-store';
 
 // components
 import ManualUpload from './components/manualUpload';
