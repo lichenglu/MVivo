@@ -1,27 +1,9 @@
-import { ContentState, convertFromRaw, convertToRaw } from 'draft-js';
+import { ContentState } from 'draft-js';
 import { values } from 'mobx';
-import { getSnapshot, types } from 'mobx-state-tree';
+import { applySnapshot, getSnapshot, onSnapshot, types } from 'mobx-state-tree';
 
 import { CodeBook, CodeBookModel } from './codebook';
-import { assignUUID } from './utils';
-
-const DraftContentState = types.custom<string, ContentState>({
-  name: 'DraftEditorContent',
-  fromSnapshot(state?: string): ContentState {
-    if (!state) return;
-    return convertFromRaw(JSON.parse(state));
-  },
-  toSnapshot(state?: ContentState): string {
-    if (!state) return;
-    return JSON.stringify(convertToRaw(state));
-  },
-  isTargetType: (value: ContentState | string) => {
-    return value instanceof ContentState;
-  },
-  getValidationMessage: (value: string) => {
-    return '';
-  },
-});
+import { assignUUID, DraftContentState } from './utils';
 
 export const DocumentModel = types
   .model('Document', {
@@ -31,6 +13,11 @@ export const DocumentModel = types
     editorContentState: types.maybe(DraftContentState),
   })
   .actions(self => ({
+    afterCreate() {
+      onSnapshot(self, snapshot => {
+        console.log(snapshot);
+      });
+    },
     updateEditorState(contentState: ContentState) {
       self.editorContentState = contentState;
     },
@@ -104,6 +91,12 @@ export const WorkSpaceStore = types
         self.currentWorkSpace = undefined;
       }
       return workspace;
+    },
+    updateEditorState(documentID: string, contentState: ContentState) {
+      const document = self.documentBy(documentID);
+      if (document) {
+        document.updateEditorState(contentState);
+      }
     },
   }));
 

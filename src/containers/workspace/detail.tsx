@@ -1,5 +1,5 @@
 import { message, notification } from 'antd';
-import { ContentState } from 'draft-js';
+import { ContentState, convertToRaw } from 'draft-js';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
@@ -106,7 +106,10 @@ export class WorkSpaceDetail extends React.Component<
 
   public onUpdateEditorContent = (contentState: ContentState) => {
     if (this.document) {
-      this.document.updateEditorState(contentState);
+      this.props.rootStore.workSpaceStore.updateEditorState(
+        this.document.id,
+        contentState
+      );
     }
   };
 
