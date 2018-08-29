@@ -1,5 +1,7 @@
 import { EditorState, EntityInstance } from 'draft-js';
 
+import { getSelectedBlock } from './block';
+
 import { DraftDecorator } from '~/lib/constants';
 
 export const getSelectedTextFromEditor = (
@@ -70,4 +72,32 @@ export const getCodeCounts = (
     }
     return dict;
   }, {});
+};
+
+export const getSelectionEntity = (editorState: EditorState) => {
+  let entity;
+  const selection = editorState.getSelection();
+  let start = selection.getStartOffset();
+  let end = selection.getEndOffset();
+  if (start === end && start === 0) {
+    end = 1;
+  } else if (start === end) {
+    start -= 1;
+  }
+  const block = getSelectedBlock(editorState);
+
+  if (!block) return undefined;
+
+  for (let i = start; i < end; i += 1) {
+    const currentEntity = block.getEntityAt(i);
+    if (!currentEntity) {
+      break;
+    }
+    if (i === start) {
+      entity = currentEntity;
+    } else if (entity !== currentEntity) {
+      break;
+    }
+  }
+  return entity || undefined;
 };

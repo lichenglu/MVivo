@@ -1,5 +1,6 @@
 // Cannot use typescript because of a lack of typing
 import {
+  CompositeDecorator,
   ContentBlock,
   ContentState,
   convertToRaw,
@@ -13,12 +14,16 @@ import 'draft-js/dist/Draft.css';
 import React from 'react';
 
 import {
-  codingDecorator,
   createBufferedCode,
-  createEditorStateWithText,
   createNormalCode,
+  DecoratorComponentProps,
   getCodeCounts,
+  getEntitiesFromBlocks,
+  getSelectedBlock,
   getSelectedTextFromEditor,
+  getSelectionEntity,
+  NormalCode,
+  normalCodeStrategy,
   removeInlineStylesFromSelection,
   removeInlineStylesOfBlocks,
 } from '~/services/draft-utils';
@@ -58,17 +63,25 @@ interface WorkStationState {
   editorState: EditorState;
   codeInput: string;
   dataSource: CodeSnapshot[];
+  currentEntityKey?: string;
 }
 
 // TODO:
 // 1. Solve jumping cursor
-// 2. autocomplete value
+// 2. Autocomplete value
 export class WorkStation extends React.Component<
   WorkStationProps,
   WorkStationState
 > {
   constructor(props: WorkStationProps) {
     super(props);
+
+    const codingDecorator = new CompositeDecorator([
+      {
+        strategy: normalCodeStrategy,
+        component: this.createNormalCode,
+      },
+    ]);
 
     let editorState = EditorState.createEmpty(codingDecorator);
     if (props.editorContent) {
@@ -95,12 +108,16 @@ export class WorkStation extends React.Component<
   }
 
   public onEditorChange = (editorState: EditorState) => {
-    this.setState(
-      {
-        editorState,
-      },
-      () => this.onSelectText(this.state.editorState)
-    );
+    if (editorState !== this.state.editorState) {
+      this.setState({ editorState }, () => {
+        const { text } = getSelectedTextFromEditor(editorState);
+        if (text && text.trim().length > 5) {
+          this.onSelectText(editorState);
+        } else if (!text.trim()) {
+          this.onClickText(editorState);
+        }
+      });
+    }
   };
 
   public onSelectText = (editorState: EditorState) => {
@@ -128,6 +145,35 @@ export class WorkStation extends React.Component<
     }
   };
 
+  public onClickText = (editorState: EditorState) => {
+    const block = getSelectedBlock(editorState);
+    if (!block) return;
+    const contentState = editorState.getCurrentContent();
+    const targetEntity = getSelectionEntity(editorState);
+    const allEntities = getEntitiesFromBlocks(editorState).map(
+      e => e.entityKey
+    );
+    let nextContentState = contentState;
+    for (const entityKey of allEntities) {
+      nextContentState = nextContentState.mergeEntityData(entityKey, {
+        selected: entityKey === targetEntity,
+      });
+    }
+    const nextEditorState = EditorState.push(
+      editorState,
+      nextContentState,
+      'apply-entity'
+    );
+    const selection = nextEditorState.getSelection();
+
+    this.setState({
+      // https://github.com/facebook/draft-js/issues/1047#issuecomment-283453223
+      // need forceSelection to re-render entity
+      editorState: EditorState.forceSelection(nextEditorState, selection),
+      currentEntityKey: targetEntity,
+    });
+  };
+
   public logState = () => {
     const content = this.state.editorState.getCurrentContent();
     console.log(convertToRaw(content));
@@ -143,11 +189,11 @@ export class WorkStation extends React.Component<
 
     const { editorState } = this.state;
 
-    const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = createNormalCode(contentState, {
       bgColor: code.bgColor,
       codeID: code.id,
+      selected: false,
     });
 
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
@@ -232,6 +278,10 @@ export class WorkStation extends React.Component<
       dataSource: nextDataSource,
       codeInput: inputVal,
     });
+  };
+
+  public createNormalCode = (props: DecoratorComponentProps) => {
+    return <NormalCode {...props} />;
   };
 
   get codes(): Array<CodeSnapshot & { count?: number }> {

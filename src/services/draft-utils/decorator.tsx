@@ -1,5 +1,10 @@
 import Color from 'color';
-import { CompositeDecorator, ContentBlock, ContentState } from 'draft-js';
+import {
+  CompositeDecorator,
+  ContentBlock,
+  ContentState,
+  EntityInstance,
+} from 'draft-js';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import styled from 'styled-components';
@@ -43,7 +48,7 @@ export const normalCodeStrategy: Strategy = (
   }, callback);
 };
 
-export interface DecaratorComponentProps {
+export interface DecoratorComponentProps {
   contentState: ContentState;
   children: any;
   entityKey: string;
@@ -58,7 +63,7 @@ const BufferedCodeText = styled.span`
     transition: 0.3s;
   }
 `;
-export const BufferedCode = (props: DecaratorComponentProps) => {
+export const BufferedCode = (props: DecoratorComponentProps) => {
   return (
     <BufferedCodeText data-offset-key={props.offsetkey}>
       {props.children}
@@ -69,10 +74,16 @@ export const BufferedCode = (props: DecaratorComponentProps) => {
 export interface NormalCodeTextProps {
   bgColor: string;
   codeID: string;
+  selected: boolean;
 }
 
 const NormalCodeText = styled.span<NormalCodeTextProps>`
-  background-color: ${({ bgColor }) => bgColor};
+  background-color: ${({ bgColor, selected }) =>
+    selected
+      ? Color(bgColor)
+          .darken(0.3)
+          .toString()
+      : bgColor};
   color: #fff;
   transition: 0.3s;
   &:hover {
@@ -91,21 +102,29 @@ const NormalCodeText = styled.span<NormalCodeTextProps>`
 
 const CodeName = styled.span`
   font-size: 0.6rem;
-  background-color: transparent;
+  cursor: not-allowed;
 `;
 
 // TODO: think of a more elegant way to get rid of mobx injection
 // so as to make the component dummy
 export const NormalCode = inject('rootStore')(
-  (props: DecaratorComponentProps & { rootStore: RootStore }) => {
+  (
+    props: DecoratorComponentProps & {
+      rootStore: RootStore;
+      currentEntity: EntityInstance;
+    }
+  ) => {
     const entity = props.contentState.getEntity(props.entityKey);
     const data: NormalCodeTextProps = entity.getData();
     const code = props.rootStore.codeBookStore.codes.get(data.codeID);
+    const selected = data.selected;
+
     return code ? (
       <NormalCodeText
         data-offset-key={props.offsetkey}
         bgColor={code.bgColor}
         codeID={code.id}
+        selected={selected}
       >
         <CodeName>{`[@${code.name}]`}</CodeName>
         {props.children}
