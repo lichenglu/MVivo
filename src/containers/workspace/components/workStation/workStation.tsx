@@ -304,8 +304,19 @@ export class WorkStation extends React.Component<
     return this.codes.sort((a, b) => b.count - a.count);
   }
 
+  get currentCode() {
+    const { currentEntityKey, editorState } = this.state;
+
+    if (!currentEntityKey) return [];
+
+    const contentState = editorState.getCurrentContent();
+    const { codeID } = contentState.getEntity(currentEntityKey).getData();
+
+    return this.codes.filter(c => c.id === codeID);
+  }
+
   public render() {
-    const { editorState, dataSource, codeInput } = this.state;
+    const { editorState, dataSource, currentEntityKey, codeInput } = this.state;
 
     return (
       <Container>
@@ -327,7 +338,7 @@ export class WorkStation extends React.Component<
             allowClear
           />
           <UsedCodeTags
-            codes={this.sortedCodes}
+            codes={currentEntityKey ? this.currentCode : this.sortedCodes}
             onClick={() => console.log('onClick')}
             onClose={() => console.log('onClose')}
           />

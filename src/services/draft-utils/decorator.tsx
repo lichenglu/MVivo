@@ -91,6 +91,7 @@ const NormalCodeText = styled.span<NormalCodeTextProps>`
       Color(bgColor)
         .darken(0.3)
         .toString()};
+    cursor: pointer;
   }
   &:focus {
     background-color: ${({ bgColor }) =>
