@@ -14,16 +14,13 @@ import 'draft-js/dist/Draft.css';
 import React from 'react';
 
 import {
-  createBufferedCode,
+  codingDecorator,
   createNormalCode,
-  DecoratorComponentProps,
   getCodeCounts,
   getEntitiesFromBlocks,
   getSelectedBlock,
   getSelectedTextFromEditor,
   getSelectionEntity,
-  NormalCode,
-  normalCodeStrategy,
   removeInlineStylesFromSelection,
   removeInlineStylesOfBlocks,
 } from '~/services/draft-utils';
@@ -76,13 +73,6 @@ export class WorkStation extends React.Component<
   constructor(props: WorkStationProps) {
     super(props);
 
-    const codingDecorator = new CompositeDecorator([
-      {
-        strategy: normalCodeStrategy,
-        component: this.createNormalCode,
-      },
-    ]);
-
     let editorState = EditorState.createEmpty(codingDecorator);
     if (props.editorContent) {
       editorState = EditorState.createWithContent(
@@ -108,68 +98,73 @@ export class WorkStation extends React.Component<
   }
 
   public onEditorChange = (editorState: EditorState) => {
-    if (editorState !== this.state.editorState) {
-      this.setState({ editorState }, () => {
-        const { text } = getSelectedTextFromEditor(editorState);
-        if (text && text.trim().length > 5) {
-          this.onSelectText(editorState);
-        } else if (!text.trim()) {
-          this.onClickText(editorState);
-        }
-      });
+    const { text } = getSelectedTextFromEditor(editorState);
+    if (text && text.trim().length > 5) {
+      this.onSelectText(editorState);
+    } else if (!text.trim()) {
+      this.onClickText(editorState);
+    }
+
+    if (
+      editorState.getCurrentContent() !==
+      this.state.editorState.getCurrentContent()
+    ) {
+      this.setState({ editorState });
     }
   };
 
   public onSelectText = (editorState: EditorState) => {
-    const { text } = getSelectedTextFromEditor(editorState);
-    if (text && text.trim().length > 5) {
-      const selection = editorState.getSelection();
-      const currentStyle = editorState.getCurrentInlineStyle();
+    const selection = editorState.getSelection();
+    const currentStyle = editorState.getCurrentInlineStyle();
 
-      const cleanEditorState = removeInlineStylesFromSelection(editorState);
-      let nextEditorState = cleanEditorState;
+    const cleanEditorState = removeInlineStylesFromSelection(editorState);
+    let nextEditorState = cleanEditorState;
 
-      // If the color is being toggled on, apply it.
-      if (!currentStyle.has('buffered')) {
-        nextEditorState = RichUtils.toggleInlineStyle(
-          nextEditorState,
-          'buffered'
-        );
-      }
+    // If the color is being toggled on, apply it.
+    if (!currentStyle.has('buffered')) {
+      nextEditorState = RichUtils.toggleInlineStyle(
+        nextEditorState,
+        'buffered'
+      );
+    }
 
-      if (nextEditorState) {
-        this.setState({
-          editorState: nextEditorState,
-        });
-      }
+    if (nextEditorState) {
+      this.setState({
+        editorState: nextEditorState,
+      });
     }
   };
 
   public onClickText = (editorState: EditorState) => {
-    const block = getSelectedBlock(editorState);
-    if (!block) return;
     const contentState = editorState.getCurrentContent();
     const targetEntity = getSelectionEntity(editorState);
+
     const allEntities = getEntitiesFromBlocks(editorState).map(
       e => e.entityKey
     );
     let nextContentState = contentState;
+    const selection = editorState.getSelection();
     for (const entityKey of allEntities) {
       nextContentState = nextContentState.mergeEntityData(entityKey, {
         selected: entityKey === targetEntity,
       });
+      nextContentState = Modifier.applyEntity(
+        nextContentState,
+        selection,
+        entityKey
+      );
     }
+
     const nextEditorState = EditorState.push(
       editorState,
       nextContentState,
       'apply-entity'
     );
-    const selection = nextEditorState.getSelection();
 
     this.setState({
-      // https://github.com/facebook/draft-js/issues/1047#issuecomment-283453223
-      // need forceSelection to re-render entity
-      editorState: EditorState.forceSelection(nextEditorState, selection),
+      // Inspired by
+      // https://github.com/facebook/draft-js/issues/1047#issuecomment-290568584
+      editorState: nextEditorState,
       currentEntityKey: targetEntity,
     });
   };
@@ -278,10 +273,6 @@ export class WorkStation extends React.Component<
       dataSource: nextDataSource,
       codeInput: inputVal,
     });
-  };
-
-  public createNormalCode = (props: DecoratorComponentProps) => {
-    return <NormalCode {...props} />;
   };
 
   get codes(): Array<CodeSnapshot & { count?: number }> {

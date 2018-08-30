@@ -1,10 +1,11 @@
 import { Tag } from 'antd';
 import React from 'react';
+import FlipMove from 'react-flip-move';
 import styled from 'styled-components';
 
 import { CodeSnapshot } from '~/stores';
 
-const Container = styled.div`
+const Container = styled(FlipMove)`
   margin-top: 1rem;
   width: 100%;
 `;

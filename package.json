@@ -16,6 +16,7 @@
     "randomcolor": "^0.5.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-flip-move": "^3.0.2",
     "react-helmet": "^5.2.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
