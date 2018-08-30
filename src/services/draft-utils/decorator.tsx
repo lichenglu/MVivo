@@ -10,6 +10,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { DraftDecorator } from '~/lib/constants';
+import { trimText } from '~/lib/utils';
 import { RootStore } from '~/stores/root-store';
 
 export type Strategy = (
@@ -73,7 +74,7 @@ export const BufferedCode = (props: DecoratorComponentProps) => {
 
 export interface NormalCodeTextProps {
   bgColor: string;
-  codeID: string;
+  codeIDs: string[];
   selected: boolean;
 }
 
@@ -117,17 +118,22 @@ export const NormalCode = inject('rootStore')(
   ) => {
     const entity = props.contentState.getEntity(props.entityKey);
     const data: NormalCodeTextProps = entity.getData();
-    const code = props.rootStore.codeBookStore.codes.get(data.codeID);
+    const codes = data.codeIDs
+      .map(id => props.rootStore.codeBookStore.codes.get(id))
+      .filter(c => !!c);
+    const primaryCode = codes[0];
     const selected = data.selected;
 
-    return code ? (
+    return primaryCode ? (
       <NormalCodeText
         data-offset-key={props.offsetkey}
-        bgColor={code.bgColor}
-        codeID={code.id}
+        bgColor={primaryCode.bgColor}
+        codeIDs={data.codeIDs}
         selected={selected}
       >
-        <CodeName>{`[@${code.name}]`}</CodeName>
+        <CodeName>{`[${trimText(
+          codes.map(c => c && c.name).join(', ')
+        )}]`}</CodeName>
         {props.children}
       </NormalCodeText>
     ) : (

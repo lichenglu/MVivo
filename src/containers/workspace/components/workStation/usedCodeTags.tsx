@@ -15,7 +15,7 @@ const StyledTag = styled(Tag)`
 `;
 
 interface UsedCodeTagsProps {
-  codes: CodeSnapshot[];
+  codes: CodeSnapshot[] | null;
   onClose: (id: string) => void;
   onClick: (id: string) => void;
 }
@@ -27,16 +27,17 @@ export const UsedCodeTags = ({
   onClick,
 }: UsedCodeTagsProps) => (
   <Container>
-    {codes.slice(0, 5).map(code => (
-      <StyledTag
-        color={code.bgColor}
-        onClose={onClose.bind(null, code.id)}
-        onClick={onClick.bind(null, code.id)}
-        key={code.id}
-        closable
-      >
-        {code.name}
-      </StyledTag>
-    ))}
+    {codes &&
+      codes.slice(0, 5).map(code => (
+        <StyledTag
+          color={code.bgColor}
+          onClose={onClose.bind(null, code.id)}
+          onClick={onClick.bind(null, code.id)}
+          key={code.id}
+          closable
+        >
+          {code.name}
+        </StyledTag>
+      ))}
   </Container>
 );

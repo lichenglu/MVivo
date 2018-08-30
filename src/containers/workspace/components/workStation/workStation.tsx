@@ -1,6 +1,5 @@
 // Cannot use typescript because of a lack of typing
 import {
-  CompositeDecorator,
   ContentBlock,
   ContentState,
   convertToRaw,
@@ -18,7 +17,6 @@ import {
   createNormalCode,
   getCodeCounts,
   getEntitiesFromBlocks,
-  getSelectedBlock,
   getSelectedTextFromEditor,
   getSelectionEntity,
   removeInlineStylesFromSelection,
@@ -30,11 +28,6 @@ import { CodeSnapshot } from '~/stores';
 import { AutoComplete } from './autoComplete';
 import { Container, SideContainer } from './layout';
 import { UsedCodeTags } from './usedCodeTags';
-
-// dev
-import editor from '~/fixtures/editor.json';
-
-const initialText = editor.initialText;
 
 const customStyleMap = {
   buffered: {
@@ -161,12 +154,19 @@ export class WorkStation extends React.Component<
       'apply-entity'
     );
 
-    this.setState({
-      // Inspired by
-      // https://github.com/facebook/draft-js/issues/1047#issuecomment-290568584
-      editorState: nextEditorState,
-      currentEntityKey: targetEntity,
-    });
+    this.setState(
+      {
+        // Inspired by
+        // https://github.com/facebook/draft-js/issues/1047#issuecomment-290568584
+        editorState: nextEditorState,
+        currentEntityKey: targetEntity,
+      },
+      () => {
+        this.setState({
+          dataSource: this.excludedCodes,
+        });
+      }
+    );
   };
 
   public logState = () => {
@@ -174,10 +174,10 @@ export class WorkStation extends React.Component<
     console.log(convertToRaw(content));
   };
 
-  public onMapTextToCode = (code: CodeSnapshot | null) => {
+  public onMapBufferedTextToCode = (code: CodeSnapshot | null) => {
     if (!code) {
       console.warn(
-        '[onMapTextToCode] No code is passed in when associating text with a code'
+        '[onMapBufferedTextToCode] No code is passed in when associating text with a code'
       );
       return;
     }
@@ -187,7 +187,7 @@ export class WorkStation extends React.Component<
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = createNormalCode(contentState, {
       bgColor: code.bgColor,
-      codeID: code.id,
+      codeIDs: [code.id],
       selected: false,
     });
 
@@ -234,9 +234,54 @@ export class WorkStation extends React.Component<
     });
   };
 
+  public onAddCodeToSelectedEntity = (code?: CodeSnapshot) => {
+    const { currentEntityKey, editorState } = this.state;
+
+    if (!currentEntityKey || !this.currentCodes || !code) return;
+    if (this.currentCodes.find(c => c.id === code.id)) {
+      console.warn(
+        `[onAddCodeToSelectedEntity] you are trying to add code ${
+          code.name
+        } to an entity. But this code already exists in the entity`
+      );
+      return;
+    }
+
+    const contentState = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    let nextContentState = contentState.mergeEntityData(currentEntityKey, {
+      codeIDs: this.currentCodes.map(c => c.id).concat([code.id]),
+    });
+    nextContentState = Modifier.applyEntity(
+      nextContentState,
+      selection,
+      currentEntityKey
+    );
+
+    const nextEditorState = EditorState.push(
+      editorState,
+      nextContentState,
+      'apply-entity'
+    );
+
+    // TODO: Refactor to auto save
+    this.props.onUpdateEditorContent(nextEditorState.getCurrentContent());
+
+    this.setState(
+      {
+        editorState: nextEditorState,
+      },
+      () => {
+        this.setState({
+          dataSource: this.excludedCodes,
+        });
+      }
+    );
+  };
+
   public onSelectCode = (id: string, option: AntAutoCompleteOption) => {
     const { codeList, onCreateCode } = this.props;
-    const { codeInput } = this.state;
+    const { codeInput, currentEntityKey } = this.state;
 
     if (id.trim()) {
       let code;
@@ -246,7 +291,9 @@ export class WorkStation extends React.Component<
       if (!code) {
         code = onCreateCode({ name: codeInput });
       }
-      this.onMapTextToCode(code);
+      currentEntityKey
+        ? this.onAddCodeToSelectedEntity(code)
+        : this.onMapBufferedTextToCode(code);
       if (code) {
         console.log(code);
         this.setState({
@@ -257,12 +304,14 @@ export class WorkStation extends React.Component<
   };
 
   public onSearchCode = (inputVal: string) => {
-    const hasName =
+    const { dataSource } = this.state;
+    const containsCode =
       this.codes.filter(code => code.name === inputVal).length === 1;
-    const filteredCodes = this.codes.filter(code =>
-      code.name.includes(inputVal)
-    );
-    const nextDataSource = hasName
+    const filteredCodes = this.excludedCodes.filter(code => {
+      const included = code.name.includes(inputVal);
+      return included;
+    });
+    const nextDataSource = containsCode
       ? filteredCodes
       : filteredCodes
           // @ts-ignore
@@ -295,15 +344,26 @@ export class WorkStation extends React.Component<
     return this.codes.sort((a, b) => b.count - a.count);
   }
 
-  get currentCode() {
+  // all the codes but those codes that the current selected
+  // entity contains
+  get excludedCodes() {
+    return this.codes.filter(
+      code =>
+        !this.currentCodes
+          ? true
+          : !this.currentCodes.find(c => c.id === code.id)
+    );
+  }
+
+  get currentCodes() {
     const { currentEntityKey, editorState } = this.state;
 
-    if (!currentEntityKey) return [];
+    if (!currentEntityKey) return null;
 
     const contentState = editorState.getCurrentContent();
-    const { codeID } = contentState.getEntity(currentEntityKey).getData();
+    const { codeIDs } = contentState.getEntity(currentEntityKey).getData();
 
-    return this.codes.filter(c => c.id === codeID);
+    return this.codes.filter(c => codeIDs.includes(c.id));
   }
 
   public render() {
@@ -329,7 +389,7 @@ export class WorkStation extends React.Component<
             allowClear
           />
           <UsedCodeTags
-            codes={currentEntityKey ? this.currentCode : this.sortedCodes}
+            codes={currentEntityKey ? this.currentCodes : this.sortedCodes}
             onClick={() => console.log('onClick')}
             onClose={() => console.log('onClose')}
           />
