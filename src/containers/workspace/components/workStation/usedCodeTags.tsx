@@ -1,6 +1,7 @@
 import { Tag } from 'antd';
 import React from 'react';
 import FlipMove from 'react-flip-move';
+import { withHandlers } from 'recompose';
 import styled from 'styled-components';
 
 import { CodeSnapshot } from '~/stores';
@@ -14,10 +15,29 @@ const StyledTag = styled(Tag)`
   margin-bottom: 0.6rem;
 `;
 
+const EnhancedTag = withHandlers<any, any>({
+  // @ts-ignore
+  handleClose: ({ onClose, code }) => () => {
+    if (onClose) {
+      console.log('onClose', onClose.toString());
+      onClose(code);
+    }
+  },
+  // @ts-ignore
+  handleClick: ({ onClick, code }) => () => {
+    if (onClick) {
+      onClick(code);
+    }
+  },
+  // @ts-ignore
+})(({ handleClose, handleClick, onClose, onClick, ...rest }) => (
+  <StyledTag {...rest} onClick={handleClick} onClose={handleClose} />
+));
+
 interface UsedCodeTagsProps {
   codes: CodeSnapshot[] | null;
-  onClose: (id: string) => void;
-  onClick: (id: string) => void;
+  onClose: (code: CodeSnapshot) => void;
+  onClick: (code: CodeSnapshot) => void;
 }
 
 // TODO: Finish onClose and onClick fns
@@ -29,15 +49,16 @@ export const UsedCodeTags = ({
   <Container>
     {codes &&
       codes.slice(0, 5).map(code => (
-        <StyledTag
+        <EnhancedTag
           color={code.bgColor}
-          onClose={onClose.bind(null, code.id)}
-          onClick={onClick.bind(null, code.id)}
+          onClose={onClose}
+          onClick={onClick}
+          code={code}
           key={code.id}
           closable
         >
           {code.name}
-        </StyledTag>
+        </EnhancedTag>
       ))}
   </Container>
 );

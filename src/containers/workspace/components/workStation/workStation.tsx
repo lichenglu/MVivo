@@ -21,6 +21,7 @@ import {
   getSelectionEntity,
   removeInlineStylesFromSelection,
   removeInlineStylesOfBlocks,
+  updateCodeOfEntity,
 } from '~/services/draft-utils';
 import { CodeSnapshot } from '~/stores';
 
@@ -107,7 +108,6 @@ export class WorkStation extends React.Component<
   };
 
   public onSelectText = (editorState: EditorState) => {
-    const selection = editorState.getSelection();
     const currentStyle = editorState.getCurrentInlineStyle();
 
     const cleanEditorState = removeInlineStylesFromSelection(editorState);
@@ -234,29 +234,31 @@ export class WorkStation extends React.Component<
     });
   };
 
-  public onAddCodeToSelectedEntity = (code?: CodeSnapshot) => {
+  public onUpdateCodeToSelectedEntity = (
+    code: CodeSnapshot | null,
+    action: 'add' | 'delete'
+  ) => {
     const { currentEntityKey, editorState } = this.state;
 
     if (!currentEntityKey || !this.currentCodes || !code) return;
-    if (this.currentCodes.find(c => c.id === code.id)) {
-      console.warn(
-        `[onAddCodeToSelectedEntity] you are trying to add code ${
-          code.name
-        } to an entity. But this code already exists in the entity`
-      );
-      return;
+
+    if (action === 'add') {
+      if (this.currentCodes.find(c => c.id === code.id)) {
+        console.warn(
+          `[onUpdateCodeToSelectedEntity] you are trying to add code ${
+            code.name
+          } to an entity. But this code already exists in the entity`
+        );
+        return;
+      }
     }
 
-    const contentState = editorState.getCurrentContent();
-    const selection = editorState.getSelection();
-    let nextContentState = contentState.mergeEntityData(currentEntityKey, {
-      codeIDs: this.currentCodes.map(c => c.id).concat([code.id]),
+    const nextContentState = updateCodeOfEntity({
+      action,
+      code,
+      entityKey: currentEntityKey,
+      editorState,
     });
-    nextContentState = Modifier.applyEntity(
-      nextContentState,
-      selection,
-      currentEntityKey
-    );
 
     const nextEditorState = EditorState.push(
       editorState,
@@ -264,7 +266,6 @@ export class WorkStation extends React.Component<
       'apply-entity'
     );
 
-    // TODO: Refactor to auto save
     this.props.onUpdateEditorContent(nextEditorState.getCurrentContent());
 
     this.setState(
@@ -279,9 +280,9 @@ export class WorkStation extends React.Component<
     );
   };
 
-  public onSelectCode = (id: string, option: AntAutoCompleteOption) => {
+  public onSelectOption = (id: string, option: AntAutoCompleteOption) => {
     const { codeList, onCreateCode } = this.props;
-    const { codeInput, currentEntityKey } = this.state;
+    const { codeInput } = this.state;
 
     if (id.trim()) {
       let code;
@@ -291,9 +292,7 @@ export class WorkStation extends React.Component<
       if (!code) {
         code = onCreateCode({ name: codeInput });
       }
-      currentEntityKey
-        ? this.onAddCodeToSelectedEntity(code)
-        : this.onMapBufferedTextToCode(code);
+      this.onSelectCode(code);
       if (code) {
         console.log(code);
         this.setState({
@@ -301,6 +300,18 @@ export class WorkStation extends React.Component<
         });
       }
     }
+  };
+
+  public onSelectCode = (code: CodeSnapshot | null) => {
+    const { currentEntityKey } = this.state;
+    currentEntityKey
+      ? this.onUpdateCodeToSelectedEntity(code, 'add')
+      : this.onMapBufferedTextToCode(code);
+  };
+
+  public onDeleteCode = (code: CodeSnapshot) => {
+    console.log(code, 'onDeleteCode');
+    this.onUpdateCodeToSelectedEntity(code, 'delete');
   };
 
   public onSearchCode = (inputVal: string) => {
@@ -382,7 +393,7 @@ export class WorkStation extends React.Component<
 
         <SideContainer>
           <AutoComplete
-            onSelect={this.onSelectCode}
+            onSelect={this.onSelectOption}
             onSearch={this.onSearchCode}
             dataSource={dataSource}
             placeholder="Type to search codes or create a new one"
@@ -390,8 +401,8 @@ export class WorkStation extends React.Component<
           />
           <UsedCodeTags
             codes={currentEntityKey ? this.currentCodes : this.sortedCodes}
-            onClick={() => console.log('onClick')}
-            onClose={() => console.log('onClose')}
+            onClick={this.onSelectCode}
+            onClose={this.onDeleteCode}
           />
         </SideContainer>
       </Container>
