@@ -1,5 +1,5 @@
 import React from 'react';
-import { Value, ValueJSON } from 'slate';
+import { Change, Value } from 'slate';
 import { Editor } from 'slate-react';
 
 import { CodeSnapshot } from '~/stores';
@@ -9,14 +9,16 @@ import { AutoComplete } from './autoComplete';
 import { Container, SideContainer } from './layout';
 import { UsedCodeTags } from './usedCodeTags';
 
-const customStyleMap = {
-  buffered: {
-    strokeDashoffset: '0',
-  },
-};
+// slate-plugins
+import { BufferedText, CodedText } from '~/lib/slate-plugins';
+
+const codedTextConfig = CodedText({ codeMap: {} });
+
+const plugins = [...BufferedText().plugins, ...codedTextConfig.plugins];
 
 interface WorkStationProps {
   codeList?: CodeSnapshot[];
+  codeMap?: Map<string, CodeSnapshot>;
   onCreateCode: (
     data: {
       name: string;
@@ -25,8 +27,8 @@ interface WorkStationProps {
       tint?: string;
     }
   ) => CodeSnapshot | null;
-  onUpdateEditorContent: (contentState: ValueJSON) => void;
-  editorState?: ValueJSON | null;
+  onUpdateEditorContent: (contentState: Value) => void;
+  editorState?: Value | null;
 }
 
 interface WorkStationState {
@@ -48,7 +50,7 @@ export class WorkStation extends React.Component<
 
     let editorState = Value.create();
     if (props.editorState) {
-      editorState = Value.fromJSON(props.editorState);
+      editorState = props.editorState;
     }
     this.state = {
       editorState,
@@ -66,6 +68,9 @@ export class WorkStation extends React.Component<
       });
     }
   }
+
+  public onChangeEditor = ({ value }: Change) =>
+    this.setState({ editorState: value });
 
   public onSelectOption = (id: string, option: AntAutoCompleteOption) => {
     const { codeList, onCreateCode } = this.props;
@@ -91,6 +96,12 @@ export class WorkStation extends React.Component<
 
   public onSelectCode = (code: CodeSnapshot | null) => {
     const { currentEntityKey } = this.state;
+    const change = codedTextConfig.changes.updateCodeForBlocks({
+      codeID: code.id,
+      action: 'add',
+      value: this.state.editorState,
+    });
+    this.onChangeEditor(change);
     // Either map to buffered or add code to selected node
   };
 
@@ -158,9 +169,19 @@ export class WorkStation extends React.Component<
       <Container>
         <Editor
           value={editorState}
+          plugins={plugins}
+          className={'slate-editor'}
           ref={element => {
             this.editor = element;
           }}
+          style={{
+            paddingRight: '1rem',
+            flex: '0.8',
+            maxHeight: '100%',
+            overflowY: 'auto',
+            fontSize: '1rem',
+          }}
+          onChange={this.onChangeEditor}
         />
 
         <SideContainer>

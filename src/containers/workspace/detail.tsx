@@ -1,9 +1,9 @@
 import { message, notification } from 'antd';
-import { ContentState } from 'draft-js';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { Value as SlateValue } from 'slate';
 import styled from 'styled-components';
 
 import { CodeModel, RootStore } from '~/stores/root-store';
@@ -104,7 +104,7 @@ export class WorkSpaceDetail extends React.Component<
     return null;
   };
 
-  public onUpdateEditorContent = (contentState: ContentState) => {
+  public onUpdateEditorContent = (contentState: SlateValue) => {
     if (this.document) {
       this.props.rootStore.workSpaceStore.updateEditorState(
         this.document.id,
@@ -130,6 +130,13 @@ export class WorkSpaceDetail extends React.Component<
     return [];
   }
 
+  get codeMap() {
+    if (this.workSpace && this.workSpace.codeBook) {
+      return this.workSpace.codeBook.codes;
+    }
+    return undefined;
+  }
+
   get hasDocument() {
     if (!this.document) return false;
     return !!this.document.id;
@@ -147,9 +154,10 @@ export class WorkSpaceDetail extends React.Component<
         {this.hasDocument ? (
           <WorkStation
             codeList={this.codeList}
+            codeMap={this.codeMap}
             onCreateCode={this.onCreateCode}
             onUpdateEditorContent={this.onUpdateEditorContent}
-            editorContent={this.document && this.document.editorContentState}
+            editorState={this.document && this.document.editorContentState}
           />
         ) : (
           <UploadContainer>

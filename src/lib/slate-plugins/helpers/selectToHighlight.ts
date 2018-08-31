@@ -1,20 +1,24 @@
-import { Change } from 'slate';
+import { Change, Mark } from 'slate';
+
+import { SlatePlugin } from '~/lib/slate-plugins';
 
 interface SelectToHighlightOptions {
   highlightColor: string;
   type: string;
 }
 
-export function selectToHighlight(
+export function SelectToHighlight(
   options: SelectToHighlightOptions
 ): SlatePlugin {
+  const mark = Mark.create({
+    type: options.type,
+    data: { bgColor: options.highlightColor },
+  });
+
   return {
     onChange: (change: Change) => {
       if (change.value.fragment.text) {
-        change.insertInline({
-          type: options.type,
-          data: { bgColor: options.highlightColor },
-        });
+        change.toggleMark(mark);
       }
     },
   };
