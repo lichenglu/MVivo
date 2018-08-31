@@ -1,6 +1,8 @@
 import { SlatePlugin } from '~/lib/slate-plugins';
 
-import { RenderHighlight, SelectToHighlight } from '../helpers';
+import { HighlightComponent } from '../components';
+import { SelectToHighlight } from '../utils/changes';
+import { RenderHighlight } from '../utils/render';
 
 export function BufferedText(options?) {
   return {

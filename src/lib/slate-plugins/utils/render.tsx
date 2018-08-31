@@ -1,40 +1,25 @@
-import Color from 'color';
 import React from 'react';
 import { RenderMarkProps } from 'slate-react';
-import styled from 'styled-components';
 
 import { SlatePlugin } from '~/lib/slate-plugins';
-
-export interface HighlightProps {
-  bgColor: string;
-  hoverToEmphasize: boolean;
-  tint?: string;
-}
-
-export const HighlightComponent = styled.span<HighlightProps>`
-  background-color: ${({ bgColor }) => bgColor};
-  transition: 0.3s;
-  color: ${({ tint }) => tint || '#fff'};
-  &:hover {
-    background-color: ${({ bgColor, hoverToEmphasize }) =>
-      hoverToEmphasize
-        ? Color(bgColor)
-            .darken(0.3)
-            .toString()
-        : bgColor};
-  }
-`;
 
 export interface RenderHighlightOptions {
   type: string;
   hoverToEmphasize?: boolean;
   AnchorComponent?: (props: RenderMarkProps) => JSX.Element;
+  Component: (
+    props: {
+      hoverToEmphasize: boolean;
+      bgColor: string;
+    } & RenderMarkProps
+  ) => JSX.Element;
 }
 
 export function RenderHighlight({
   type,
   AnchorComponent,
   hoverToEmphasize = true,
+  Component,
 }: RenderHighlightOptions): SlatePlugin {
   return {
     renderMark: props => {
@@ -45,14 +30,14 @@ export function RenderHighlight({
         const bgColor = data.get('bgColor');
 
         return (
-          <HighlightComponent
+          <Component
             hoverToEmphasize={hoverToEmphasize}
             bgColor={bgColor}
             {...attributes}
           >
             {AnchorComponent && <AnchorComponent {...props} />}
             {children}
-          </HighlightComponent>
+          </Component>
         );
       }
     },
