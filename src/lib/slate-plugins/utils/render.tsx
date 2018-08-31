@@ -3,15 +3,21 @@ import { RenderMarkProps } from 'slate-react';
 
 import { SlatePlugin } from '~/lib/slate-plugins';
 
+import { Highlight } from '../components';
+
 export interface RenderHighlightOptions {
   type: string;
   hoverToEmphasize?: boolean;
   AnchorComponent?: (props: RenderMarkProps) => JSX.Element;
-  Component: (
+  Component?: (
     props: {
       hoverToEmphasize: boolean;
       bgColor: string;
-    } & RenderMarkProps
+      mark: RenderMarkProps['mark'];
+      editor: RenderMarkProps['editor'];
+      children?: RenderMarkProps['children'];
+      attributes?: RenderMarkProps['attributes'];
+    }
   ) => JSX.Element;
 }
 
@@ -19,11 +25,11 @@ export function RenderHighlight({
   type,
   AnchorComponent,
   hoverToEmphasize = true,
-  Component,
+  Component = props => <Highlight {...props} />,
 }: RenderHighlightOptions): SlatePlugin {
   return {
     renderMark: props => {
-      const { mark, attributes, children } = props;
+      const { mark, attributes, children, editor } = props;
 
       if (mark.get('type') === type) {
         const data = mark.get('data');
@@ -33,7 +39,9 @@ export function RenderHighlight({
           <Component
             hoverToEmphasize={hoverToEmphasize}
             bgColor={bgColor}
-            {...attributes}
+            mark={mark}
+            editor={editor}
+            attributes={attributes}
           >
             {AnchorComponent && <AnchorComponent {...props} />}
             {children}

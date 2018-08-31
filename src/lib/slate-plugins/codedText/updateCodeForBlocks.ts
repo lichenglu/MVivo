@@ -1,5 +1,7 @@
 import { Inline, Value } from 'slate';
 
+import { hasMarkAndDo } from '../utils/has';
+
 interface UpdateCodeForBlocks {
   codeID: string;
   action: 'add' | 'delete';
@@ -19,15 +21,10 @@ export function updateCodeForBlocks({
 }: UpdateCodeForBlocks) {
   let change;
   if (action === 'add') {
-    const marks = value.document.getMarks();
-    marks.valueSeq().forEach(mark => {
-      if (!mark) return;
-      if (mark.type === 'BufferedText') {
-        console.log(mark);
-        change = value.change().removeMark(mark.type);
-        // .setInlines({ type, data: [codeID] });
-      }
+    hasMarkAndDo(value, 'BufferedText', (editorState, markType) => {
+      console.log('asdasd');
+      change = editorState.change().removeMark(markType);
+      return change;
     });
-    return change;
   }
 }

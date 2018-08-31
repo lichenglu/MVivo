@@ -15,7 +15,9 @@ interface CodedTextOptions {
 }
 
 export default function CodedText({ codeMap }: CodedTextOptions) {
-  return [RenderCodedText({ type: 'CodedText', codeMap })];
+  return {
+    ...RenderCodedText({ type: 'CodedText', codeMap }),
+  };
 }
 
 export { updateCodeForBlocks };

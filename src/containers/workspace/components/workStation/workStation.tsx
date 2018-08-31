@@ -10,11 +10,11 @@ import { Container, SideContainer } from './layout';
 import { UsedCodeTags } from './usedCodeTags';
 
 // slate-plugins
-import { BufferedText, CodedText } from '~/lib/slate-plugins';
-
-const codedTextConfig = CodedText({ codeMap: {} });
-
-const plugins = [...BufferedText().plugins, ...codedTextConfig.plugins];
+import {
+  BufferedText,
+  CodedText,
+  updateCodeForBlocks,
+} from '~/lib/slate-plugins';
 
 interface WorkStationProps {
   codeList?: CodeSnapshot[];
@@ -45,6 +45,9 @@ export class WorkStation extends React.Component<
   WorkStationProps,
   WorkStationState
 > {
+  public plugins = [BufferedText(), CodedText({ codeMap: new Map() })];
+  private editor: Editor | null;
+
   constructor(props: WorkStationProps) {
     super(props);
 
@@ -58,8 +61,6 @@ export class WorkStation extends React.Component<
       dataSource: this.codes,
     };
   }
-
-  private editor: Editor | null;
 
   public componentDidUpdate(prevProps: WorkStationProps) {
     if (prevProps.codeList !== this.props.codeList) {
@@ -96,12 +97,14 @@ export class WorkStation extends React.Component<
 
   public onSelectCode = (code: CodeSnapshot | null) => {
     const { currentEntityKey } = this.state;
-    const change = codedTextConfig.changes.updateCodeForBlocks({
+    const change = updateCodeForBlocks({
       codeID: code.id,
       action: 'add',
       value: this.state.editorState,
     });
-    this.onChangeEditor(change);
+    if (change) {
+      this.onChangeEditor(change);
+    }
     // Either map to buffered or add code to selected node
   };
 
@@ -169,7 +172,7 @@ export class WorkStation extends React.Component<
       <Container>
         <Editor
           value={editorState}
-          plugins={plugins}
+          plugins={this.plugins}
           className={'slate-editor'}
           ref={element => {
             this.editor = element;

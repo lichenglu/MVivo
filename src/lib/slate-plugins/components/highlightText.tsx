@@ -1,14 +1,21 @@
 import Color from 'color';
 import React from 'react';
+import { RenderMarkProps } from 'slate-react';
 import styled from 'styled-components';
 
-export interface HighlightProps {
-  bgColor: string;
+export interface HighlightContainerProps {
   hoverToEmphasize: boolean;
+  bgColor: string;
   tint?: string;
 }
+export interface HighlightProps extends HighlightContainerProps {
+  mark: RenderMarkProps['mark'];
+  editor: RenderMarkProps['editor'];
+  children?: RenderMarkProps['children'];
+  attributes?: RenderMarkProps['attributes'];
+}
 
-export const HighlightComponent = styled.span<HighlightProps>`
+const HighlightContainer = styled.span<HighlightContainerProps>`
   background-color: ${({ bgColor }) => bgColor};
   transition: 0.3s;
   color: ${({ tint }) => tint || '#fff'};
@@ -21,3 +28,17 @@ export const HighlightComponent = styled.span<HighlightProps>`
         : bgColor};
   }
 `;
+
+export const Highlight = ({
+  hoverToEmphasize,
+  bgColor,
+  tint,
+  mark,
+  editor,
+  attributes,
+  children,
+}: HighlightProps) => (
+  <HighlightContainer {...{ hoverToEmphasize, bgColor, tint }} {...attributes}>
+    {children}
+  </HighlightContainer>
+);

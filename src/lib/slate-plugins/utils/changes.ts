@@ -17,7 +17,8 @@ export function SelectToHighlight(
 
   return {
     onChange: (change: Change) => {
-      if (change.value.fragment.text) {
+      const text = change.value.fragment.text;
+      if (text) {
         change.toggleMark(mark);
       }
     },

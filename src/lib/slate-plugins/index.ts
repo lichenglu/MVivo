@@ -14,5 +14,7 @@ export interface SlatePlugin {
   renderNode?: (props: RenderNodeProps) => any;
 }
 
-export * from './helpers';
-export * from './features';
+export * from './bufferedText';
+export { default as BufferedText } from './bufferedText';
+export * from './codedText';
+export { default as CodedText } from './codedText';
