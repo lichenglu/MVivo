@@ -10,15 +10,17 @@ interface SelectToHighlightOptions {
 export function SelectToHighlight(
   options: SelectToHighlightOptions
 ): SlatePlugin {
-  const mark = Mark.create({
-    type: options.type,
-    data: { bgColor: options.highlightColor },
-  });
-
   return {
     onChange: (change: Change) => {
       const text = change.value.fragment.text;
       if (text) {
+        const mark = Mark.create({
+          type: options.type,
+          data: {
+            bgColor: options.highlightColor,
+            range: change.value.selection,
+          },
+        });
         change.toggleMark(mark);
       }
     },
