@@ -21,9 +21,8 @@ export function SelectToHighlight(
   });
   return {
     onChange: (change: Change) => {
-      const text = change.value.fragment.text;
-      if (text) {
-        const selection = change.value.selection;
+      const selection = change.value.selection;
+      if (selection.isExpanded) {
         const { anchor, focus } = selection;
 
         let decorations = options.allowMultipleSelection
@@ -36,51 +35,25 @@ export function SelectToHighlight(
           mark: highlightMark,
         });
 
+        let found = false;
         const nextDecorations = [];
 
-        const candidateAnchorOffset = decCandidate.anchor.offset;
-        const candidateFocusOffset = decCandidate.focus.offset;
-
         for (const decoration of decorations) {
-          const anchorOffset = decoration.anchor.offset;
-          const focusOffset = decoration.focus.offset;
-
           if (
-            anchorOffset < candidateAnchorOffset &&
-            focusOffset > candidateFocusOffset
+            decCandidate.start.offset > decoration.start.offset &&
+            decCandidate.end.offset < decoration.end.offset
           ) {
-            nextDecorations.push({
-              anchor: decoration.anchor,
-              focus: {
-                ...decoration.focus,
-                offset: candidateAnchorOffset - anchorOffset,
-              },
-            });
+            found = true;
+          } else {
+            nextDecorations.push(decoration);
           }
         }
-        decorations = decorations.map(decoration => {
-          const anchorOffset = decoration.anchor.offset;
-          const focusOffset = decoration.focus.offset;
 
-          const candidateAnchorOffset = decCandidate.anchor.offset;
-          const candidateFocusOffset = decCandidate.focus.offset;
+        if (!found) {
+          nextDecorations.push(decCandidate);
+        }
 
-          if (
-            (anchorOffset < candidateAnchorOffset &&
-              focusOffset > candidateFocusOffset) ||
-            (anchorOffset > candidateAnchorOffset &&
-              focusOffset < candidateFocusOffset)
-          ) {
-            return {
-              anchor: { ...decoration.anchor, offset: Math.abs() },
-            };
-          }
-          return decorations;
-        });
-
-        console.log(decorations);
-
-        change.setValue({ decorations });
+        change.setValue({ decorations: nextDecorations });
       }
     },
   };
