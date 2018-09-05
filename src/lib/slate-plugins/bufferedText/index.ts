@@ -10,6 +10,7 @@ export default function BufferedText(options?) {
     ...SelectToHighlight({
       type: MARKS.BufferedText,
       highlightColor: '#adb5bd',
+      allowMultipleSelection: true,
     }),
     ...RenderHighlight({
       type: MARKS.BufferedText,
