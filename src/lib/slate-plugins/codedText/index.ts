@@ -2,13 +2,9 @@ import styled from 'styled-components';
 
 import { CodeSnapshot } from '~/stores';
 
+import { INLINES } from '../utils/constants';
 import { RenderCodedText } from './renderCodedText';
 import { updateCodeForBlocks } from './updateCodeForBlocks';
-
-export const CodedTextCompnent = styled.span`
-  font-size: 0.6rem;
-  cursor: not-allowed;
-`;
 
 interface CodedTextOptions {
   codeMap: Map<string, CodeSnapshot>;
@@ -16,7 +12,7 @@ interface CodedTextOptions {
 
 export default function CodedText({ codeMap }: CodedTextOptions) {
   return {
-    ...RenderCodedText({ type: 'CodedText', codeMap }),
+    ...RenderCodedText({ type: INLINES.CodedText, codeMap }),
   };
 }
 

@@ -48,7 +48,7 @@ export interface CodedTextProps {
   rootStore?: RootStore;
 }
 
-export const CodedText = inject('rootStore')(
+export const CodedTextComponent = inject('rootStore')(
   ({ codeIDs, rootStore, attributes, selected, children }: CodedTextProps) => {
     if (!rootStore) return null;
 

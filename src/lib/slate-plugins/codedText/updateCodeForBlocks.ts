@@ -1,6 +1,6 @@
-import { Inline, Mark, Value } from 'slate';
+import { Inline, Mark, Range, Value } from 'slate';
 
-import { MARKS } from '../utils/constants';
+import { INLINES, MARKS } from '../utils/constants';
 
 interface UpdateCodeForBlocks {
   codeID: string;
@@ -15,24 +15,33 @@ export interface CodedTextMarkData {
 
 export function updateCodeForBlocks({
   codeID,
-  type = 'CodedText',
+  type = INLINES.CodedText,
   action,
   value,
 }: UpdateCodeForBlocks) {
-  let change = value.change();
+  let change = value.change({});
+
   if (action === 'add') {
-    const decorations = value.decorations.filter(decoration => {
+    const decorations = value.decorations.toArray().filter(decoration => {
       if (!decoration || !decoration.mark) return true;
-      if (decoration.mark.type === MARKS.BufferedText) {
-        const inline = Inline.create({
-          type,
-          data: { codeIDs: [codeID] },
-        });
-        change = change.wrapInlineAtRange(decoration, inline);
-        return false;
-      }
-      return true;
+      return decoration.mark.type !== MARKS.BufferedText;
     });
-    return change.setValue({ decorations });
+
+    const ranges = value.decorations.toArray().filter(decoration => {
+      if (!decoration || !decoration.mark) return true;
+      return decoration.mark.type === MARKS.BufferedText;
+    });
+
+    change.setValue({ decorations });
+
+    for (const range of ranges) {
+      const inline = Inline.create({
+        type,
+        data: { codeIDs: [codeID] },
+      });
+      change.select(range).wrapInline(inline);
+    }
+
+    return change;
   }
 }

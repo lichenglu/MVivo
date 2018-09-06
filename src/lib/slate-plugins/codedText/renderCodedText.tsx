@@ -1,8 +1,6 @@
-import Color from 'color';
 import React from 'react';
-import styled from 'styled-components';
 
-import { CodedText } from '../components';
+import { CodedTextComponent } from '../components';
 
 import { SlatePlugin } from '~/lib/slate-plugins';
 import { CodeSnapshot } from '~/stores';
@@ -26,7 +24,7 @@ export function RenderCodedText({ type }: RenderCodedTextOptions): SlatePlugin {
         const codeIDs: string[] = data.get('codeIDs');
 
         return (
-          <CodedText
+          <CodedTextComponent
             attributes={attributes}
             selected={isSelected}
             codeIDs={codeIDs}

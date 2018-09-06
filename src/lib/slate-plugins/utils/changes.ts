@@ -1,4 +1,4 @@
-import { Change, Decoration, Mark } from 'slate';
+import { Change, Decoration, DecorationProperties, Mark } from 'slate';
 
 import { hasMark } from './has';
 
@@ -25,7 +25,7 @@ export function SelectToHighlight(
       if (selection.isExpanded) {
         const { anchor, focus } = selection;
 
-        let decorations = options.allowMultipleSelection
+        const decorations = options.allowMultipleSelection
           ? change.value.decorations.toArray()
           : [];
 
@@ -36,10 +36,10 @@ export function SelectToHighlight(
         });
 
         let found = false;
-        const nextDecorations = [];
+        const nextDecorations: DecorationProperties[] = [];
 
         // Really? Does it have to be this complicated and stupid?!
-        for (const decoration of decorations) {
+        decorations.forEach(decoration => {
           if (
             decCandidate.start.offset > decoration.start.offset &&
             decCandidate.end.offset < decoration.end.offset
@@ -84,7 +84,7 @@ export function SelectToHighlight(
           } else {
             nextDecorations.push(decoration);
           }
-        }
+        });
 
         if (!found) {
           nextDecorations.push(decCandidate);
