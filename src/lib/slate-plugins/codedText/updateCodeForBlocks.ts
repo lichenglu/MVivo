@@ -21,12 +21,18 @@ export function updateCodeForBlocks({
 }: UpdateCodeForBlocks) {
   let change = value.change();
   if (action === 'add') {
-    value.decorations.forEach(decoration => {
-      if (!decoration || !decoration.mark) return;
+    const decorations = value.decorations.filter(decoration => {
+      if (!decoration || !decoration.mark) return true;
       if (decoration.mark.type === MARKS.BufferedText) {
-        change = change;
+        const inline = Inline.create({
+          type,
+          data: { codeIDs: [codeID] },
+        });
+        change = change.wrapInlineAtRange(decoration, inline);
+        return false;
       }
+      return true;
     });
-    return change;
+    return change.setValue({ decorations });
   }
 }

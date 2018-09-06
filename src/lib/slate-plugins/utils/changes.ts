@@ -38,10 +38,47 @@ export function SelectToHighlight(
         let found = false;
         const nextDecorations = [];
 
+        // Really? Does it have to be this complicated and stupid?!
         for (const decoration of decorations) {
           if (
             decCandidate.start.offset > decoration.start.offset &&
             decCandidate.end.offset < decoration.end.offset
+          ) {
+            found = true;
+            nextDecorations.push({
+              focus: decoration.start,
+              anchor: decCandidate.start,
+              mark: highlightMark,
+            });
+
+            nextDecorations.push({
+              focus: decCandidate.end,
+              anchor: decoration.end,
+              mark: highlightMark,
+            });
+          } else if (
+            decCandidate.start.offset === decoration.start.offset &&
+            decCandidate.end.offset < decoration.end.offset
+          ) {
+            found = true;
+            nextDecorations.push({
+              focus: decCandidate.end,
+              anchor: decoration.end,
+              mark: highlightMark,
+            });
+          } else if (
+            decCandidate.end.offset === decoration.end.offset &&
+            decCandidate.start.offset > decoration.start.offset
+          ) {
+            found = true;
+            nextDecorations.push({
+              focus: decoration.start,
+              anchor: decCandidate.start,
+              mark: highlightMark,
+            });
+          } else if (
+            decCandidate.end.offset === decoration.end.offset &&
+            decCandidate.start.offset === decoration.start.offset
           ) {
             found = true;
           } else {
