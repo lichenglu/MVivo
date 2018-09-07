@@ -110,6 +110,14 @@ export class WorkStation extends React.Component<
 
   public onDeleteCode = (code: CodeSnapshot) => {
     console.log(code, 'onDeleteCode');
+    const change = updateCodeForBlocks({
+      codeID: code.id,
+      action: 'delete',
+      value: this.state.editorState,
+    });
+    if (change) {
+      this.onChangeEditor(change);
+    }
     // either delete code in codebook (alert) or delete code of selected node
   };
 
@@ -195,11 +203,11 @@ export class WorkStation extends React.Component<
             placeholder="Type to search codes or create a new one"
             allowClear
           />
-          {/* <UsedCodeTags
+          <UsedCodeTags
             codes={this.sortedCodes}
             onClick={this.onSelectCode}
             onClose={this.onDeleteCode}
-          /> */}
+          />
         </SideContainer>
       </Container>
     );

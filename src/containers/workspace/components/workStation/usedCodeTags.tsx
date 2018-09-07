@@ -17,9 +17,9 @@ const StyledTag = styled(Tag)`
 
 const EnhancedTag = withHandlers<any, any>({
   // @ts-ignore
-  handleClose: ({ onClose, code }) => () => {
+  handleClose: ({ onClose, code }) => e => {
+    e.stopPropagation();
     if (onClose) {
-      console.log('onClose', onClose.toString());
       onClose(code);
     }
   },

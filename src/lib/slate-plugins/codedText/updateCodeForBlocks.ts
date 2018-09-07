@@ -22,26 +22,44 @@ export function updateCodeForBlocks({
   let change = value.change({});
 
   if (action === 'add') {
-    const decorations = value.decorations.toArray().filter(decoration => {
-      if (!decoration || !decoration.mark) return true;
-      return decoration.mark.type !== MARKS.BufferedText;
-    });
+    const decorations = value.decorations
+      .toArray()
+      // For some reason...we need to wrap inline in the descending order
+      // TODO: figure out why and if it is the correct way of doing such a thing
+      .sort((a, b) => b.start.offset - a.start.offset)
+      .filter(decoration => {
+        if (!decoration || !decoration.mark) return true;
 
-    const ranges = value.decorations.toArray().filter(decoration => {
-      if (!decoration || !decoration.mark) return true;
-      return decoration.mark.type === MARKS.BufferedText;
-    });
-
-    change.setValue({ decorations });
-
-    for (const range of ranges) {
-      const inline = Inline.create({
-        type,
-        data: { codeIDs: [codeID] },
+        if (decoration.mark.type === MARKS.BufferedText) {
+          const range = Range.create(decoration);
+          const inline = Inline.create({
+            type,
+            data: { codeIDs: [codeID] },
+          });
+          change = change.wrapInlineAtRange(range, inline);
+          return false;
+        }
+        return true;
       });
-      change.select(range).wrapInline(inline);
-    }
+    return change.setValue({ decorations });
+  } else if (action === 'delete') {
+    return change
+      .moveToRangeOfDocument()
+      .value.inlines.toArray()
+      .forEach(inline => {
+        if (inline && inline.type === INLINES.CodedText) {
+          const codeIDs: string[] = inline.get('data').get('codeIDs');
+          const nextCodeIDs = codeIDs.filter(id => id !== codeID);
+          const shouldRMInline = nextCodeIDs.length === 0;
 
-    return change;
+          change.moveAnchorToStartOfNode(inline).moveFocusToEndOfNode(inline);
+
+          shouldRMInline
+            ? change.unwrapInline(inline)
+            : change.setInlines({
+                data: { codeIDs: nextCodeIDs },
+              });
+        }
+      });
   }
 }
