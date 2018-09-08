@@ -23,7 +23,6 @@ export function updateCodeForBlocks({
 
   if (action === 'add') {
     const decorations = value.decorations
-      .toArray()
       // For some reason...we need to wrap inline in the descending order
       // TODO: figure out why and if it is the correct way of doing such a thing
       .sort((a, b) => b.start.offset - a.start.offset)
@@ -43,23 +42,20 @@ export function updateCodeForBlocks({
       });
     return change.setValue({ decorations });
   } else if (action === 'delete') {
-    return change
-      .moveToRangeOfDocument()
-      .value.inlines.toArray()
-      .forEach(inline => {
-        if (inline && inline.type === INLINES.CodedText) {
-          const codeIDs: string[] = inline.get('data').get('codeIDs');
-          const nextCodeIDs = codeIDs.filter(id => id !== codeID);
-          const shouldRMInline = nextCodeIDs.length === 0;
+    change.moveToRangeOfDocument();
+    change.value.inlines.forEach(inline => {
+      if (inline && inline.type === INLINES.CodedText) {
+        const codeIDs: string[] = inline.get('data').get('codeIDs');
+        const nextCodeIDs = codeIDs.filter(id => id !== codeID);
+        const shouldRMInline = nextCodeIDs.length === 0;
 
-          change.moveAnchorToStartOfNode(inline).moveFocusToEndOfNode(inline);
-
-          shouldRMInline
-            ? change.unwrapInline(inline)
-            : change.setInlines({
-                data: { codeIDs: nextCodeIDs },
-              });
-        }
-      });
+        shouldRMInline
+          ? change.unwrapInline(inline)
+          : change.setInlines({
+              data: { codeIDs: nextCodeIDs },
+            });
+      }
+    });
+    return change;
   }
 }

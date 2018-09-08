@@ -45,6 +45,9 @@ export const CodeBookModel = types
       addCode(code: Code) {
         self.codes.put(code);
       },
+      removeCode(codeID: string) {
+        self.codes.delete(codeID);
+      },
       randomColorFromPalette() {
         const randomIdx = Math.floor(
           Math.random() * self.availableColors.length
@@ -71,7 +74,6 @@ export const CodeBookStore = types
     createCodeAndAddTo(codeBookID: string, code: Code) {
       const codeBook = self.codeBooks.get(codeBookID);
 
-      console.log(code.bgColor, codeBook);
       if (!code.bgColor && codeBook) {
         code.setBgColor(codeBook.randomColorFromPalette());
         console.log(code.bgColor);
@@ -80,6 +82,15 @@ export const CodeBookStore = types
       self.codes.put(code);
       if (codeBook) {
         codeBook.addCode(code);
+      }
+    },
+    removeCodeOf(codeBookID: string, codeID: string) {
+      const codeBook = self.codeBooks.get(codeBookID);
+      if (codeBook) {
+        codeBook.removeCode(codeID);
+        return true;
+      } else {
+        return false;
       }
     },
   }))

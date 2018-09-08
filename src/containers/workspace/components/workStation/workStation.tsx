@@ -27,6 +27,7 @@ interface WorkStationProps {
       tint?: string;
     }
   ) => CodeSnapshot | null;
+  onDeleteCode: (codeID: string) => boolean;
   onUpdateEditorContent: (contentState: Value) => void;
   editorState?: Value | null;
 }
@@ -51,7 +52,7 @@ export class WorkStation extends React.Component<
   constructor(props: WorkStationProps) {
     super(props);
 
-    let editorState = Value.create();
+    let editorState = Value.create({});
     if (props.editorState) {
       editorState = props.editorState;
     }
@@ -70,8 +71,10 @@ export class WorkStation extends React.Component<
     }
   }
 
-  public onChangeEditor = ({ value }: Change) =>
+  public onChangeEditor = ({ value }: Change) => {
     this.setState({ editorState: value });
+    this.props.onUpdateEditorContent(value);
+  };
 
   public onSelectOption = (id: string, option: AntAutoCompleteOption) => {
     const { codeList, onCreateCode } = this.props;
@@ -109,7 +112,6 @@ export class WorkStation extends React.Component<
   };
 
   public onDeleteCode = (code: CodeSnapshot) => {
-    console.log(code, 'onDeleteCode');
     const change = updateCodeForBlocks({
       codeID: code.id,
       action: 'delete',
@@ -117,6 +119,7 @@ export class WorkStation extends React.Component<
     });
     if (change) {
       this.onChangeEditor(change);
+      this.props.onDeleteCode(code.id);
     }
     // either delete code in codebook (alert) or delete code of selected node
   };

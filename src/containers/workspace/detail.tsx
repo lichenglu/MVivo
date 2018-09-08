@@ -104,6 +104,17 @@ export class WorkSpaceDetail extends React.Component<
     return null;
   };
 
+  public onDeleteCode = (codeID: string) => {
+    if (this.workSpace && this.workSpace.codeBook) {
+      const success = this.props.rootStore.codeBookStore.removeCodeOf(
+        this.workSpace.codeBook.id,
+        codeID
+      );
+      return success;
+    }
+    return false;
+  };
+
   public onUpdateEditorContent = (contentState: SlateValue) => {
     if (this.document) {
       this.props.rootStore.workSpaceStore.updateEditorState(
@@ -154,8 +165,8 @@ export class WorkSpaceDetail extends React.Component<
         {this.hasDocument ? (
           <WorkStation
             codeList={this.codeList}
-            codeMap={this.codeMap}
             onCreateCode={this.onCreateCode}
+            onDeleteCode={this.onDeleteCode}
             onUpdateEditorContent={this.onUpdateEditorContent}
             editorState={this.document && this.document.editorContentState}
           />
