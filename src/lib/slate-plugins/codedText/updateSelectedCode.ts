@@ -6,7 +6,7 @@ interface UpdateSelectedCode {
   codeID: string;
   action: 'add' | 'delete';
   value: Value;
-  type?: string;
+  type?: INLINES;
 }
 
 export function updateSelectedCode({
@@ -19,7 +19,7 @@ export function updateSelectedCode({
 
   if (action === 'add') {
     change.value.inlines.forEach(inline => {
-      if (inline && inline.type === INLINES.CodedText) {
+      if (inline && inline.type === type) {
         console.log(inline);
         const codeIDs: string[] = inline.get('data').get('codeIDs');
         if (codeIDs.includes(codeID)) {
@@ -36,7 +36,7 @@ export function updateSelectedCode({
     });
   } else if (action === 'delete') {
     change.value.inlines.forEach(inline => {
-      if (inline && inline.type === INLINES.CodedText) {
+      if (inline && inline.type === type) {
         const codeIDs: string[] = inline.get('data').get('codeIDs');
         const nextCodeIDs = codeIDs.filter(id => id !== codeID);
         const shouldRMInline = nextCodeIDs.length === 0;

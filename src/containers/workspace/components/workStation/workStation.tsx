@@ -14,6 +14,7 @@ import { UsedCodeTags } from './usedCodeTags';
 import {
   BufferedText,
   CodedText,
+  getCodeSummary,
   updateCodeForBlocks,
   updateSelectedCode,
 } from '~/lib/slate-plugins';
@@ -191,20 +192,26 @@ export class WorkStation extends React.Component<
     const { codeList } = this.props;
     if (!codeList) return [];
 
-    let codeCounts = {};
+    let codeSummary = {};
     if (this.state) {
       const { editorState } = this.state;
-      // codeCounts = getCodeCounts(editorState);
+      codeSummary = getCodeSummary({ value: editorState });
     }
 
     return codeList.map(code => ({
       ...code,
-      count: codeCounts[code.id] || 0,
+      count: (codeSummary[code.id] && codeSummary[code.id].count) || 0,
     }));
   }
 
   get sortedCodes() {
-    return this.codes.sort((a, b) => b.count - a.count);
+    return this.codes.sort((a, b) => {
+      if (a && b && a.count && b.count) {
+        return b.count - a.count;
+      } else {
+        return 1;
+      }
+    });
   }
 
   get currentCodes() {
