@@ -45,11 +45,19 @@ export interface CodedTextProps {
   codeIDs: string[];
   attributes: object;
   children: ReactNode;
+  onClick?: () => void;
   rootStore?: RootStore;
 }
 
 export const CodedTextComponent = inject('rootStore')(
-  ({ codeIDs, rootStore, attributes, selected, children }: CodedTextProps) => {
+  ({
+    codeIDs,
+    rootStore,
+    attributes,
+    selected,
+    onClick,
+    children,
+  }: CodedTextProps) => {
     if (!rootStore) return null;
 
     const codes = codeIDs
@@ -62,6 +70,7 @@ export const CodedTextComponent = inject('rootStore')(
         {...attributes}
         bgColor={primaryCode.bgColor}
         selected={selected}
+        onClick={onClick}
       >
         <CodeName>{`[${trimText(
           codes.map(c => c && c.name).join(', ')

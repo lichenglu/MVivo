@@ -1,5 +1,6 @@
+import { List } from 'immutable';
 import React from 'react';
-import { Change, Value } from 'slate';
+import { Change, Inline, Value } from 'slate';
 import { Editor } from 'slate-react';
 
 import { CodeSnapshot } from '~/stores';
@@ -14,7 +15,9 @@ import {
   BufferedText,
   CodedText,
   updateCodeForBlocks,
+  updateSelectedCode,
 } from '~/lib/slate-plugins';
+import { INLINES } from '~/lib/slate-plugins/utils/constants';
 
 interface WorkStationProps {
   codeList?: CodeSnapshot[];
@@ -36,7 +39,8 @@ interface WorkStationState {
   editorState: Value;
   codeInput: string;
   dataSource: CodeSnapshot[];
-  currentEntityKey?: string;
+  hasSelectedCodedInline: boolean;
+  currentInlineCodeIDs: string[];
 }
 
 // TODO:
@@ -46,7 +50,7 @@ export class WorkStation extends React.Component<
   WorkStationProps,
   WorkStationState
 > {
-  public plugins = [BufferedText(), CodedText({ codeMap: new Map() })];
+  public plugins: object[] = [];
   private editor: Editor | null;
 
   constructor(props: WorkStationProps) {
@@ -60,7 +64,16 @@ export class WorkStation extends React.Component<
       editorState,
       codeInput: '',
       dataSource: this.codes,
+      hasSelectedCodedInline: false,
+      currentInlineCodeIDs: [],
     };
+
+    this.plugins = [
+      BufferedText(),
+      CodedText({
+        onClickCodedText: this.onClickCodedText,
+      }),
+    ];
   }
 
   public componentDidUpdate(prevProps: WorkStationProps) {
@@ -72,7 +85,13 @@ export class WorkStation extends React.Component<
   }
 
   public onChangeEditor = ({ value }: Change) => {
-    this.setState({ editorState: value });
+    this.setState({ editorState: value }, () => {
+      this.setState({
+        hasSelectedCodedInline: this.state.editorState.inlines.some(
+          i => i.get('type') === INLINES.CodedText
+        ),
+      });
+    });
     this.props.onUpdateEditorContent(value);
   };
 
@@ -90,7 +109,6 @@ export class WorkStation extends React.Component<
       }
       this.onSelectCode(code);
       if (code) {
-        console.log(code);
         this.setState({
           codeInput: code.name,
         });
@@ -99,37 +117,52 @@ export class WorkStation extends React.Component<
   };
 
   public onSelectCode = (code: CodeSnapshot | null) => {
-    const { currentEntityKey } = this.state;
-    const change = updateCodeForBlocks({
+    const { hasSelectedCodedInline } = this.state;
+    // If there are coded inlines selected
+    // then we only apply the new code to that selection
+    const updateFn = hasSelectedCodedInline
+      ? updateSelectedCode
+      : updateCodeForBlocks;
+
+    const change = updateFn({
       codeID: code.id,
       action: 'add',
       value: this.state.editorState,
     });
+
     if (change) {
       this.onChangeEditor(change);
     }
-    // Either map to buffered or add code to selected node
   };
 
   public onDeleteCode = (code: CodeSnapshot) => {
-    const change = updateCodeForBlocks({
+    const { hasSelectedCodedInline } = this.state;
+    // If there are coded inlines selected
+    // then we only remove the code from that selection
+    const updateFn = hasSelectedCodedInline
+      ? updateSelectedCode
+      : updateCodeForBlocks;
+
+    const change = updateFn({
       codeID: code.id,
       action: 'delete',
       value: this.state.editorState,
     });
+
     if (change) {
       this.onChangeEditor(change);
+    }
+    if (!hasSelectedCodedInline) {
       this.props.onDeleteCode(code.id);
     }
-    // either delete code in codebook (alert) or delete code of selected node
   };
 
   public onSearchCode = (inputVal: string) => {
-    const { dataSource } = this.state;
     const containsCode =
       this.codes.filter(code => code.name === inputVal).length === 1;
     const filteredCodes = this.excludedCodes.filter(code => {
-      const included = code.name.includes(inputVal);
+      if (!inputVal) return true;
+      const included = code.name.toLowerCase().includes(inputVal.toLowerCase());
       return included;
     });
     const nextDataSource = containsCode
@@ -143,6 +176,15 @@ export class WorkStation extends React.Component<
       dataSource: nextDataSource,
       codeInput: inputVal,
     });
+  };
+
+  public onClickCodedText = ({
+    codeIDs,
+  }: {
+    node: Inline;
+    codeIDs: string[];
+  }) => {
+    this.setState({ currentInlineCodeIDs: codeIDs });
   };
 
   get codes(): Array<CodeSnapshot & { count?: number }> {
@@ -165,6 +207,14 @@ export class WorkStation extends React.Component<
     return this.codes.sort((a, b) => b.count - a.count);
   }
 
+  get currentCodes() {
+    const { currentInlineCodeIDs, hasSelectedCodedInline } = this.state;
+
+    if (!hasSelectedCodedInline) return null;
+
+    return this.codes.filter(c => currentInlineCodeIDs.includes(c.id));
+  }
+
   // all the codes but those codes that the current selected
   // entity contains
   get excludedCodes() {
@@ -177,7 +227,7 @@ export class WorkStation extends React.Component<
   }
 
   public render() {
-    const { editorState, dataSource, currentEntityKey, codeInput } = this.state;
+    const { editorState, dataSource, hasSelectedCodedInline } = this.state;
 
     return (
       <Container>
@@ -202,12 +252,15 @@ export class WorkStation extends React.Component<
           <AutoComplete
             onSelect={this.onSelectOption}
             onSearch={this.onSearchCode}
+            onFocus={(e: React.FocusEvent<any>) => this.onSearchCode('')}
             dataSource={dataSource}
             placeholder="Type to search codes or create a new one"
             allowClear
           />
           <UsedCodeTags
-            codes={this.sortedCodes}
+            codes={
+              hasSelectedCodedInline ? this.currentCodes : this.sortedCodes
+            }
             onClick={this.onSelectCode}
             onClose={this.onDeleteCode}
           />

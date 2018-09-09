@@ -1,19 +1,21 @@
-import styled from 'styled-components';
-
-import { CodeSnapshot } from '~/stores';
+import { Inline, Node } from 'slate';
 
 import { INLINES } from '../utils/constants';
 import { RenderCodedText } from './renderCodedText';
 import { updateCodeForBlocks } from './updateCodeForBlocks';
+import { updateSelectedCode } from './updateSelectedCode';
 
 interface CodedTextOptions {
-  codeMap: Map<string, CodeSnapshot>;
+  onClickCodedText?: (data: { node: Node; codeIDs: string[] }) => void;
 }
 
-export default function CodedText({ codeMap }: CodedTextOptions) {
+export default function CodedText({ onClickCodedText }: CodedTextOptions) {
   return {
-    ...RenderCodedText({ type: INLINES.CodedText, codeMap }),
+    ...RenderCodedText({
+      onClickCodedText,
+      type: INLINES.CodedText,
+    }),
   };
 }
 
-export { updateCodeForBlocks };
+export { updateCodeForBlocks, updateSelectedCode };

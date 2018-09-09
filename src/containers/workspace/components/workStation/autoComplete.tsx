@@ -31,6 +31,7 @@ const StyledAutoComplete = styled(AntAutoComplete)`
 
 type AutoCompletionProps = Omit<AntAutoCompleteProps, 'dataSource'> & {
   dataSource: CodeSnapshot[];
+  onFocus?: (e: React.FocusEvent<any>) => void;
 };
 
 export const AutoComplete = ({

@@ -1,9 +1,9 @@
 import React from 'react';
+import { Inline, Node } from 'slate';
 
 import { CodedTextComponent } from '../components';
 
 import { SlatePlugin } from '~/lib/slate-plugins';
-import { CodeSnapshot } from '~/stores';
 
 export interface CodedTextProps {
   bgColor: string;
@@ -11,14 +11,17 @@ export interface CodedTextProps {
 }
 
 interface RenderCodedTextOptions {
-  codeMap: Map<string, CodeSnapshot>;
   type: string;
+  onClickCodedText?: (data: { node: Node; codeIDs: string[] }) => void;
 }
 
-export function RenderCodedText({ type }: RenderCodedTextOptions): SlatePlugin {
+export function RenderCodedText({
+  type,
+  onClickCodedText,
+}: RenderCodedTextOptions): SlatePlugin {
   return {
     renderNode: props => {
-      const { node, attributes, children, isSelected } = props;
+      const { node, attributes, children, editor, isSelected } = props;
       if (node.get('type') === type) {
         const data = node.get('data');
         const codeIDs: string[] = data.get('codeIDs');
@@ -28,6 +31,9 @@ export function RenderCodedText({ type }: RenderCodedTextOptions): SlatePlugin {
             attributes={attributes}
             selected={isSelected}
             codeIDs={codeIDs}
+            onClick={() => {
+              onClickCodedText && onClickCodedText({ node, codeIDs });
+            }}
             children={children}
           />
         );
