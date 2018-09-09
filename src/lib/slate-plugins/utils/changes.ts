@@ -13,15 +13,16 @@ interface SelectToHighlightOptions {
 export function SelectToHighlight(
   options: SelectToHighlightOptions
 ): SlatePlugin {
-  const highlightMark = Mark.create({
-    type: options.type,
-    data: {
-      bgColor: options.highlightColor,
-    },
-  });
   return {
     onChange: (change: Change) => {
       const selection = change.value.selection;
+      const highlightMark = Mark.create({
+        type: options.type,
+        data: {
+          bgColor: options.highlightColor,
+        },
+      });
+
       if (selection.isExpanded) {
         const { anchor, focus } = selection;
 
@@ -36,54 +37,16 @@ export function SelectToHighlight(
         });
 
         let found = false;
-        const nextDecorations: DecorationProperties[] = [];
+        let nextDecorations: DecorationProperties[] = [];
 
         // Really? Does it have to be this complicated and stupid?!
         decorations.forEach(decoration => {
-          if (
-            decCandidate.start.offset > decoration.start.offset &&
-            decCandidate.end.offset < decoration.end.offset
-          ) {
+          if (!decoration) return;
+          const { changed, result } = mergeDecoration(decCandidate, decoration);
+          if (changed) {
             found = true;
-            nextDecorations.push({
-              focus: decoration.start,
-              anchor: decCandidate.start,
-              mark: highlightMark,
-            });
-
-            nextDecorations.push({
-              focus: decCandidate.end,
-              anchor: decoration.end,
-              mark: highlightMark,
-            });
-          } else if (
-            decCandidate.start.offset === decoration.start.offset &&
-            decCandidate.end.offset < decoration.end.offset
-          ) {
-            found = true;
-            nextDecorations.push({
-              focus: decCandidate.end,
-              anchor: decoration.end,
-              mark: highlightMark,
-            });
-          } else if (
-            decCandidate.end.offset === decoration.end.offset &&
-            decCandidate.start.offset > decoration.start.offset
-          ) {
-            found = true;
-            nextDecorations.push({
-              focus: decoration.start,
-              anchor: decCandidate.start,
-              mark: highlightMark,
-            });
-          } else if (
-            decCandidate.end.offset === decoration.end.offset &&
-            decCandidate.start.offset === decoration.start.offset
-          ) {
-            found = true;
-          } else {
-            nextDecorations.push(decoration);
           }
+          nextDecorations = [...nextDecorations, ...result];
         });
 
         if (!found) {
@@ -91,7 +54,61 @@ export function SelectToHighlight(
         }
 
         change.setValue({ decorations: nextDecorations });
+        change.deselect();
       }
     },
   };
 }
+
+const mergeDecoration = (decCandidate: Decoration, decoration: Decoration) => {
+  let changed = false;
+  const result = [];
+  const mark = decCandidate.mark;
+
+  if (
+    decCandidate.start.offset > decoration.start.offset &&
+    decCandidate.end.offset < decoration.end.offset
+  ) {
+    changed = true;
+    result.push({
+      focus: decoration.start,
+      anchor: decCandidate.start,
+      mark,
+    });
+
+    result.push({
+      focus: decCandidate.end,
+      anchor: decoration.end,
+      mark,
+    });
+  } else if (
+    decCandidate.start.offset === decoration.start.offset &&
+    decCandidate.end.offset < decoration.end.offset
+  ) {
+    changed = true;
+    result.push({
+      focus: decCandidate.end,
+      anchor: decoration.end,
+      mark,
+    });
+  } else if (
+    decCandidate.end.offset === decoration.end.offset &&
+    decCandidate.start.offset > decoration.start.offset
+  ) {
+    changed = true;
+    result.push({
+      focus: decoration.start,
+      anchor: decCandidate.start,
+      mark,
+    });
+  } else if (
+    decCandidate.end.offset === decoration.end.offset &&
+    decCandidate.start.offset === decoration.start.offset
+  ) {
+    changed = true;
+  } else {
+    result.push(decoration);
+  }
+
+  return { changed, result };
+};

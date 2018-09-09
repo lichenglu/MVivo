@@ -49,6 +49,8 @@ export function updateCodeForBlocks({
         const nextCodeIDs = codeIDs.filter(id => id !== codeID);
         const shouldRMInline = nextCodeIDs.length === 0;
 
+        console.log(shouldRMInline);
+
         shouldRMInline
           ? change.unwrapInline(inline)
           : change.setInlines({
@@ -56,6 +58,6 @@ export function updateCodeForBlocks({
             });
       }
     });
-    return change;
+    return change.deselect();
   }
 }
