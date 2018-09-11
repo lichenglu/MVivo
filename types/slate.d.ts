@@ -957,6 +957,15 @@ declare module 'slate' {
     insertInline(
       inline: Inline | Partial<InlineProperties> | Partial<InlineJSON>
     ): Change;
+    wrapInline(
+      inline: Inline | Partial<InlineProperties> | Partial<InlineJSON>
+    ): Change;
+    setInlines(
+      inline: Inline | Partial<InlineProperties> | Partial<InlineJSON>
+    ): Change;
+    unwrapInline(
+      inline: Inline | Partial<InlineProperties> | Partial<InlineJSON>
+    ): Change;
     insertText(text: string, marks?: Immutable.Set<Mark>): Change;
     removeMark(
       mark: Mark | Partial<MarkProperties> | Partial<MarkJSON>

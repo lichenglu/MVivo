@@ -26,6 +26,7 @@ export function SelectToHighlight(
       if (selection.isExpanded) {
         const { anchor, focus } = selection;
 
+        // TODO: allowMultipleSelection only works for the true case
         const decorations = options.allowMultipleSelection
           ? change.value.decorations.toArray()
           : [];
@@ -54,17 +55,41 @@ export function SelectToHighlight(
           nextDecorations.push(decCandidate);
         }
 
-        change.setValue({ decorations: nextDecorations });
-        change.deselect();
+        change
+          .setOperationFlag('save', true)
+          .setValue({ decorations: nextDecorations })
+          .setOperationFlag('save', false);
+        if (selection.isBackward) {
+          change.moveToStart();
+        } else {
+          change.moveToEnd();
+        }
       }
     },
   };
+}
+
+enum DecorationNormalization {
+  overlapped = 'overlapped',
+  sameStartShortEnd = 'sameStartShortEnd',
+  sameEndShortStart = 'sameEndShortStart',
+  completelyOverlapped = 'completelyOverlapped',
 }
 
 const mergeDecoration = (decCandidate: Decoration, decoration: Decoration) => {
   let changed = false;
   const result = [];
   const mark = decCandidate.mark;
+
+  // we only deal with decoration within the same node
+  // so this is basically a block level update
+  if (
+    decCandidate.start.key !== decoration.start.key ||
+    decCandidate.end.key !== decoration.end.key
+  ) {
+    result.push(decoration);
+    return { changed, result };
+  }
 
   if (
     decCandidate.start.offset > decoration.start.offset &&
@@ -109,7 +134,8 @@ const mergeDecoration = (decCandidate: Decoration, decoration: Decoration) => {
     changed = true;
   } else if (
     decCandidate.end.offset > decoration.end.offset &&
-    decCandidate.start.offset >= decoration.start.offset
+    decCandidate.start.offset >= decoration.start.offset &&
+    decCandidate.start.offset < decoration.end.offset
   ) {
     changed = true;
     result.push({
@@ -119,6 +145,7 @@ const mergeDecoration = (decCandidate: Decoration, decoration: Decoration) => {
     });
   } else if (
     decCandidate.end.offset <= decoration.end.offset &&
+    decCandidate.end.offset >= decoration.start.offset &&
     decCandidate.start.offset < decoration.start.offset
   ) {
     changed = true;
@@ -132,6 +159,7 @@ const mergeDecoration = (decCandidate: Decoration, decoration: Decoration) => {
     decCandidate.start.offset < decoration.start.offset
   ) {
     changed = true;
+    result.push(decCandidate);
   } else {
     result.push(decoration);
   }

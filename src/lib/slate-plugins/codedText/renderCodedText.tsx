@@ -22,7 +22,8 @@ export function RenderCodedText({
   return {
     renderNode: props => {
       const { node, attributes, children, editor, isSelected } = props;
-      if (node.get('type') === type) {
+
+      if (node instanceof Inline && node.get('type') === type) {
         const data = node.get('data');
         const codeIDs: string[] = data.get('codeIDs');
 
