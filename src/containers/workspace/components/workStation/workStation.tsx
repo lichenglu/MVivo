@@ -156,6 +156,9 @@ export class WorkStation extends React.Component<
     if (!hasSelectedCodedInline) {
       this.props.onDeleteCode(code.id);
     }
+    // if (this.editor) {
+    //   this.editor.focus();
+    // }
   };
 
   public onSearchCode = (inputVal: string) => {
@@ -235,7 +238,6 @@ export class WorkStation extends React.Component<
 
   public render() {
     const { editorState, dataSource, hasSelectedCodedInline } = this.state;
-
     return (
       <Container>
         <Editor

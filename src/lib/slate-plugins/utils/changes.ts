@@ -22,20 +22,22 @@ export function SelectToHighlight(
           bgColor: options.highlightColor,
         },
       });
+      const { anchor, focus } = selection;
+      const decCandidate = Decoration.create({
+        anchor,
+        focus,
+        mark: highlightMark,
+      });
 
       if (selection.isExpanded) {
-        const { anchor, focus } = selection;
+        if (decCandidate.start.key !== decCandidate.end.key) {
+          endSelection(change);
+          return;
+        }
 
-        // TODO: allowMultipleSelection only works for the true case
         const decorations = options.allowMultipleSelection
           ? change.value.decorations.toArray()
-          : [];
-
-        const decCandidate = Decoration.create({
-          anchor,
-          focus,
-          mark: highlightMark,
-        });
+          : [change.value.decorations.toArray()[0]].filter(d => !!d);
 
         let found = false;
         let nextDecorations: DecorationProperties[] = [];
@@ -55,19 +57,27 @@ export function SelectToHighlight(
           nextDecorations.push(decCandidate);
         }
 
+        if (!options.allowMultipleSelection && !found) {
+          nextDecorations = [decCandidate];
+        }
+
         change
           .setOperationFlag('save', true)
           .setValue({ decorations: nextDecorations })
           .setOperationFlag('save', false);
-        if (selection.isBackward) {
-          change.moveToStart();
-        } else {
-          change.moveToEnd();
-        }
+        endSelection(change);
       }
     },
   };
 }
+
+const endSelection = (change: Change) => {
+  if (change.value.selection.isBackward) {
+    change.moveToStart();
+  } else {
+    change.moveToEnd();
+  }
+};
 
 enum DecorationNormalization {
   overlapped = 'overlapped',

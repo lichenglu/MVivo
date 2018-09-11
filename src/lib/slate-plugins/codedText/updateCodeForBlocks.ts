@@ -1,7 +1,6 @@
 import { Inline, Range, Value } from 'slate';
 
 import { INLINES, MARKS } from '../utils/constants';
-import { List } from 'antd';
 
 interface UpdateCodeForBlocks {
   codeID: string;
@@ -33,11 +32,21 @@ export function updateCodeForBlocks({
 
         if (decoration.mark.type === MARKS.BufferedText) {
           const range = Range.create(decoration);
+          change.select(range);
           const inline = Inline.create({
             type,
             data: { codeIDs: [codeID] },
           });
-          change = change.wrapInlineAtRange(range, inline);
+
+          // if the buffered text is overlapped with a coded inline
+          // currently, we remove the old inline, and replace with the
+          // new one
+          change.value.inlines.forEach(inline => {
+            if (inline) {
+              change.unwrapInline(inline);
+            }
+          });
+          change = change.wrapInline(inline);
           return false;
         }
         return true;
@@ -54,6 +63,8 @@ export function updateCodeForBlocks({
         if (!codeIDs.includes(codeID)) {
           return;
         }
+
+        change.moveToRangeOfNode(inline);
 
         const nextCodeIDs = codeIDs.filter(id => id !== codeID);
         const shouldRMInline = nextCodeIDs.length === 0;
