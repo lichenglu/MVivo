@@ -42,6 +42,7 @@ export function SelectToHighlight(
         // Really? Does it have to be this complicated and stupid?!
         decorations.forEach(decoration => {
           if (!decoration) return;
+
           const { changed, result } = mergeDecoration(decCandidate, decoration);
           if (changed) {
             found = true;
@@ -104,6 +105,31 @@ const mergeDecoration = (decCandidate: Decoration, decoration: Decoration) => {
   } else if (
     decCandidate.end.offset === decoration.end.offset &&
     decCandidate.start.offset === decoration.start.offset
+  ) {
+    changed = true;
+  } else if (
+    decCandidate.end.offset > decoration.end.offset &&
+    decCandidate.start.offset >= decoration.start.offset
+  ) {
+    changed = true;
+    result.push({
+      focus: decoration.start,
+      anchor: decCandidate.end,
+      mark,
+    });
+  } else if (
+    decCandidate.end.offset <= decoration.end.offset &&
+    decCandidate.start.offset < decoration.start.offset
+  ) {
+    changed = true;
+    result.push({
+      focus: decCandidate.start,
+      anchor: decoration.end,
+      mark,
+    });
+  } else if (
+    decCandidate.end.offset > decoration.end.offset &&
+    decCandidate.start.offset < decoration.start.offset
   ) {
     changed = true;
   } else {
