@@ -94,7 +94,9 @@ export const CodedTextComponent = inject('rootStore')(
         onClick={onClick}
       >
         <CodeName onClick={onClickSummary}>{`[${trimText(
-          codes.map(c => c && c.name).join(', ')
+          codes.map(c => c && c.name).join(', '),
+          'middle',
+          30
         )}]`}</CodeName>
         {children}
       </CodedTextContainer>
