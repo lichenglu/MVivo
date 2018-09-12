@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Value } from 'slate';
-import { Editor } from 'slate-react';
 import styled from 'styled-components';
 
 import { RootStore } from '~/stores/root-store';
@@ -11,7 +10,7 @@ import { RootStore } from '~/stores/root-store';
 import { getCodeSummary } from '~/lib/slate-plugins';
 
 // components
-import { CheckList, PivotTable } from './components/summary';
+import { APATable, CheckList, PivotTable } from './components/summary';
 
 interface SummaryProps extends RouteCompProps<{ id: string }> {
   rootStore: RootStore;
@@ -86,11 +85,12 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
         </Helmet>
 
         <CheckList codes={this.codeList} onCheckCode={this.onCheckCode} />
-        <PivotTable
+        {/* <PivotTable
           codes={this.filteredCodes}
           rowKey={'id'}
           onChangeDefinition={this.onChangeDefinition}
-        />
+        /> */}
+        <APATable rows={this.filteredCodes} />
       </React.Fragment>
     );
   }
