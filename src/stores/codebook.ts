@@ -18,8 +18,7 @@ export const CodeModel = types
       self.bgColor = color;
     },
     update(data: object) {
-      self.definition = data.definition;
-      console.log(self);
+      applySnapshot(self, { ...getSnapshot(self), ...data });
     },
   }))
   .preProcessSnapshot(assignUUID);

@@ -23,6 +23,14 @@ const EditAreaContainer = styled.div`
   align-items: flex-end;
 `;
 
+const UpdateButton = styled(Button)`
+  margin-top: 0.5rem;
+`;
+
+const DefinitionText = styled.p`
+  cursor: pointer;
+`;
+
 export class Definition extends React.PureComponent<
   DefinitionProps,
   DefinitionState
@@ -47,24 +55,26 @@ export class Definition extends React.PureComponent<
     return (
       <Container>
         {edit && (
-          <EditAreaContainer>
+          <EditAreaContainer onClick={this.onToggleEdit}>
             <TextArea
               value={definition}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 this.setState({ definition: e.target.value })
               }
               placeholder={'Input the code definition here'}
+              onClick={e => e.stopPropagation()}
               onPressEnter={this.onToggleEdit}
+              autosize={{ minRows: 4, maxRows: 6 }}
             />
-            <Button onClick={this.submitDefinition} type={'primary'}>
+            <UpdateButton onClick={this.submitDefinition} type={'primary'}>
               Update
-            </Button>
+            </UpdateButton>
           </EditAreaContainer>
         )}
         {!edit && (
-          <p onClick={this.onToggleEdit}>
+          <DefinitionText onClick={this.onToggleEdit}>
             {definition || 'Input the code definition here'}
-          </p>
+          </DefinitionText>
         )}
       </Container>
     );
