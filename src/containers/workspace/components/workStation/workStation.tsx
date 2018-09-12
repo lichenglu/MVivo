@@ -76,6 +76,7 @@ export class WorkStation extends React.Component<
       BufferedText({ clearOnEscape: true }),
       CodedText({
         onClickCodedText: this.onClickCodedText,
+        mixBgColor: true,
       }),
       SoftBreak(),
     ];
@@ -112,8 +113,8 @@ export class WorkStation extends React.Component<
       if (!code) {
         code = onCreateCode({ name: codeInput });
       }
-      this.onSelectCode(code);
       if (code) {
+        this.onSelectCode(code);
         this.setState({
           codeInput: code.name,
         });
@@ -121,7 +122,7 @@ export class WorkStation extends React.Component<
     }
   };
 
-  public onSelectCode = (code: CodeSnapshot | null) => {
+  public onSelectCode = (code: CodeSnapshot) => {
     const { hasSelectedCodedInline } = this.state;
     // If there are coded inlines selected
     // then we only apply the new code to that selection

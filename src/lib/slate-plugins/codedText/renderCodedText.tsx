@@ -13,11 +13,13 @@ export interface CodedTextProps {
 interface RenderCodedTextOptions {
   type: string;
   onClickCodedText?: (data: { node: Node; codeIDs: string[] }) => void;
+  mixBgColor?: boolean;
 }
 
 export function RenderCodedText({
   type,
   onClickCodedText,
+  mixBgColor,
 }: RenderCodedTextOptions): SlatePlugin {
   return {
     renderNode: props => {
@@ -36,6 +38,7 @@ export function RenderCodedText({
               onClickCodedText && onClickCodedText({ node, codeIDs });
             }}
             children={children}
+            mixBgColor={mixBgColor}
           />
         );
       }

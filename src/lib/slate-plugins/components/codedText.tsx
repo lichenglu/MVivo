@@ -47,6 +47,7 @@ export interface CodedTextProps {
   children: ReactNode;
   onClick?: () => void;
   rootStore?: RootStore;
+  mixBgColor?: boolean;
 }
 
 export const CodedTextComponent = inject('rootStore')(
@@ -57,6 +58,7 @@ export const CodedTextComponent = inject('rootStore')(
     selected,
     onClick,
     children,
+    mixBgColor,
   }: CodedTextProps) => {
     if (!rootStore) return null;
 
@@ -65,10 +67,27 @@ export const CodedTextComponent = inject('rootStore')(
       .filter(c => !!c);
     const primaryCode = codes[0];
 
-    return primaryCode ? (
+    if (!primaryCode) {
+      console.warn(`There is no code attached to this inline.`);
+      return null;
+    }
+
+    let bgColor;
+    if (mixBgColor) {
+      bgColor = codes
+        .slice(1)
+        .reduce((cur, next) => {
+          return next ? cur.mix(Color(next.bgColor)) : cur;
+        }, Color(primaryCode.bgColor))
+        .toString();
+    } else {
+      bgColor = primaryCode.bgColor;
+    }
+
+    return (
       <CodedTextContainer
         {...attributes}
-        bgColor={primaryCode.bgColor}
+        bgColor={bgColor}
         selected={selected}
         onClick={onClick}
       >
@@ -77,6 +96,6 @@ export const CodedTextComponent = inject('rootStore')(
         )}]`}</CodeName>
         {children}
       </CodedTextContainer>
-    ) : null;
+    );
   }
 );
