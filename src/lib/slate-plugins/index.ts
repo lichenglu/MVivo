@@ -18,3 +18,4 @@ export * from './bufferedText';
 export { default as BufferedText } from './bufferedText';
 export * from './codedText';
 export { default as CodedText } from './codedText';
+export { default as SoftBreak } from './softbreak';

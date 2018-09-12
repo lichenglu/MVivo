@@ -1,9 +1,11 @@
-import { List } from 'immutable';
 import React from 'react';
 import { Change, Inline, Value } from 'slate';
 import { Editor } from 'slate-react';
 
 import { CodeSnapshot } from '~/stores';
+
+// styles
+import './workStation.less';
 
 // components
 import { AutoComplete } from './autoComplete';
@@ -15,6 +17,7 @@ import {
   BufferedText,
   CodedText,
   getCodeSummary,
+  SoftBreak,
   updateCodeForBlocks,
   updateSelectedCode,
 } from '~/lib/slate-plugins';
@@ -70,10 +73,11 @@ export class WorkStation extends React.Component<
     };
 
     this.plugins = [
-      BufferedText(),
+      BufferedText({ clearOnEscape: true }),
       CodedText({
         onClickCodedText: this.onClickCodedText,
       }),
+      SoftBreak(),
     ];
   }
 
@@ -156,9 +160,6 @@ export class WorkStation extends React.Component<
     if (!hasSelectedCodedInline) {
       this.props.onDeleteCode(code.id);
     }
-    // if (this.editor) {
-    //   this.editor.focus();
-    // }
   };
 
   public onSearchCode = (inputVal: string) => {
@@ -246,13 +247,6 @@ export class WorkStation extends React.Component<
           className={'slate-editor'}
           ref={element => {
             this.editor = element;
-          }}
-          style={{
-            paddingRight: '1rem',
-            flex: '0.8',
-            maxHeight: '100%',
-            overflowY: 'auto',
-            fontSize: '1rem',
           }}
           onChange={this.onChangeEditor}
         />
