@@ -1,5 +1,5 @@
 import { values } from 'mobx';
-import { getSnapshot, types } from 'mobx-state-tree';
+import { applySnapshot, getSnapshot, types } from 'mobx-state-tree';
 
 import { assignUUID } from './utils';
 
@@ -16,6 +16,10 @@ export const CodeModel = types
   .actions(self => ({
     setBgColor(color: string) {
       self.bgColor = color;
+    },
+    update(data: object) {
+      self.definition = data.definition;
+      console.log(self);
     },
   }))
   .preProcessSnapshot(assignUUID);
@@ -47,6 +51,12 @@ export const CodeBookModel = types
       },
       removeCode(codeID: string) {
         self.codes.delete(codeID);
+      },
+      updateCode(codeID: string, data: object) {
+        const code = self.codes.get(codeID);
+        if (code) {
+          code.update(data);
+        }
       },
       randomColorFromPalette() {
         const randomIdx = Math.floor(
@@ -91,6 +101,12 @@ export const CodeBookStore = types
         return true;
       } else {
         return false;
+      }
+    },
+    updateCodeOf(codeBookID: string, codeID: string, data: object) {
+      const codeBook = self.codeBooks.get(codeBookID);
+      if (codeBook) {
+        codeBook.updateCode(codeID, data);
       }
     },
   }))

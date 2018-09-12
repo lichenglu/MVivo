@@ -15,6 +15,11 @@ export default () => (
     <Route
       exact={true}
       path={routeConstants.workspaceDetail}
+      component={WorkSpaceDetail}
+    />
+    <Route
+      exact={true}
+      path={routeConstants.workspaceSummary}
       component={Summary}
     />
   </Switch>
