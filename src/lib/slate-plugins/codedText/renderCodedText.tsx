@@ -29,6 +29,13 @@ export function RenderCodedText({
         const data = node.get('data');
         const codeIDs: string[] = data.get('codeIDs');
 
+        const handleSummaryClick = (e: React.MouseEvent<HTMLElement>) => {
+          e.stopPropagation();
+          editor.change(change => {
+            change.moveToRangeOfNode(node).moveToEnd();
+          });
+        };
+
         return (
           <CodedTextComponent
             attributes={attributes}
@@ -37,6 +44,7 @@ export function RenderCodedText({
             onClick={() => {
               onClickCodedText && onClickCodedText({ node, codeIDs });
             }}
+            onClickSummary={handleSummaryClick}
             children={children}
             mixBgColor={mixBgColor}
           />

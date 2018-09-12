@@ -46,6 +46,7 @@ export interface CodedTextProps {
   attributes: object;
   children: ReactNode;
   onClick?: () => void;
+  onClickSummary?: (e: React.MouseEvent<HTMLElement>) => void;
   rootStore?: RootStore;
   mixBgColor?: boolean;
 }
@@ -57,8 +58,9 @@ export const CodedTextComponent = inject('rootStore')(
     attributes,
     selected,
     onClick,
-    children,
+    onClickSummary,
     mixBgColor,
+    children,
   }: CodedTextProps) => {
     if (!rootStore) return null;
 
@@ -91,7 +93,7 @@ export const CodedTextComponent = inject('rootStore')(
         selected={selected}
         onClick={onClick}
       >
-        <CodeName>{`[${trimText(
+        <CodeName onClick={onClickSummary}>{`[${trimText(
           codes.map(c => c && c.name).join(', ')
         )}]`}</CodeName>
         {children}
