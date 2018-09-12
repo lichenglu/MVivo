@@ -23,7 +23,7 @@
     "recompose": "^0.30.0",
     "slate": "^0.40.2",
     "slate-plain-serializer": "^0.6.2",
-    "slate-react": "^0.18.5",
+    "slate-react": "^0.18.4",
     "styled-components": "^3.4.6",
     "uuid": "^3.3.2"
   },
