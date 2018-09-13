@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { notification, Switch } from 'antd';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
@@ -18,6 +18,7 @@ interface SummaryProps extends RouteCompProps<{ id: string }> {
 
 interface SummaryState {
   checkedCodes: string[];
+  showAPA: boolean;
 }
 
 @inject('rootStore')
@@ -25,6 +26,7 @@ interface SummaryState {
 export class Summary extends React.Component<SummaryProps, SummaryState> {
   public state = {
     checkedCodes: this.codeList.map(c => c.id),
+    showAPA: false,
   };
 
   get workSpace() {
@@ -77,20 +79,30 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     }
   };
 
+  public onChangeAPASwitch = (checked: boolean) =>
+    this.setState({ showAPA: checked });
+
   public render(): JSX.Element | null {
+    const { showAPA } = this.state;
     return (
       <React.Fragment>
         <Helmet>
           <title>WorkSpace Summary</title>
         </Helmet>
 
-        <CheckList codes={this.codeList} onCheckCode={this.onCheckCode} />
-        {/* <PivotTable
-          codes={this.filteredCodes}
-          rowKey={'id'}
-          onChangeDefinition={this.onChangeDefinition}
-        /> */}
-        <APATable rows={this.filteredCodes} />
+        <CheckList
+          codes={this.codeList}
+          onCheckCode={this.onCheckCode}
+          onChangeAPASwitch={this.onChangeAPASwitch}
+        />
+        {!showAPA && (
+          <PivotTable
+            codes={this.filteredCodes}
+            rowKey={'id'}
+            onChangeDefinition={this.onChangeDefinition}
+          />
+        )}
+        {showAPA && <APATable rows={this.filteredCodes} />}
       </React.Fragment>
     );
   }

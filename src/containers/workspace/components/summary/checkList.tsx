@@ -1,4 +1,4 @@
-import { Checkbox } from 'antd';
+import { Checkbox, Switch } from 'antd';
 import { CheckboxChangeEvent, CheckboxOptionType } from 'antd/lib/checkbox';
 import React from 'react';
 import styled from 'styled-components';
@@ -16,11 +16,18 @@ interface CheckListState {
 
 interface CheckListProps {
   codes: Array<CodeSnapshot & { count: number; examples: string[] }>;
+  onChangeAPASwitch: (checked: boolean) => void;
   onCheckCode: (checked: string[]) => void;
 }
 
 const Container = styled.div`
   margin-bottom: 1rem;
+`;
+
+const CheckAllContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
 `;
 
 export class CheckList extends React.Component<CheckListProps, CheckListState> {
@@ -60,9 +67,10 @@ export class CheckList extends React.Component<CheckListProps, CheckListState> {
 
   public render() {
     const { indeterminate, checkedList, checkedValue } = this.state;
+    const { onChangeAPASwitch } = this.props;
     return (
       <Container>
-        <div style={{ borderBottom: '1px solid #E9E9E9' }}>
+        <CheckAllContainer style={{ borderBottom: '1px solid #E9E9E9' }}>
           <Checkbox
             indeterminate={indeterminate}
             onChange={this.onCheckAllChange}
@@ -70,7 +78,12 @@ export class CheckList extends React.Component<CheckListProps, CheckListState> {
           >
             Check all
           </Checkbox>
-        </div>
+          <Switch
+            unCheckedChildren="APA"
+            checkedChildren="Edit"
+            onChange={onChangeAPASwitch}
+          />
+        </CheckAllContainer>
         <br />
         <CheckboxGroup
           options={checkedList}

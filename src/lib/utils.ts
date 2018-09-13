@@ -20,6 +20,7 @@ export const trimText = (
   return str;
 };
 
+// https://stackoverflow.com/questions/36330859/export-html-table-as-word-file-and-change-file-orientation
 export const export2Word = ({
   containerID,
   element,
