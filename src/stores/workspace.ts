@@ -1,19 +1,20 @@
-import { ContentState } from 'draft-js';
 import { values } from 'mobx';
 import { getSnapshot, types } from 'mobx-state-tree';
+import { Value as SlateValue, Data } from 'slate';
+import Serializer from 'slate-plain-serializer';
 
 import { CodeBook, CodeBookModel } from './codebook';
-import { assignUUID, DraftContentState } from './utils';
+import { assignUUID, EditorContentState } from './utils';
 
 export const DocumentModel = types
   .model('Document', {
     id: types.identifier,
     name: types.string,
     text: types.string,
-    editorContentState: types.maybe(DraftContentState),
+    editorContentState: types.maybe(EditorContentState),
   })
   .actions(self => ({
-    updateEditorState(contentState: ContentState) {
+    updateEditorState(contentState: SlateValue) {
       self.editorContentState = contentState;
     },
   }))
@@ -73,7 +74,7 @@ export const WorkSpaceStore = types
     createDocument(data: Omit<DocumentSnapshot, 'id' | 'editorContentState'>) {
       const document = DocumentModel.create(data);
       if (!document.editorContentState) {
-        document.updateEditorState(ContentState.createFromText(document.text));
+        document.updateEditorState(Serializer.deserialize(document.text));
       }
       self.documents.put(document);
       return document;
@@ -87,7 +88,7 @@ export const WorkSpaceStore = types
       }
       return workspace;
     },
-    updateEditorState(documentID: string, contentState: ContentState) {
+    updateEditorState(documentID: string, contentState: SlateValue) {
       const document = self.documentBy(documentID);
       if (document) {
         document.updateEditorState(contentState);

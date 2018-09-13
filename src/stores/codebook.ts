@@ -1,5 +1,5 @@
 import { values } from 'mobx';
-import { getSnapshot, types } from 'mobx-state-tree';
+import { applySnapshot, getSnapshot, types } from 'mobx-state-tree';
 
 import { assignUUID } from './utils';
 
@@ -16,6 +16,9 @@ export const CodeModel = types
   .actions(self => ({
     setBgColor(color: string) {
       self.bgColor = color;
+    },
+    update(data: object) {
+      applySnapshot(self, { ...getSnapshot(self), ...data });
     },
   }))
   .preProcessSnapshot(assignUUID);
@@ -45,6 +48,15 @@ export const CodeBookModel = types
       addCode(code: Code) {
         self.codes.put(code);
       },
+      removeCode(codeID: string) {
+        self.codes.delete(codeID);
+      },
+      updateCode(codeID: string, data: object) {
+        const code = self.codes.get(codeID);
+        if (code) {
+          code.update(data);
+        }
+      },
       randomColorFromPalette() {
         const randomIdx = Math.floor(
           Math.random() * self.availableColors.length
@@ -71,7 +83,6 @@ export const CodeBookStore = types
     createCodeAndAddTo(codeBookID: string, code: Code) {
       const codeBook = self.codeBooks.get(codeBookID);
 
-      console.log(code.bgColor, codeBook);
       if (!code.bgColor && codeBook) {
         code.setBgColor(codeBook.randomColorFromPalette());
         console.log(code.bgColor);
@@ -80,6 +91,21 @@ export const CodeBookStore = types
       self.codes.put(code);
       if (codeBook) {
         codeBook.addCode(code);
+      }
+    },
+    removeCodeOf(codeBookID: string, codeID: string) {
+      const codeBook = self.codeBooks.get(codeBookID);
+      if (codeBook) {
+        codeBook.removeCode(codeID);
+        return true;
+      } else {
+        return false;
+      }
+    },
+    updateCodeOf(codeBookID: string, codeID: string, data: object) {
+      const codeBook = self.codeBooks.get(codeBookID);
+      if (codeBook) {
+        codeBook.updateCode(codeID, data);
       }
     },
   }))

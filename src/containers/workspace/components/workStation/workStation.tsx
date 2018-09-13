@@ -1,43 +1,31 @@
-// Cannot use typescript because of a lack of typing
-import {
-  ContentBlock,
-  ContentState,
-  convertToRaw,
-  Editor,
-  EditorState,
-  Modifier,
-  RichUtils,
-  SelectionState,
-} from 'draft-js';
-import 'draft-js/dist/Draft.css';
 import React from 'react';
+import { Change, Inline, Value } from 'slate';
+import { Editor } from 'slate-react';
 
-import {
-  codingDecorator,
-  createNormalCode,
-  getCodeCounts,
-  getEntitiesFromBlocks,
-  getSelectedTextFromEditor,
-  getSelectionEntity,
-  removeInlineStylesFromSelection,
-  removeInlineStylesOfBlocks,
-  updateCodeOfEntity,
-} from '~/services/draft-utils';
 import { CodeSnapshot } from '~/stores';
+
+// styles
+import './workStation.less';
 
 // components
 import { AutoComplete } from './autoComplete';
 import { Container, SideContainer } from './layout';
 import { UsedCodeTags } from './usedCodeTags';
 
-const customStyleMap = {
-  buffered: {
-    strokeDashoffset: '0',
-  },
-};
+// slate-plugins
+import {
+  BufferedText,
+  CodedText,
+  getCodeSummary,
+  SoftBreak,
+  updateCodeForBlocks,
+  updateSelectedCode,
+} from '~/lib/slate-plugins';
+import { INLINES } from '~/lib/slate-plugins/utils/constants';
 
 interface WorkStationProps {
   codeList?: CodeSnapshot[];
+  codeMap?: Map<string, CodeSnapshot>;
   onCreateCode: (
     data: {
       name: string;
@@ -46,15 +34,17 @@ interface WorkStationProps {
       tint?: string;
     }
   ) => CodeSnapshot | null;
-  onUpdateEditorContent: (contentState: ContentState) => void;
-  editorContent?: ContentState | null;
+  onDeleteCode: (codeID: string) => boolean;
+  onUpdateEditorContent: (contentState: Value) => void;
+  editorState?: Value | null;
 }
 
 interface WorkStationState {
-  editorState: EditorState;
+  editorState: Value;
   codeInput: string;
   dataSource: CodeSnapshot[];
-  currentEntityKey?: string;
+  hasSelectedCodedInline: boolean;
+  currentInlineCodeIDs: string[];
 }
 
 // TODO:
@@ -64,24 +54,33 @@ export class WorkStation extends React.Component<
   WorkStationProps,
   WorkStationState
 > {
+  public plugins: object[] = [];
+  private editor: Editor | null;
+
   constructor(props: WorkStationProps) {
     super(props);
 
-    let editorState = EditorState.createEmpty(codingDecorator);
-    if (props.editorContent) {
-      editorState = EditorState.createWithContent(
-        props.editorContent,
-        codingDecorator
-      );
+    let editorState = Value.create({});
+    if (props.editorState) {
+      editorState = props.editorState;
     }
     this.state = {
       editorState,
       codeInput: '',
       dataSource: this.codes,
+      hasSelectedCodedInline: false,
+      currentInlineCodeIDs: [],
     };
-  }
 
-  private editor: Editor | null;
+    this.plugins = [
+      BufferedText({ clearOnEscape: true }),
+      CodedText({
+        onClickCodedText: this.onClickCodedText,
+        mixBgColor: true,
+      }),
+      SoftBreak(),
+    ];
+  }
 
   public componentDidUpdate(prevProps: WorkStationProps) {
     if (prevProps.codeList !== this.props.codeList) {
@@ -91,193 +90,15 @@ export class WorkStation extends React.Component<
     }
   }
 
-  public onEditorChange = (editorState: EditorState) => {
-    const { text } = getSelectedTextFromEditor(editorState);
-    if (text && text.trim().length > 5) {
-      this.onSelectText(editorState);
-    } else if (!text.trim()) {
-      this.onClickText(editorState);
-    }
-
-    if (
-      editorState.getCurrentContent() !==
-      this.state.editorState.getCurrentContent()
-    ) {
-      this.setState({ editorState });
-    }
-  };
-
-  public onSelectText = (editorState: EditorState) => {
-    const currentStyle = editorState.getCurrentInlineStyle();
-
-    const cleanEditorState = removeInlineStylesFromSelection(editorState);
-    let nextEditorState = cleanEditorState;
-
-    // If the color is being toggled on, apply it.
-    if (!currentStyle.has('buffered')) {
-      nextEditorState = RichUtils.toggleInlineStyle(
-        nextEditorState,
-        'buffered'
-      );
-    }
-
-    if (nextEditorState) {
+  public onChangeEditor = ({ value }: Change) => {
+    this.setState({ editorState: value }, () => {
       this.setState({
-        editorState: nextEditorState,
+        hasSelectedCodedInline: this.state.editorState.inlines.some(
+          i => i.get('type') === INLINES.CodedText
+        ),
       });
-    }
-  };
-
-  public onClickText = (editorState: EditorState) => {
-    const contentState = editorState.getCurrentContent();
-    const targetEntity = getSelectionEntity(editorState);
-
-    const allEntities = getEntitiesFromBlocks(editorState).map(
-      e => e.entityKey
-    );
-    let nextContentState = contentState;
-    const selection = editorState.getSelection();
-    for (const entityKey of allEntities) {
-      nextContentState = nextContentState.mergeEntityData(entityKey, {
-        selected: entityKey === targetEntity,
-      });
-      nextContentState = Modifier.applyEntity(
-        nextContentState,
-        selection,
-        entityKey
-      );
-    }
-
-    const nextEditorState = EditorState.push(
-      editorState,
-      nextContentState,
-      'apply-entity'
-    );
-
-    this.setState(
-      {
-        // Inspired by
-        // https://github.com/facebook/draft-js/issues/1047#issuecomment-290568584
-        editorState: nextEditorState,
-        currentEntityKey: targetEntity,
-      },
-      () => {
-        this.setState({
-          dataSource: this.excludedCodes,
-        });
-      }
-    );
-  };
-
-  public logState = () => {
-    const content = this.state.editorState.getCurrentContent();
-    console.log(convertToRaw(content));
-  };
-
-  public onMapBufferedTextToCode = (code: CodeSnapshot | null) => {
-    if (!code) {
-      console.warn(
-        '[onMapBufferedTextToCode] No code is passed in when associating text with a code'
-      );
-      return;
-    }
-
-    const { editorState } = this.state;
-
-    const contentState = editorState.getCurrentContent();
-    const contentStateWithEntity = createNormalCode(contentState, {
-      bgColor: code.bgColor,
-      codeIDs: [code.id],
-      selected: false,
     });
-
-    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-
-    let updatedContentState = contentStateWithEntity;
-
-    const blocks = contentState.getBlockMap();
-    blocks.forEach((block: ContentBlock) => {
-      const blockKey = block.getKey();
-      block.findStyleRanges(
-        character => {
-          return character.getStyle().has('buffered');
-        },
-        (start, end) => {
-          const bufferedSelection = new SelectionState({
-            anchorOffset: start,
-            anchorKey: blockKey,
-            focusOffset: end,
-            focusKey: blockKey,
-          });
-          updatedContentState = Modifier.applyEntity(
-            updatedContentState,
-            bufferedSelection,
-            entityKey
-          );
-        }
-      );
-    });
-
-    const editorWithEntity = EditorState.push(
-      editorState,
-      updatedContentState,
-      'apply-entity'
-    );
-
-    const cleanEditorState = removeInlineStylesOfBlocks(editorWithEntity);
-
-    // TODO: Refactor to auto save
-    this.props.onUpdateEditorContent(cleanEditorState.getCurrentContent());
-
-    this.setState({
-      editorState: EditorState.moveSelectionToEnd(cleanEditorState),
-    });
-  };
-
-  public onUpdateCodeToSelectedEntity = (
-    code: CodeSnapshot | null,
-    action: 'add' | 'delete'
-  ) => {
-    const { currentEntityKey, editorState } = this.state;
-
-    if (!currentEntityKey || !this.currentCodes || !code) return;
-
-    if (action === 'add') {
-      if (this.currentCodes.find(c => c.id === code.id)) {
-        console.warn(
-          `[onUpdateCodeToSelectedEntity] you are trying to add code ${
-            code.name
-          } to an entity. But this code already exists in the entity`
-        );
-        return;
-      }
-    }
-
-    const nextContentState = updateCodeOfEntity({
-      action,
-      code,
-      entityKey: currentEntityKey,
-      editorState,
-    });
-
-    const nextEditorState = EditorState.push(
-      editorState,
-      nextContentState,
-      'apply-entity'
-    );
-
-    this.props.onUpdateEditorContent(nextEditorState.getCurrentContent());
-
-    this.setState(
-      {
-        editorState: nextEditorState,
-      },
-      () => {
-        this.setState({
-          dataSource: this.excludedCodes,
-        });
-      }
-    );
+    this.props.onUpdateEditorContent(value);
   };
 
   public onSelectOption = (id: string, option: AntAutoCompleteOption) => {
@@ -292,9 +113,8 @@ export class WorkStation extends React.Component<
       if (!code) {
         code = onCreateCode({ name: codeInput });
       }
-      this.onSelectCode(code);
       if (code) {
-        console.log(code);
+        this.onSelectCode(code);
         this.setState({
           codeInput: code.name,
         });
@@ -302,24 +122,53 @@ export class WorkStation extends React.Component<
     }
   };
 
-  public onSelectCode = (code: CodeSnapshot | null) => {
-    const { currentEntityKey } = this.state;
-    currentEntityKey
-      ? this.onUpdateCodeToSelectedEntity(code, 'add')
-      : this.onMapBufferedTextToCode(code);
+  public onSelectCode = (code: CodeSnapshot) => {
+    const { hasSelectedCodedInline } = this.state;
+    // If there are coded inlines selected
+    // then we only apply the new code to that selection
+    const updateFn = hasSelectedCodedInline
+      ? updateSelectedCode
+      : updateCodeForBlocks;
+
+    const change = updateFn({
+      codeID: code.id,
+      action: 'add',
+      value: this.state.editorState,
+    });
+
+    if (change) {
+      this.onChangeEditor(change);
+    }
   };
 
   public onDeleteCode = (code: CodeSnapshot) => {
-    console.log(code, 'onDeleteCode');
-    this.onUpdateCodeToSelectedEntity(code, 'delete');
+    const { hasSelectedCodedInline } = this.state;
+    // If there are coded inlines selected
+    // then we only remove the code from that selection
+    const updateFn = hasSelectedCodedInline
+      ? updateSelectedCode
+      : updateCodeForBlocks;
+
+    const change = updateFn({
+      codeID: code.id,
+      action: 'delete',
+      value: this.state.editorState,
+    });
+
+    if (change) {
+      this.onChangeEditor(change);
+    }
+    if (!hasSelectedCodedInline) {
+      this.props.onDeleteCode(code.id);
+    }
   };
 
   public onSearchCode = (inputVal: string) => {
-    const { dataSource } = this.state;
     const containsCode =
       this.codes.filter(code => code.name === inputVal).length === 1;
     const filteredCodes = this.excludedCodes.filter(code => {
-      const included = code.name.includes(inputVal);
+      if (!inputVal) return true;
+      const included = code.name.toLowerCase().includes(inputVal.toLowerCase());
       return included;
     });
     const nextDataSource = containsCode
@@ -335,24 +184,47 @@ export class WorkStation extends React.Component<
     });
   };
 
+  public onClickCodedText = ({
+    codeIDs,
+  }: {
+    node: Inline;
+    codeIDs: string[];
+  }) => {
+    this.setState({ currentInlineCodeIDs: codeIDs });
+  };
+
   get codes(): Array<CodeSnapshot & { count?: number }> {
     const { codeList } = this.props;
     if (!codeList) return [];
 
-    let codeCounts = {};
+    let codeSummary = {};
     if (this.state) {
       const { editorState } = this.state;
-      codeCounts = getCodeCounts(editorState);
+      codeSummary = getCodeSummary({ value: editorState });
     }
 
     return codeList.map(code => ({
       ...code,
-      count: codeCounts[code.id] || 0,
+      count: (codeSummary[code.id] && codeSummary[code.id].count) || 0,
     }));
   }
 
   get sortedCodes() {
-    return this.codes.sort((a, b) => b.count - a.count);
+    return this.codes.sort((a, b) => {
+      if (a && b && a.count && b.count) {
+        return b.count - a.count;
+      } else {
+        return 1;
+      }
+    });
+  }
+
+  get currentCodes() {
+    const { currentInlineCodeIDs, hasSelectedCodedInline } = this.state;
+
+    if (!hasSelectedCodedInline) return null;
+
+    return this.codes.filter(c => currentInlineCodeIDs.includes(c.id));
   }
 
   // all the codes but those codes that the current selected
@@ -366,41 +238,33 @@ export class WorkStation extends React.Component<
     );
   }
 
-  get currentCodes() {
-    const { currentEntityKey, editorState } = this.state;
-
-    if (!currentEntityKey) return null;
-
-    const contentState = editorState.getCurrentContent();
-    const { codeIDs } = contentState.getEntity(currentEntityKey).getData();
-
-    return this.codes.filter(c => codeIDs.includes(c.id));
-  }
-
   public render() {
-    const { editorState, dataSource, currentEntityKey, codeInput } = this.state;
-
+    const { editorState, dataSource, hasSelectedCodedInline } = this.state;
     return (
       <Container>
         <Editor
-          editorState={editorState}
-          onChange={this.onEditorChange}
-          customStyleMap={customStyleMap}
+          value={editorState}
+          plugins={this.plugins}
+          className={'slate-editor'}
           ref={element => {
             this.editor = element;
           }}
+          onChange={this.onChangeEditor}
         />
 
         <SideContainer>
           <AutoComplete
             onSelect={this.onSelectOption}
             onSearch={this.onSearchCode}
+            onFocus={(e: React.FocusEvent<any>) => this.onSearchCode('')}
             dataSource={dataSource}
             placeholder="Type to search codes or create a new one"
             allowClear
           />
           <UsedCodeTags
-            codes={currentEntityKey ? this.currentCodes : this.sortedCodes}
+            codes={
+              hasSelectedCodedInline ? this.currentCodes : this.sortedCodes
+            }
             onClick={this.onSelectCode}
             onClose={this.onDeleteCode}
           />

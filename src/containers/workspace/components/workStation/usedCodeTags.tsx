@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { CodeSnapshot } from '~/stores';
 
-const Container = styled(FlipMove)`
+const Container = styled.div`
   margin-top: 1rem;
   width: 100%;
 `;
@@ -17,9 +17,9 @@ const StyledTag = styled(Tag)`
 
 const EnhancedTag = withHandlers<any, any>({
   // @ts-ignore
-  handleClose: ({ onClose, code }) => () => {
+  handleClose: ({ onClose, code }) => e => {
+    e.stopPropagation();
     if (onClose) {
-      console.log('onClose', onClose.toString());
       onClose(code);
     }
   },
