@@ -9,24 +9,6 @@ export const Container = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   height: calc(100vh - 24px - 24px - 64px);
-  &&&& > .DraftEditor-root {
-    padding-right: 1rem;
-    flex: 0.8;
-    max-height: 100%;
-    overflow-y: auto;
-    font-size: 1rem;
-  }
-
-  // Hacky way of using styles that react does not support for inline style
-  // https://github.com/facebook/draft-js/issues/957#issuecomment-359076343
-  &&&& div.public-DraftEditor-content [style*='stroke-dashoffset: 0'] {
-    color: #fff;
-    background-color: #adb5bd;
-    &:hover {
-      background-color: #868e96;
-      transition: 0.3s;
-    }
-  }
 `;
 
 export const SideContainer = styled.div`
