@@ -8,7 +8,7 @@
     "color": "^3.0.0",
     "immutable": ">=3.8.1",
     "localforage": "^1.7.2",
-    "mobx": "^5.1.0",
+    "mobx": "^5.1.1",
     "mobx-react": "^5.2.8",
     "mobx-state-tree": "^3.3.0",
     "normalize.css": "^8.0.0",

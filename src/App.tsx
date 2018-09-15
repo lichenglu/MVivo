@@ -9,6 +9,8 @@ import Header from './components/header';
 
 // containers
 import WorkSpace from './containers/workspace';
+import CodeBook from './containers/codebook';
+
 
 // utils
 import { routeConstants } from './lib/constants';
@@ -41,6 +43,7 @@ class App extends React.Component {
         <Header items={this.items} />
         <ContentContainer>
           <Route path={routeConstants.root} component={WorkSpace} />
+          <Route path={routeConstants.codebooks} component={CodeBook} />
         </ContentContainer>
       </Container>
     );
