@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import { RootStore } from '~/stores/root-store';
 
+
 // components
 import Fab from '~/components/fab';
 import CreateCBModal from '~/containers/codebook/components/createModal';
@@ -23,13 +24,13 @@ interface CodeBookState {
 @observer
 export class CodeBook extends React.Component<CodeBookProps, CodeBookState> {
   public state = {
-    wsModalVisible: false,
+    cbModalVisible: false,
   };
 
   public onCreateCodeBook = (data: any) => {
     const codeBook = this.props.rootStore.createCodeBook(data);
-    this.props.rootStore.setWorkSpaceBy(workSpace.id);
-    this.toggleWSModalFactory(false)();
+  //  this.props.rootStore.setWorkSpaceBy(workSpace.id);
+    this.toggleCBModalFactory(false)();
     notification.open({
       description: `You have just created a codebook named ${
         codeBook.name
