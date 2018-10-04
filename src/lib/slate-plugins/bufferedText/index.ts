@@ -34,7 +34,11 @@ export default function BufferedText(options: BufferedText = {}) {
       const { selection } = value;
       if (event.key !== 'Escape') return;
 
-      change.setValue({ decorations: [] });
+      change.setValue({
+        decorations: change.value.decorations
+          .toArray()
+          .filter(d => d.mark.type !== MARKS.BufferedText),
+      });
 
       const edge = selection.isBackward ? 'Start' : 'End';
       return change[`moveTo${edge}`]();

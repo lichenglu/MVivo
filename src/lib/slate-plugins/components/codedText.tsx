@@ -1,10 +1,12 @@
 import Color from 'color';
 import { inject } from 'mobx-react';
+import { getSnapshot } from 'mobx-state-tree';
 import React, { ReactNode } from 'react';
+import { Inline, Node } from 'slate';
 import styled from 'styled-components';
 
 import { trimText } from '~/lib/utils';
-import { RootStore } from '~/stores/root-store';
+import { CodeSnapshot, RootStore } from '~/stores/root-store';
 
 export interface CodedTextContainerProps {
   bgColor: string;
@@ -45,6 +47,8 @@ export interface CodedTextProps {
   codeIDs: string[];
   attributes: object;
   children: ReactNode;
+  node: Node;
+  parent: Node;
   onClick?: () => void;
   onClickSummary?: (e: React.MouseEvent<HTMLElement>) => void;
   rootStore?: RootStore;
@@ -60,30 +64,43 @@ export const CodedTextComponent = inject('rootStore')(
     onClick,
     onClickSummary,
     mixBgColor,
+    node,
+    parent,
     children,
   }: CodedTextProps) => {
     if (!rootStore) return null;
 
     const codes = codeIDs
       .map(id => rootStore.codeBookStore.codes.get(id))
-      .filter(c => !!c);
-    const primaryCode = codes[0];
+      .filter(c => !!c)
+      .map(code => getSnapshot(code));
 
-    if (!primaryCode) {
-      console.warn(`There is no code attached to this inline.`);
-      return null;
-    }
+    let bgColor = getInlineBgColor({
+      codes,
+      mixBgColor: mixBgColor || true,
+    });
 
-    let bgColor;
-    if (mixBgColor) {
-      bgColor = codes
-        .slice(1)
-        .reduce((cur, next) => {
-          return next ? cur.mix(Color(next.bgColor)) : cur;
-        }, Color(primaryCode.bgColor))
-        .toString();
-    } else {
-      bgColor = primaryCode.bgColor;
+    if (!bgColor) return null;
+
+    // mix with parent inline's bg color if available
+    if (
+      parent instanceof Inline &&
+      node instanceof Inline &&
+      parent.type === node.type
+    ) {
+      const parentCodeIDs: string[] = parent.get('data').get('codeIDs');
+      const parentBgColor = getInlineBgColor({
+        codes: parentCodeIDs
+          .map(id => rootStore.codeBookStore.codes.get(id))
+          .filter(c => !!c)
+          .map(code => getSnapshot(code)),
+        mixBgColor: mixBgColor || true,
+      });
+      if (parentBgColor) {
+        bgColor = Color(bgColor)
+          .mix(Color(parentBgColor))
+          .toString();
+      }
     }
 
     return (
@@ -103,3 +120,31 @@ export const CodedTextComponent = inject('rootStore')(
     );
   }
 );
+
+export const getInlineBgColor = ({
+  codes,
+  mixBgColor,
+}: {
+  codes: CodeSnapshot[];
+  mixBgColor: boolean;
+}) => {
+  const primaryCode = codes[0];
+
+  if (!primaryCode) {
+    console.warn(`There is no code attached to this inline.`);
+    return null;
+  }
+
+  let bgColor;
+  if (mixBgColor) {
+    bgColor = codes
+      .slice(1)
+      .reduce((cur, next) => {
+        return next ? cur.mix(Color(next.bgColor)) : cur;
+      }, Color(primaryCode.bgColor))
+      .toString();
+  } else {
+    bgColor = primaryCode.bgColor;
+  }
+  return bgColor;
+};

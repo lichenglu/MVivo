@@ -31,8 +31,7 @@ export function updateCodeForBlocks({
         if (!decoration || !decoration.mark) return true;
 
         if (decoration.mark.type === MARKS.BufferedText) {
-          const range = Range.create(decoration);
-          change.select(range);
+          const range = value.document.createRange(decoration);
           const inline = Inline.create({
             type,
             data: { codeIDs: [codeID] },
@@ -41,12 +40,12 @@ export function updateCodeForBlocks({
           // if the buffered text is overlapped with a coded inline
           // currently, we remove the old inline, and replace with the
           // new one
-          change.value.inlines.forEach(inline => {
-            if (inline) {
-              change.unwrapInline(inline);
-            }
-          });
-          change = change.wrapInline(inline);
+          // change.value.inlines.forEach(inline => {
+          //   if (inline) {
+          //     change.unwrapInline(inline);
+          //   }
+          // });
+          change = change.wrapInlineAtRange(range, inline);
           return false;
         }
         return true;

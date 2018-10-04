@@ -21,7 +21,7 @@
     "react-router-dom": "^4.3.1",
     "react-svg-inline": "^2.1.1",
     "recompose": "^0.30.0",
-    "slate": "^0.40.2",
+    "slate": "^0.41.2",
     "slate-plain-serializer": "^0.6.2",
     "slate-react": "^0.18.4",
     "styled-components": "^3.4.6",

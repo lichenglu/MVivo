@@ -23,7 +23,7 @@ export function RenderCodedText({
 }: RenderCodedTextOptions): SlatePlugin {
   return {
     renderNode: props => {
-      const { node, attributes, children, editor, isSelected } = props;
+      const { node, parent, attributes, children, editor, isSelected } = props;
 
       if (node instanceof Inline && node.get('type') === type) {
         const data = node.get('data');
@@ -41,6 +41,8 @@ export function RenderCodedText({
             attributes={attributes}
             selected={isSelected}
             codeIDs={codeIDs}
+            node={node}
+            parent={parent}
             onClick={() => {
               onClickCodedText && onClickCodedText({ node, codeIDs });
             }}
