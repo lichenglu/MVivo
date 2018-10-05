@@ -1,5 +1,12 @@
 import { Set } from 'immutable';
-import { Change, Decoration, DecorationProperties, Mark, Value } from 'slate';
+import {
+  Change,
+  Decoration,
+  DecorationProperties,
+  Inline,
+  Mark,
+  Value,
+} from 'slate';
 import { INLINES } from '~/lib/slate-plugins/utils/constants';
 
 interface SelectToHighlightOptions {
@@ -18,105 +25,107 @@ export const mapMarksToSelection = (options: SelectToHighlightOptions) => (
   if (!selection.isExpanded) return change;
 
   const selectedText = change.value.fragment.text;
-  const highlightMark = Mark.create({
+  const highlightMark = Inline.create({
     type: options.type,
     data: {
       bgColor: options.highlightColor,
     },
   });
-  const { anchor, focus } = selection;
 
-  const decCandidate = change.value.document.createDecoration({
-    anchor,
-    focus,
-    mark: highlightMark,
-  });
+  return change.wrapInline(highlightMark);
+  // const { anchor, focus } = selection;
 
-  const decorations = options.allowMultipleSelection
-    ? change.value.decorations.toArray()
-    : [change.value.decorations.toArray()[0]].filter(d => !!d);
+  // const decCandidate = change.value.document.createDecoration({
+  //   anchor,
+  //   focus,
+  //   mark: highlightMark,
+  // });
 
-  let found = false;
-  let nextDecorations: DecorationProperties[] = [];
+  // const decorations = options.allowMultipleSelection
+  //   ? change.value.decorations.toArray()
+  //   : [change.value.decorations.toArray()[0]].filter(d => !!d);
 
-  // If the selection overlaps with any coded inlines
-  if (decCandidate.start.key !== decCandidate.end.key) {
-    nextDecorations = [...decorations, decCandidate];
-    // const inlines = change.value.inlines.toArray();
-    // const inlineData: object[] = [];
-    // for (const inline of inlines) {
-    //   inlineData.push({
-    //     text: inline.getText(),
-    //     startIdx: selectedText.indexOf(inline.getText()),
-    //     inline,
-    //   });
-    //   change.unwrapInline(inline);
-    // }
+  // let found = false;
+  // let nextDecorations: DecorationProperties[] = [];
 
-    // nextDecorations = [
-    //   ...decorations,
-    //   {
-    //     anchor: decCandidate.start,
-    //     focus: {
-    //       key: decCandidate.start.key,
-    //       offset: decCandidate.start.offset + selectedText.length,
-    //     },
-    //     mark: decCandidate.mark,
-    //   },
-    // ];
+  // // If the selection overlaps with any coded inlines
+  // if (decCandidate.start.key !== decCandidate.end.key) {
+  //   nextDecorations = [...decorations, decCandidate];
+  //   // const inlines = change.value.inlines.toArray();
+  //   // const inlineData: object[] = [];
+  //   // for (const inline of inlines) {
+  //   //   inlineData.push({
+  //   //     text: inline.getText(),
+  //   //     startIdx: selectedText.indexOf(inline.getText()),
+  //   //     inline,
+  //   //   });
+  //   //   change.unwrapInline(inline);
+  //   // }
 
-    // change
-    //   .withoutMerging(() => {
-    //     change.setValue({ decorations: nextDecorations });
-    //   })
-    //   .normalize();
+  //   // nextDecorations = [
+  //   //   ...decorations,
+  //   //   {
+  //   //     anchor: decCandidate.start,
+  //   //     focus: {
+  //   //       key: decCandidate.start.key,
+  //   //       offset: decCandidate.start.offset + selectedText.length,
+  //   //     },
+  //   //     mark: decCandidate.mark,
+  //   //   },
+  //   // ];
 
-    // for (const data of inlineData.reverse()) {
-    //   const { text, startIdx, inline } = data;
-    //   const dec = change.value.decorations.last();
-    //   console.log(decCandidate, dec);
-    //   const range = change.value.document.createRange({
-    //     anchor: {
-    //       key: dec.start.key,
-    //       offset: startIdx,
-    //     },
-    //     focus: {
-    //       key: dec.start.key,
-    //       offset: startIdx + text.length,
-    //     },
-    //   });
-    //   change.wrapInlineAtRange(range, {
-    //     type: inline.type,
-    //     data: inline.data.toObject(),
-    //   });
-    // }
-  } else {
-    // TODO: Really? Does it have to be this complicated and stupid?!
-    decorations.forEach(decoration => {
-      if (!decoration) return;
+  //   // change
+  //   //   .withoutMerging(() => {
+  //   //     change.setValue({ decorations: nextDecorations });
+  //   //   })
+  //   //   .normalize();
 
-      const { changed, result } = mergeDecoration(decCandidate, decoration);
+  //   // for (const data of inlineData.reverse()) {
+  //   //   const { text, startIdx, inline } = data;
+  //   //   const dec = change.value.decorations.last();
+  //   //   console.log(decCandidate, dec);
+  //   //   const range = change.value.document.createRange({
+  //   //     anchor: {
+  //   //       key: dec.start.key,
+  //   //       offset: startIdx,
+  //   //     },
+  //   //     focus: {
+  //   //       key: dec.start.key,
+  //   //       offset: startIdx + text.length,
+  //   //     },
+  //   //   });
+  //   //   change.wrapInlineAtRange(range, {
+  //   //     type: inline.type,
+  //   //     data: inline.data.toObject(),
+  //   //   });
+  //   // }
+  // } else {
+  //   // TODO: Really? Does it have to be this complicated and stupid?!
+  //   decorations.forEach(decoration => {
+  //     if (!decoration) return;
 
-      if (changed) {
-        found = true;
-      }
-      nextDecorations = [...nextDecorations, ...result];
-    });
+  //     const { changed, result } = mergeDecoration(decCandidate, decoration);
 
-    if (!found) {
-      nextDecorations.push(decCandidate);
-    }
+  //     if (changed) {
+  //       found = true;
+  //     }
+  //     nextDecorations = [...nextDecorations, ...result];
+  //   });
 
-    if (!options.allowMultipleSelection && !found) {
-      nextDecorations = [decCandidate];
-    }
-  }
-  return change
-    .withoutNormalizing(() => {
-      change.setValue({ decorations: nextDecorations });
-    })
-    .call(endSelection)
-    .normalize();
+  //   if (!found) {
+  //     nextDecorations.push(decCandidate);
+  //   }
+
+  //   if (!options.allowMultipleSelection && !found) {
+  //     nextDecorations = [decCandidate];
+  //   }
+  // }
+  // return change
+  //   .withoutNormalizing(() => {
+  //     change.setValue({ decorations: nextDecorations });
+  //   })
+  //   .call(endSelection)
+  //   .normalize();
 };
 
 const endSelection = (change: Change) => {

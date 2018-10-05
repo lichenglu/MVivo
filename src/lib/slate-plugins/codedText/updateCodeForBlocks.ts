@@ -22,36 +22,21 @@ export function updateCodeForBlocks({
   let change = value.change({});
 
   if (action === 'add') {
-    const decorations = value.decorations
-      .toArray()
-      // For some reason...we need to wrap inline in the descending order
-      // TODO: figure out why and if it is the correct way of doing such a thing
-      .sort((a, b) => (b.start.offset || 0) - (a.start.offset || 0))
-      .filter(decoration => {
-        if (!decoration || !decoration.mark) return true;
+    change.moveToRangeOfDocument();
+    const originalRange = change.value.selection;
+    change.value.inlines.forEach(inline => {
+      if (inline && inline.type === MARKS.BufferedText) {
+        change.moveToRangeOfNode(inline);
 
-        if (decoration.mark.type === MARKS.BufferedText) {
-          const range = value.document.createRange(decoration);
-          const inline = Inline.create({
-            type,
-            data: { codeIDs: [codeID] },
-          });
+        const codedInline = Inline.create({
+          type,
+          data: { codeIDs: [codeID] },
+        });
 
-          // if the buffered text is overlapped with a coded inline
-          // currently, we remove the old inline, and replace with the
-          // new one
-          // change.value.inlines.forEach(inline => {
-          //   if (inline) {
-          //     change.unwrapInline(inline);
-          //   }
-          // });
-          change = change.wrapInlineAtRange(range, inline);
-          return false;
-        }
-        return true;
-      });
-
-    return change.setValue({ decorations });
+        change = change.wrapInline(codedInline);
+      }
+    });
+    return change.select(originalRange).moveToStart();
   } else if (action === 'delete') {
     change.moveToRangeOfDocument();
     change.value.inlines.forEach(inline => {
