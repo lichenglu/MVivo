@@ -1,9 +1,10 @@
+import isHotkey from 'is-hotkey';
 import { Change } from 'slate';
 
-import { SlatePlugin } from '~/lib/slate-plugins';
+import { mapMarksToSelection } from './mapMarksToSelection';
 
 import { Highlight } from '../components';
-import { SelectToHighlight } from '../utils/changes';
+// import { SelectToHighlight } from '../utils/changes';
 import { MARKS } from '../utils/constants';
 import { RenderHighlight } from '../utils/render';
 
@@ -13,37 +14,49 @@ interface BufferedText {
 
 export default function BufferedText(options: BufferedText = {}) {
   return {
-    ...SelectToHighlight({
-      type: MARKS.BufferedText,
-      highlightColor: '#adb5bd',
-      allowMultipleSelection: true,
-    }),
+    // ...SelectToHighlight({
+    //   type: MARKS.BufferedText,
+    //   highlightColor: '#adb5bd',
+    //   allowMultipleSelection: true,
+    // }),
     ...RenderHighlight({
       type: MARKS.BufferedText,
     }),
-    schema: {
-      marks: {
-        [MARKS.BufferedText]: {
-          isAtomic: true,
-        },
-      },
-    },
+    // schema: {
+    //   marks: {
+    //     [MARKS.BufferedText]: {
+    //       isAtomic: true,
+    //     },
+    //   },
+    // },
     onKeyDown(event: KeyboardEvent, change: Change) {
-      if (!options.clearOnEscape) return;
-      const { value } = change;
-      const { selection } = value;
-      if (event.key !== 'Escape') return;
+      if (isHotkey('Escape', event)) {
+        if (!options.clearOnEscape) return;
+        const { value } = change;
+        const { selection } = value;
+        if (event.key !== 'Escape') return;
 
-      change.setValue({
-        decorations: change.value.decorations
-          .toArray()
-          .filter(d => d.mark.type !== MARKS.BufferedText),
-      });
+        change.setValue({
+          decorations: change.value.decorations
+            .toArray()
+            .filter(d => d.mark.type !== MARKS.BufferedText),
+        });
 
-      const edge = selection.isBackward ? 'Start' : 'End';
-      return change[`moveTo${edge}`]();
+        const edge = selection.isBackward ? 'Start' : 'End';
+        return change[`moveTo${edge}`]();
+      }
+      if (isHotkey('mod+e', event)) {
+        event.preventDefault();
+        change.call(
+          mapMarksToSelection({
+            type: MARKS.BufferedText,
+            highlightColor: '#adb5bd',
+            allowMultipleSelection: true,
+          })
+        );
+      }
     },
   };
 }
 
-export { Highlight };
+export { Highlight, mapMarksToSelection };

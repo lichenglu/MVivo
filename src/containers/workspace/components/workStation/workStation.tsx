@@ -5,6 +5,7 @@ import { Editor } from 'slate-react';
 import { CodeSnapshot } from '~/stores';
 
 // styles
+import 'react-contexify/dist/ReactContexify.min.css';
 import './workStation.less';
 
 // components
@@ -17,11 +18,12 @@ import {
   BufferedText,
   CodedText,
   getCodeSummary,
+  mapMarksToSelection,
   SoftBreak,
   updateCodeForBlocks,
   updateSelectedCode,
 } from '~/lib/slate-plugins';
-import { INLINES } from '~/lib/slate-plugins/utils/constants';
+import { INLINES, MARKS } from '~/lib/slate-plugins/utils/constants';
 
 interface WorkStationProps {
   codeList?: CodeSnapshot[];
