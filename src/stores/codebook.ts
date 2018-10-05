@@ -29,13 +29,12 @@ export const CodeBookModel = types
     id: types.identifier,
     name: types.string,
     colorPalette: types.optional(types.array(types.string), colorPalette),
+    availableColors: types.optional(types.array(types.string), colorPalette),
     recycleColor: types.optional(types.boolean, true),
   })
-  .volatile(self => ({
-    availableColors: getSnapshot(self.colorPalette),
-  }))
   .actions(self => {
     function sliceAvailableColor(idx: number) {
+      // @ts-ignore
       self.availableColors = self.availableColors
         .slice(0, idx)
         .concat(self.availableColors.slice(idx + 1));
