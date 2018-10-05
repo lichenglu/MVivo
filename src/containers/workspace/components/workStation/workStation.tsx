@@ -18,12 +18,11 @@ import {
   BufferedText,
   CodedText,
   getCodeSummary,
-  mapMarksToSelection,
   SoftBreak,
   updateCodeForBlocks,
   updateSelectedCode,
 } from '~/lib/slate-plugins';
-import { INLINES, MARKS } from '~/lib/slate-plugins/utils/constants';
+import { INLINES } from '~/lib/slate-plugins/utils/constants';
 
 interface WorkStationProps {
   codeList?: CodeSnapshot[];

@@ -55,6 +55,7 @@ export const UsedCodeTags = ({
           onClick={onClick}
           code={code}
           key={code.id}
+          visible
           closable
         >
           {code.name}

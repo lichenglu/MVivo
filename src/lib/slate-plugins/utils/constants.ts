@@ -4,4 +4,5 @@ export enum MARKS {
 
 export enum INLINES {
   CodedText = 'CodedText',
+  BufferedText = 'BufferedText',
 }

@@ -43,7 +43,8 @@ export function RenderCodedText({
             codeIDs={codeIDs}
             node={node}
             parent={parent}
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation();
               onClickCodedText && onClickCodedText({ node, codeIDs });
             }}
             onClickSummary={handleSummaryClick}

@@ -49,7 +49,7 @@ export interface CodedTextProps {
   children: ReactNode;
   node: Node;
   parent: Node;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   onClickSummary?: (e: React.MouseEvent<HTMLElement>) => void;
   rootStore?: RootStore;
   mixBgColor?: boolean;
@@ -110,11 +110,13 @@ export const CodedTextComponent = inject('rootStore')(
         selected={selected}
         onClick={onClick}
       >
-        <CodeName onClick={onClickSummary}>{`[${trimText(
-          codes.map(c => c && c.name).join(', '),
-          'middle',
-          30
-        )}]`}</CodeName>
+        <CodeName onClick={onClickSummary}>
+          {`[${trimText(
+            codes.map(c => c && c.name).join(', '),
+            'middle',
+            30
+          )}]`}
+        </CodeName>
         {children}
       </CodedTextContainer>
     );

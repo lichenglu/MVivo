@@ -1,11 +1,11 @@
 import isHotkey from 'is-hotkey';
 import { Change } from 'slate';
 
-import { mapMarksToSelection } from './mapMarksToSelection';
+import { mapSelectionToInlines } from '~/lib/slate-plugins/bufferedText/mapSelectionToInlines';
 
 import { Highlight } from '../components';
 // import { SelectToHighlight } from '../utils/changes';
-import { MARKS } from '../utils/constants';
+import { INLINES } from '../utils/constants';
 import { RenderHighlight } from '../utils/render';
 
 interface BufferedText {
@@ -20,15 +20,15 @@ export default function BufferedText(options: BufferedText = {}) {
     //   allowMultipleSelection: true,
     // }),
     ...RenderHighlight({
-      type: MARKS.BufferedText,
+      type: INLINES.BufferedText,
     }),
-    // schema: {
-    //   marks: {
-    //     [MARKS.BufferedText]: {
-    //       isAtomic: true,
-    //     },
-    //   },
-    // },
+    schema: {
+      inlines: {
+        [INLINES.BufferedText]: {
+          isAtomic: true,
+        },
+      },
+    },
     onKeyDown(event: KeyboardEvent, change: Change) {
       if (isHotkey('Escape', event)) {
         if (!options.clearOnEscape) return;
@@ -36,20 +36,21 @@ export default function BufferedText(options: BufferedText = {}) {
         const { selection } = value;
         if (event.key !== 'Escape') return;
 
-        change.setValue({
-          decorations: change.value.decorations
-            .toArray()
-            .filter(d => d.mark.type !== MARKS.BufferedText),
+        change.moveToRangeOfDocument();
+        change.value.inlines.forEach(inline => {
+          if (inline && inline.type === INLINES.BufferedText) {
+            change.unwrapInline(inline);
+          }
         });
 
         const edge = selection.isBackward ? 'Start' : 'End';
-        return change[`moveTo${edge}`]();
+        return change.select(selection)[`moveTo${edge}`]();
       }
       if (isHotkey('mod+e', event)) {
         event.preventDefault();
         change.call(
-          mapMarksToSelection({
-            type: MARKS.BufferedText,
+          mapSelectionToInlines({
+            type: INLINES.BufferedText,
             highlightColor: '#adb5bd',
             allowMultipleSelection: true,
           })
@@ -59,4 +60,4 @@ export default function BufferedText(options: BufferedText = {}) {
   };
 }
 
-export { Highlight, mapMarksToSelection };
+export { Highlight, mapSelectionToInlines };
