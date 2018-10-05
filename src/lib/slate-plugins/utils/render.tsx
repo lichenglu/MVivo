@@ -1,4 +1,5 @@
 import React from 'react';
+import { Inline } from 'slate';
 import { RenderMarkProps } from 'slate-react';
 
 import { SlatePlugin } from '~/lib/slate-plugins';
@@ -28,18 +29,18 @@ export function RenderHighlight({
   Component = props => <Highlight {...props} />,
 }: RenderHighlightOptions): SlatePlugin {
   return {
-    renderMark: props => {
-      const { mark, attributes, children, editor } = props;
+    renderNode: props => {
+      const { node, attributes, children, editor } = props;
 
-      if (mark.get('type') === type) {
-        const data = mark.get('data');
+      if (node instanceof Inline && node.get('type') === type) {
+        const data = node.get('data');
         const bgColor = data.get('bgColor');
 
         return (
           <Component
             hoverToEmphasize={hoverToEmphasize}
             bgColor={bgColor}
-            mark={mark}
+            mark={node}
             editor={editor}
             attributes={attributes}
           >

@@ -1,8 +1,10 @@
+import { Set } from 'immutable';
 import { Change, Decoration, DecorationProperties, Mark } from 'slate';
 
 import { hasMark } from './has';
 
 import { SlatePlugin } from '~/lib/slate-plugins';
+import { INLINES } from '~/lib/slate-plugins/utils/constants';
 
 interface SelectToHighlightOptions {
   highlightColor: string;
@@ -16,6 +18,7 @@ export function SelectToHighlight(
   return {
     onChange: (change: Change) => {
       const selection = change.value.selection;
+      const selectedText = change.value.fragment.text;
       const highlightMark = Mark.create({
         type: options.type,
         data: {
@@ -23,18 +26,13 @@ export function SelectToHighlight(
         },
       });
       const { anchor, focus } = selection;
-      const decCandidate = Decoration.create({
+      const decCandidate = change.value.document.createDecoration({
         anchor,
         focus,
         mark: highlightMark,
       });
 
       if (selection.isExpanded) {
-        if (decCandidate.start.key !== decCandidate.end.key) {
-          endSelection(change);
-          return;
-        }
-
         const decorations = options.allowMultipleSelection
           ? change.value.decorations.toArray()
           : [change.value.decorations.toArray()[0]].filter(d => !!d);
@@ -42,25 +40,33 @@ export function SelectToHighlight(
         let found = false;
         let nextDecorations: DecorationProperties[] = [];
 
-        // Really? Does it have to be this complicated and stupid?!
-        decorations.forEach(decoration => {
-          if (!decoration) return;
+        // If the selection overlaps with any coded inlines
+        if (decCandidate.start.key !== decCandidate.end.key) {
+          nextDecorations = [...decorations, decCandidate];
+        } else {
+          // TODO: Really? Does it have to be this complicated and stupid?!
+          decorations.forEach(decoration => {
+            if (!decoration) return;
 
-          const { changed, result } = mergeDecoration(decCandidate, decoration);
-          if (changed) {
-            found = true;
+            const { changed, result } = mergeDecoration(
+              decCandidate,
+              decoration
+            );
+
+            if (changed) {
+              found = true;
+            }
+            nextDecorations = [...nextDecorations, ...result];
+          });
+
+          if (!found) {
+            nextDecorations.push(decCandidate);
           }
-          nextDecorations = [...nextDecorations, ...result];
-        });
 
-        if (!found) {
-          nextDecorations.push(decCandidate);
+          if (!options.allowMultipleSelection && !found) {
+            nextDecorations = [decCandidate];
+          }
         }
-
-        if (!options.allowMultipleSelection && !found) {
-          nextDecorations = [decCandidate];
-        }
-
         change
           .setOperationFlag('save', true)
           .setValue({ decorations: nextDecorations })
@@ -93,14 +99,6 @@ const mergeDecoration = (decCandidate: Decoration, decoration: Decoration) => {
 
   // we only deal with decoration within the same node
   // so this is basically a block level update
-  if (
-    decCandidate.start.key !== decoration.start.key ||
-    decCandidate.end.key !== decoration.end.key
-  ) {
-    result.push(decoration);
-    return { changed, result };
-  }
-
   if (
     decCandidate.start.offset > decoration.start.offset &&
     decCandidate.end.offset < decoration.end.offset

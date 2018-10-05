@@ -5,6 +5,7 @@ import { Editor } from 'slate-react';
 import { CodeSnapshot } from '~/stores';
 
 // styles
+import 'react-contexify/dist/ReactContexify.min.css';
 import './workStation.less';
 
 // components
