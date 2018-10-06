@@ -3,7 +3,7 @@ import { InputProps, TextAreaProps } from 'antd/lib/input';
 import React from 'react';
 import styled from 'styled-components';
 
-import { CodeBookSnapshot } from '../../../stores';
+import { CodeBookSnapshot } from '~/stores';
 
 interface CreateCBModalProps {
   visible: boolean;
@@ -100,7 +100,7 @@ export default class CreateCBModal extends React.Component<
             />
           </StyledFormItem>
 
-          <StyledFormItem label="Existing Code Book:">
+          <StyledFormItem label="Copy From Existing Code Book:">
             <Select
               style={{ width: '50%' }}
               placeholder="Select existing code books"

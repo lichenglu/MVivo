@@ -1,6 +1,7 @@
 import Color from 'color';
 import React from 'react';
-import { RenderMarkProps } from 'slate-react';
+import { Inline } from 'slate';
+import { RenderNodeProps } from 'slate-react';
 import styled from 'styled-components';
 
 export interface HighlightContainerProps {
@@ -9,10 +10,10 @@ export interface HighlightContainerProps {
   tint?: string;
 }
 export interface HighlightProps extends HighlightContainerProps {
-  mark: RenderMarkProps['mark'];
-  editor: RenderMarkProps['editor'];
-  children?: RenderMarkProps['children'];
-  attributes?: RenderMarkProps['attributes'];
+  inline: Inline;
+  editor: RenderNodeProps['editor'];
+  children?: RenderNodeProps['children'];
+  attributes?: RenderNodeProps['attributes'];
 }
 
 const HighlightContainer = styled.span<HighlightContainerProps>`
@@ -33,7 +34,7 @@ export const Highlight = ({
   hoverToEmphasize,
   bgColor,
   tint,
-  mark,
+  inline,
   editor,
   attributes,
   children,

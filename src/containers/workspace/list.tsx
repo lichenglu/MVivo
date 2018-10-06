@@ -11,7 +11,7 @@ import CreateWSModal from '~/containers/workspace/components/createModal';
 import EmptyView from '~/containers/workspace/components/emptyView';
 import WorkspaceList from '~/containers/workspace/components/workspaceList';
 
-interface WorkSpaceProps {
+interface WorkSpaceProps extends RouteCompProps<{}> {
   rootStore: RootStore;
 }
 
@@ -46,6 +46,9 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
         this.props.rootStore.deleteWorkSpaceBy(params.workSpaceID);
         break;
       case 'share':
+        break;
+      case 'summary':
+        this.props.history.push(`workspace/${params.workSpaceID}/summary`);
         break;
       default:
         break;

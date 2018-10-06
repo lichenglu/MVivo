@@ -23,10 +23,10 @@ interface CodeBookListProps {
 
 export default ({ codeBooks, onSelectExtraAction }: CodeBookListProps) => (
   <Container>
-    {codeBooks.map(ws => (
+    {codeBooks.map(codebook => (
       <CodebookCard
-        key={cb.id}
-        data={cb}
+        key={codebook.id}
+        data={codebook}
         onSelectExtraAction={onSelectExtraAction}
       />
     ))}

@@ -36,6 +36,12 @@ const Container = styled.div`
     flex: 0.25;
     width: calc(25% - 1rem);
   }
+
+  &&&& {
+    .ant-card {
+      max-width: 100%;
+    }
+  }
 `;
 
 const Action = styled.a<{ important?: boolean }>`
@@ -99,10 +105,6 @@ const CodeBookCard = ({ data, onEdit, handleAction }: CodeBookCardProps) => (
       ]}
     >
       <Card.Meta
-        // TODO: use different images according to ws's importance
-        // avatar={
-        // 	<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-        // }
         title={data.name}
         description={data.description || 'No description'}
       />

@@ -141,13 +141,6 @@ export class WorkSpaceDetail extends React.Component<
     return [];
   }
 
-  get codeMap() {
-    if (this.workSpace && this.workSpace.codeBook) {
-      return this.workSpace.codeBook.codes;
-    }
-    return undefined;
-  }
-
   get hasDocument() {
     if (!this.document) return false;
     return !!this.document.id;

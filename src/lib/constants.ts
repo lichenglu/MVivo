@@ -1,11 +1,7 @@
 export const routeConstants = {
   codebooks: '/codebooks',
   root: '/',
-  workspaceDetail: '/workspace/:id',
+  workStation: '/workspace/:id',
+  workspaceEdit: '/workspace/:id/edit',
   workspaceSummary: '/workspace/:id/summary',
 };
-
-export enum DraftDecorator {
-  BUFFERED_CODE = 'BUFFERED_CODE',
-  CODE = 'CODE',
-}

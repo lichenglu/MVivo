@@ -60,6 +60,7 @@ const CardCover = styled.div`
 `;
 
 const actions = [
+  { key: 'summary', text: 'Summary' },
   { key: 'share', text: 'Share' },
   { key: 'delete', text: 'Delete', important: true },
 ];
@@ -79,7 +80,9 @@ const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
         </CardCover>
       }
       actions={[
-        <Icon key="edit" type="edit" onClick={onEdit} />,
+        <Link key="edit" to={`/workspace/${data.id}/edit`}>
+          <Icon type="edit" onClick={onEdit} />
+        </Link>,
         <Dropdown
           key="ellipsis"
           placement="bottomCenter"

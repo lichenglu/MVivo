@@ -1,16 +1,16 @@
-import { notification } from 'antd';
+import { message, notification } from 'antd';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { RootStore } from '~/stores/root-store';
 
-
 // components
 import Fab from '~/components/fab';
+
+import CodebookList from '~/containers/codebook/components/codebookList';
 import CreateCBModal from '~/containers/codebook/components/createModal';
 import EmptyView from '~/containers/codebook/components/emptyView';
-import CodebookList from '~/containers/codebook/components/codebookList';
 
 interface CodeBookProps {
   rootStore: RootStore;
@@ -27,16 +27,23 @@ export class CodeBook extends React.Component<CodeBookProps, CodeBookState> {
     cbModalVisible: false,
   };
 
-  public onCreateCodeBook = (data: any) => {
+  public onCreateCodeBook = (data: {
+    name: string;
+    description: string;
+    codeBookID?: string;
+  }) => {
     const codeBook = this.props.rootStore.createCodeBook(data);
-  //  this.props.rootStore.setWorkSpaceBy(workSpace.id);
     this.toggleCBModalFactory(false)();
-    notification.open({
-      description: `You have just created a codebook named ${
-        codeBook.name
-      }. It is also saved locally so that you can still see it when you refresh the browser`,
-      message: 'New codebook successfully created',
-    });
+    if (codeBook) {
+      notification.open({
+        description: `You have just created a code book named ${
+          codeBook.name
+        }. It is also saved locally so that you can still see it when you refresh the browser`,
+        message: 'New code book successfully created',
+      });
+    } else {
+      message.error('Failed to create code book');
+    }
   };
 
   public onSelectExtraAction = (
@@ -72,13 +79,13 @@ export class CodeBook extends React.Component<CodeBookProps, CodeBookState> {
         <Helmet>
           <title>CodeBook</title>
         </Helmet>
-        {this.hasCodeBook && <Fab onClick={this.toggleCBModalFactory(true)} />}
         <CreateCBModal
           visible={cbModalVisible}
           codeBooks={this.codeBooks}
           onClose={this.toggleCBModalFactory(false)}
           onSubmit={this.onCreateCodeBook}
         />
+        {this.hasCodeBook && <Fab onClick={this.toggleCBModalFactory(true)} />}
         {this.hasCodeBook ? (
           <CodebookList
             codeBooks={this.codeBooks}
