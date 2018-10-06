@@ -36,6 +36,13 @@ const Container = styled.div`
     flex: 0.25;
     width: calc(25% - 1rem);
   }
+
+  &&&& {
+    .ant-card {
+      width: 100%;
+      height: 100%;
+    }
+  }
 `;
 
 const Action = styled.a<{ important?: boolean }>`
@@ -55,8 +62,14 @@ const Action = styled.a<{ important?: boolean }>`
   }
 `;
 
-const CardCover = styled.div`
+const CardCover = styled.div<{ cover: string }>`
   pointer: cursor;
+  background: ${({ cover }) => cover};
+
+  min-width: 10rem;
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
 `;
 
 const actions = [
@@ -69,15 +82,9 @@ const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
   <Container>
     <Card
       cover={
-        <CardCover>
-          <Link to={`/workspace/${data.id}`}>
-            <img
-              alt="cover image"
-              src="https://source.unsplash.com/800x450/?research"
-              style={{ width: '100%', height: '100%' }}
-            />
-          </Link>
-        </CardCover>
+        <Link to={`/workspace/${data.id}`}>
+          <CardCover cover={data.cover} />
+        </Link>
       }
       actions={[
         <Link key="edit" to={`/workspace/${data.id}/edit`}>
