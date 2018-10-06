@@ -2,10 +2,13 @@ import { Table } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import React from 'react';
 import { withProps } from 'recompose';
+import styled from 'styled-components';
 
 import { CodeSnapshot } from '~/stores';
 
 import { Definition } from './definitionEdit';
+
+import { ColorGrid } from '../workStation/autoComplete';
 
 interface PivotTableProps
   extends TableProps<CodeSnapshot & { count: number; examples: string[] }> {
@@ -15,12 +18,26 @@ interface PivotTableProps
   onChangeDefinition: (data: { codeID: string; definition: string }) => void;
 }
 
+const CodeNameContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const enhance = withProps(({ onChangeDefinition, ...rest }) => {
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      render: (
+        name: string,
+        record: CodeSnapshot & { count: number; examples: string[] }
+      ) => (
+        <CodeNameContainer>
+          <ColorGrid bgColor={record.bgColor} />
+          {name}
+        </CodeNameContainer>
+      ),
     },
     {
       title: 'Definition',

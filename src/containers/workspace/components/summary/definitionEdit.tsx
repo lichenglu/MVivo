@@ -63,7 +63,7 @@ export class Definition extends React.PureComponent<
               }
               placeholder={'Input the code definition here'}
               onClick={e => e.stopPropagation()}
-              onPressEnter={this.onToggleEdit}
+              onPressEnter={this.submitDefinition}
               autosize={{ minRows: 4, maxRows: 6 }}
             />
             <UpdateButton onClick={this.submitDefinition} type={'primary'}>

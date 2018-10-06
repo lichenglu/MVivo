@@ -23,6 +23,15 @@ If you have heard of qualitative research, then you are likely to have heard of 
 3. Sort corpus by code.
 4. Output formatted code book, APA format.
 
+### Hot Keys
+
+| Hot keys                                                | Description                                                                                     |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| cmd + e (mac), ctrl + e (windows/linux)                 | Create a Buffered text that can be coded                                                        |
+| escape                                                  | Clear ALL Buffered texts                                                                        |
+| cmd + z (mac), ctrl + z (windows/linux)                 | Undo                                                                                            |
+| cmd + shift + z (mac), ctrl + shift + z (windows/linux) | Redo. Note: currently deleted codes can be restored from the document, but not from the storage |
+
 ## Version 0.1 Roadmap
 
 You can see version 0.1's roadmap [here](https://github.com/lichenglu/MVivo/issues/4)

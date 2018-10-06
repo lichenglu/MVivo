@@ -10,6 +10,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  & #apa-table {
+    width: 100%;
+  }
 `;
 
 const Table = styled.table`
