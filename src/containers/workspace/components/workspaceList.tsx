@@ -19,15 +19,26 @@ interface WorkSpaceListProps {
   onSelectExtraAction?: (
     params: AntClickParam & { workSpaceID: string }
   ) => void;
+  onBookmark: (
+    params: {
+      workSpaceID: string;
+      bookmarked: boolean;
+    }
+  ) => void;
 }
 
-export default ({ workSpaces, onSelectExtraAction }: WorkSpaceListProps) => (
+export default ({
+  workSpaces,
+  onSelectExtraAction,
+  onBookmark,
+}: WorkSpaceListProps) => (
   <Container>
     {workSpaces.map(ws => (
       <WorkspaceCard
         key={ws.id}
         data={ws}
         onSelectExtraAction={onSelectExtraAction}
+        onBookmark={onBookmark}
       />
     ))}
   </Container>

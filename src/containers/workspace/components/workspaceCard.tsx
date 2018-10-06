@@ -15,6 +15,13 @@ interface WorkSpaceCardProps {
     params: AntClickParam & { workSpaceID: string }
   ) => void;
   handleAction?: (params: AntClickParam & { workSpaceID: string }) => void;
+  onBookmark: (
+    params: {
+      workSpaceID: string;
+      bookmarked: boolean;
+    }
+  ) => void;
+  handleBookmark?: (e: React.MouseEvent<any>) => void;
 }
 
 const Container = styled.div`
@@ -65,6 +72,7 @@ const Action = styled.a<{ important?: boolean }>`
 const CardCover = styled.div<{ cover: string }>`
   pointer: cursor;
   background: ${({ cover }) => cover};
+  position: relative;
 
   min-width: 10rem;
   width: 100%;
@@ -78,12 +86,30 @@ const actions = [
   { key: 'delete', text: 'Delete', important: true },
 ];
 
-const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
+const WordSpaceCard = ({
+  data,
+  onEdit,
+  handleBookmark,
+  handleAction,
+}: WorkSpaceCardProps) => (
   <Container>
     <Card
       cover={
         <Link to={`/workspace/${data.id}`}>
-          <CardCover cover={data.cover} />
+          <CardCover cover={data.cover}>
+            <Icon
+              type="star"
+              theme={data.bookmarked ? 'filled' : 'outlined'}
+              onClick={handleBookmark}
+              style={{
+                position: 'absolute',
+                top: 12,
+                right: 12,
+                color: data.bookmarked ? 'yellow' : '#fff',
+                fontSize: '1.5rem',
+              }}
+            />
+          </CardCover>
         </Link>
       }
       actions={[
@@ -127,6 +153,12 @@ const enhance = compose<WorkSpaceCardProps, WorkSpaceCardProps>(
     ) => {
       if (!onSelectExtraAction) return;
       onSelectExtraAction({ ...params, workSpaceID: data.id });
+    },
+    handleBookmark: ({ data, onBookmark }) => (e: React.MouseEvent<any>) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (!onBookmark) return;
+      onBookmark({ workSpaceID: data.id, bookmarked: !data.bookmarked });
     },
   })
 );

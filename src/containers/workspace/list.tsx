@@ -55,6 +55,16 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
     }
   };
 
+  public onBookmark = (params: {
+    workSpaceID: string;
+    bookmarked: boolean;
+  }) => {
+    this.props.rootStore.workSpaceStore.bookmarkWorkSpaceBy(
+      params.workSpaceID,
+      params.bookmarked
+    );
+  };
+
   public toggleWSModalFactory = (toggle: boolean) => () =>
     this.setState({ wsModalVisible: toggle });
 
@@ -63,7 +73,9 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
   }
 
   get workSpaces() {
-    return this.props.rootStore.workSpaceStore.workSpaceList;
+    return this.props.rootStore.workSpaceStore.workSpaceList.sort(
+      (a, b) => b.bookmarked - a.bookmarked
+    );
   }
 
   get hasWorkSpace() {
@@ -89,6 +101,7 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
           <WorkspaceList
             workSpaces={this.workSpaces}
             onSelectExtraAction={this.onSelectExtraAction}
+            onBookmark={this.onBookmark}
           />
         ) : (
           <EmptyView onClick={this.toggleWSModalFactory(true)} />

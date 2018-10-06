@@ -98,6 +98,12 @@ export const WorkSpaceStore = types
       }
       return workspace;
     },
+    bookmarkWorkSpaceBy(id: string, bookmarked: boolean) {
+      const workspace = self.workSpaces.get(id);
+      if (workspace) {
+        workspace.bookmark(bookmarked);
+      }
+    },
     updateEditorState(documentID: string, contentState: SlateValue) {
       const document = self.documentBy(documentID);
       if (document) {
