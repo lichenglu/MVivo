@@ -65,16 +65,16 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
 
   public onChangeDefinition = ({
     codeID,
-    definition,
+    text,
   }: {
     codeID: string;
-    definition: string;
+    text: string;
   }) => {
     if (this.workSpace && this.workSpace.codeBook) {
       this.props.rootStore.codeBookStore.updateCodeOf(
         this.workSpace.codeBook.id,
         codeID,
-        { definition }
+        { definition: text }
       );
     }
   };

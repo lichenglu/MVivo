@@ -1,6 +1,6 @@
 import { values } from 'mobx';
 import { getSnapshot, types } from 'mobx-state-tree';
-import { Value as SlateValue, Data } from 'slate';
+import { Value as SlateValue } from 'slate';
 import Serializer from 'slate-plain-serializer';
 
 import { CodeBook, CodeBookModel } from './codebook';

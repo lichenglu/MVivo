@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { CodeSnapshot } from '~/stores';
 
-import { Definition } from './definitionEdit';
+import { EditableText } from '~/components/editableText';
 
 import { ColorGrid } from '../workStation/autoComplete';
 
@@ -48,10 +48,11 @@ const enhance = withProps(({ onChangeDefinition, ...rest }) => {
         definition: string,
         record: CodeSnapshot & { count: number; examples: string[] }
       ) => (
-        <Definition
-          definition={definition}
-          onChangeDefinition={onChangeDefinition}
+        <EditableText
+          text={definition}
+          onChangeText={onChangeDefinition}
           codeID={record.id}
+          placeholder={'Input the code definition here'}
         />
       ),
     },

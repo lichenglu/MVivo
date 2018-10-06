@@ -14,7 +14,7 @@ export interface RenderHighlightOptions {
     props: {
       hoverToEmphasize: boolean;
       bgColor: string;
-      mark: RenderMarkProps['mark'];
+      inline: Inline;
       editor: RenderMarkProps['editor'];
       children?: RenderMarkProps['children'];
       attributes?: RenderMarkProps['attributes'];
@@ -40,7 +40,7 @@ export function RenderHighlight({
           <Component
             hoverToEmphasize={hoverToEmphasize}
             bgColor={bgColor}
-            mark={node}
+            inline={node}
             editor={editor}
             attributes={attributes}
           >

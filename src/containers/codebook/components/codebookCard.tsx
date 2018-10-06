@@ -5,16 +5,16 @@ import { Link } from 'react-router-dom';
 import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
 
-import { WorkSpaceSnapshot } from '~/stores';
+import { CodeBookSnapshot } from '~/stores';
 import { Colors, Styles } from '~/themes';
 
-interface WorkSpaceCardProps {
-  data: WorkSpaceSnapshot;
+interface CodeBookCardProps {
+  data: CodeBookSnapshot;
   onEdit?: (params: any) => void;
   onSelectExtraAction?: (
-    params: AntClickParam & { workSpaceID: string }
+    params: AntClickParam & { codeBookID: string }
   ) => void;
-  handleAction?: (params: AntClickParam & { workSpaceID: string }) => void;
+  handleAction?: (params: AntClickParam & { codeBookID: string }) => void;
 }
 
 const Container = styled.div`
@@ -35,6 +35,12 @@ const Container = styled.div`
   @media (min-width: 960px) {
     flex: 0.25;
     width: calc(25% - 1rem);
+  }
+
+  &&&& {
+    .ant-card {
+      max-width: 100%;
+    }
   }
 `;
 
@@ -60,17 +66,16 @@ const CardCover = styled.div`
 `;
 
 const actions = [
-  { key: 'summary', text: 'Summary' },
   { key: 'share', text: 'Share' },
   { key: 'delete', text: 'Delete', important: true },
 ];
 
-const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
+const CodeBookCard = ({ data, onEdit, handleAction }: CodeBookCardProps) => (
   <Container>
     <Card
       cover={
         <CardCover>
-          <Link to={`/workspace/${data.id}`}>
+          <Link to={`/codebook/${data.id}`}>
             <img
               alt="cover image"
               src="https://source.unsplash.com/800x450/?research"
@@ -80,9 +85,7 @@ const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
         </CardCover>
       }
       actions={[
-        <Link key="edit" to={`/workspace/${data.id}/edit`}>
-          <Icon type="edit" onClick={onEdit} />
-        </Link>,
+        <Icon key="edit" type="edit" onClick={onEdit} />,
         <Dropdown
           key="ellipsis"
           placement="bottomCenter"
@@ -102,10 +105,6 @@ const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
       ]}
     >
       <Card.Meta
-        // TODO: use different images according to ws's importance
-        // avatar={
-        // 	<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-        // }
         title={data.name}
         description={data.description || 'No description'}
       />
@@ -113,15 +112,15 @@ const WordSpaceCard = ({ data, onEdit, handleAction }: WorkSpaceCardProps) => (
   </Container>
 );
 
-const enhance = compose<WorkSpaceCardProps, WorkSpaceCardProps>(
+const enhance = compose<CodeBookCardProps, CodeBookCardProps>(
   withHandlers({
     handleAction: ({ data, onSelectExtraAction }) => (
       params: AntClickParam
     ) => {
       if (!onSelectExtraAction) return;
-      onSelectExtraAction({ ...params, workSpaceID: data.id });
+      onSelectExtraAction({ ...params, codeBookID: data.id });
     },
   })
 );
 
-export default enhance(WordSpaceCard);
+export default enhance(CodeBookCard);

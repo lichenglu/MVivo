@@ -25,11 +25,12 @@ export const CodeModel = types
 
 export const CodeBookModel = types
   .model('CodeBook', {
+    availableColors: types.optional(types.array(types.string), colorPalette),
     codes: types.optional(types.map(types.reference(CodeModel)), {}),
+    colorPalette: types.optional(types.array(types.string), colorPalette),
+    description: types.maybe(types.string),
     id: types.identifier,
     name: types.string,
-    colorPalette: types.optional(types.array(types.string), colorPalette),
-    availableColors: types.optional(types.array(types.string), colorPalette),
     recycleColor: types.optional(types.boolean, true),
   })
   .actions(self => {
@@ -107,6 +108,33 @@ export const CodeBookStore = types
         codeBook.updateCode(codeID, data);
       }
     },
+    copyCodeBookBy(
+      codeBookID: string,
+      data: {
+        name: string;
+        codes?: CodesSnapshot;
+        description?: string;
+      }
+    ) {
+      const copiedCodeBook = self.codeBooks.get(codeBookID);
+
+      if (copiedCodeBook) {
+        const codeBook = CodeBookModel.create({
+          ...data,
+          colorPalette: getSnapshot(copiedCodeBook.colorPalette),
+          availableColors: getSnapshot(copiedCodeBook.availableColors),
+        });
+        self.codeBooks.put(codeBook);
+
+        const codes = copiedCodeBook.codeList;
+        codes.forEach(({ id, ...codeData }) => {
+          this.createCodeAndAddTo(codeBook.id, CodeModel.create(codeData));
+        });
+        return self.codeBooks.get(codeBook.id);
+      }
+      console.log(`Failed to copy codebook with id ${codeBookID}`);
+      return null;
+    },
   }))
   .views(self => ({
     codeBookBy(id: string) {
@@ -114,6 +142,9 @@ export const CodeBookStore = types
     },
     get codeBookList() {
       return values(self.codeBooks).map((book: CodeBook) => getSnapshot(book));
+    },
+    get hasCodeBook() {
+      return this.codeBookList.length > 0;
     },
   }));
 

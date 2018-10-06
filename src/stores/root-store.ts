@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree';
+import { getSnapshot, types } from 'mobx-state-tree';
 import {
   CodeBookModel,
   CodeBookSnapshot,
@@ -19,10 +19,36 @@ export const RootStoreModel = types
     workSpaceStore: types.optional(WorkSpaceStore, {}),
   })
   .actions(self => ({
-    createCodeBook(data: { name: string; codes?: CodesSnapshot }) {
-      const codeBook = CodeBookModel.create(data);
-      self.codeBookStore.codeBooks.put(codeBook);
-      return codeBook;
+    createCodeBook(data: {
+      name: string;
+      codes?: CodesSnapshot;
+      description?: string;
+      codeBookID?: string;
+    }) {
+      const { codeBookID, ...rest } = data;
+
+      // if there is codeBookID passed in, then copy the
+      // codebook and create a new codebook
+      if (codeBookID) {
+        const codeBook = self.codeBookStore.copyCodeBookBy(codeBookID, rest);
+        if (codeBook) {
+          return codeBook;
+        }
+        return null;
+      } else {
+        const codeBook = CodeBookModel.create(data);
+        self.codeBookStore.codeBooks.put(codeBook);
+        return codeBook;
+      }
+    },
+    deleteCodeBookBy(id: string) {
+      const targetCodeBook = self.codeBookStore.codeBookBy(id);
+      if (targetCodeBook) {
+        targetCodeBook.codeList.forEach(code =>
+          self.codeBookStore.codes.delete(code.id)
+        );
+      }
+      self.codeBookStore.codeBooks.delete(id);
     },
     createWorkSpace(data: {
       name: string;

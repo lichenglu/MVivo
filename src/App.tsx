@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Header from './components/header';
 
 // containers
+import CodeBook from './containers/codebook';
 import WorkSpace from './containers/workspace';
 
 // utils
@@ -29,8 +30,8 @@ const ContentContainer = styled.div`
 class App extends React.Component {
   get items() {
     return [
-      { key: 'workspaces', title: 'Work Spaces', path: routeConstants.root },
-      { key: 'codebooks', title: 'Code Books', path: routeConstants.codebooks },
+      { key: 'workspace', title: 'Work Spaces', path: routeConstants.root },
+      { key: 'codebook', title: 'Code Books', path: routeConstants.codebooks },
     ];
   }
 
@@ -41,6 +42,7 @@ class App extends React.Component {
         <Header items={this.items} />
         <ContentContainer>
           <Route path={routeConstants.root} component={WorkSpace} />
+          <Route path={routeConstants.codebooks} component={CodeBook} />
         </ContentContainer>
       </Container>
     );
