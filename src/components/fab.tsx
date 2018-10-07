@@ -9,7 +9,7 @@ import Plus from '../assets/plus_circle.svg';
 // TODO: better way to type
 const Fab = styled<any>(Button)`
   &&&& {
-    position: absolute;
+    position: fixed;
     bottom: 5%;
     right: 5%;
     z-index: 999;
