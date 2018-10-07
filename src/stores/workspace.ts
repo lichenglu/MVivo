@@ -6,7 +6,7 @@ import Serializer from 'slate-plain-serializer';
 import { CodeBook, CodeBookModel } from './codebook';
 import { assignUUID, EditorContentState } from './utils';
 
-import { gradients, generateGradient } from '~/lib/colorPalette';
+import { generateGradient, gradients } from '~/lib/colorPalette';
 
 export const DocumentModel = types
   .model('Document', {
@@ -26,9 +26,12 @@ export const WorkSpaceModel = types
   .model('WorkSpace', {
     bookmarked: types.optional(types.boolean, false),
     codeBook: types.maybe(types.reference(CodeBookModel)),
-    cover: types.optional(
-      types.string,
-      generateGradient(gradients[Math.floor(Math.random() * gradients.length)])
+    cover: types.maybe(
+      types.model({
+        from: types.string,
+        to: types.string,
+        degree: types.number,
+      })
     ),
     description: types.optional(types.string, ''),
     document: types.maybe(types.reference(DocumentModel)),
@@ -44,6 +47,19 @@ export const WorkSpaceModel = types
     },
     bookmark(toggle: boolean) {
       self.bookmarked = toggle;
+    },
+    afterCreate() {
+      if (!self.cover) {
+        self.cover = gradients[Math.floor(Math.random() * gradients.length)];
+      }
+    },
+  }))
+  .views(self => ({
+    get coverCSS() {
+      if (self.cover) {
+        return generateGradient(self.cover);
+      }
+      return null;
     },
   }))
   .preProcessSnapshot(assignUUID);

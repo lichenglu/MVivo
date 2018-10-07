@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
 
+import { generateGradient } from '~/lib/colorPalette';
 import { WorkSpaceSnapshot } from '~/stores';
 import { Colors, Styles } from '~/themes';
 
@@ -96,7 +97,7 @@ const WordSpaceCard = ({
     <Card
       cover={
         <Link to={`/workspace/${data.id}`}>
-          <CardCover cover={data.cover}>
+          <CardCover cover={data.cover ? generateGradient(data.cover) : ''}>
             <Icon
               type="star"
               theme={data.bookmarked ? 'filled' : 'outlined'}
