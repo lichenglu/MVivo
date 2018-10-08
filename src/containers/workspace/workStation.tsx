@@ -100,7 +100,7 @@ export class WorkStationContainer extends React.Component<
     return (
       <React.Fragment>
         <Helmet>
-          <title>WorkSpace Detail</title>
+          <title>WorkSpace - work station</title>
         </Helmet>
         {this.hasDocument ? (
           <WorkStation

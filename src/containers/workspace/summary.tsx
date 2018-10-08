@@ -102,7 +102,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     return (
       <React.Fragment>
         <Helmet>
-          <title>WorkSpace Summary</title>
+          <title>WorkSpace - summary</title>
         </Helmet>
 
         <CheckList

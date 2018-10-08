@@ -125,7 +125,7 @@ export class DocumentManagement extends React.Component<
     return (
       <React.Fragment>
         <Helmet>
-          <title>WorkSpace Detail</title>
+          <title>WorkSpace - doc management</title>
         </Helmet>
         {viewingDocs ? (
           <DocumentList
