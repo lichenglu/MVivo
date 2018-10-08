@@ -34,7 +34,7 @@ export const WorkSpaceModel = types
       })
     ),
     description: types.optional(types.string, ''),
-    document: types.maybe(types.reference(DocumentModel)),
+    documents: types.optional(types.map(types.reference(DocumentModel)), {}),
     id: types.identifier,
     name: types.string,
   })
@@ -42,8 +42,10 @@ export const WorkSpaceModel = types
     setCodeBook(book?: CodeBook) {
       self.codeBook = book;
     },
-    setDocument(documentT?: Document) {
-      self.document = documentT;
+    addDocument(documentT?: Document) {
+      if (documentT) {
+        self.documents.put(documentT);
+      }
     },
     bookmark(toggle: boolean) {
       self.bookmarked = toggle;
@@ -60,6 +62,9 @@ export const WorkSpaceModel = types
         return generateGradient(self.cover);
       }
       return null;
+    },
+    get documentList() {
+      return values(self.documents).map((doc: Document) => getSnapshot(doc));
     },
   }))
   .preProcessSnapshot(assignUUID);

@@ -1,7 +1,8 @@
 export const routeConstants = {
   codebooks: '/codebooks',
   root: '/',
-  workStation: '/workspace/:id',
-  workspaceEdit: '/workspace/:id/edit',
+  workspaceDocs: '/workspace/:id/document',
+  workStation: '/workspace/:wsID/document/:docID',
+  workStationEdit: '/workspace/:id/edit',
   workspaceSummary: '/workspace/:id/summary',
 };

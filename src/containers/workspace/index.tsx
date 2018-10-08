@@ -4,9 +4,10 @@ import { Route, Switch } from 'react-router-dom';
 import { routeConstants } from '~/lib/constants';
 
 import { WorkSpace } from '~/containers/workspace/list';
-import { WorkSpaceDetail } from './detail';
+import { DocumentManagement } from './documentManagement';
 import { WorkSpaceEditPanel } from './edit';
 import { Summary } from './summary';
+import { WorkStationContainer } from './workStation';
 
 export * from './components';
 
@@ -15,8 +16,8 @@ export default () => (
     <Route exact={true} path={routeConstants.root} component={WorkSpace} />
     <Route
       exact={true}
-      path={routeConstants.workStation}
-      component={WorkSpaceDetail}
+      path={routeConstants.workspaceDocs}
+      component={DocumentManagement}
     />
     <Route
       exact={true}
@@ -25,8 +26,13 @@ export default () => (
     />
     <Route
       exact={true}
-      path={routeConstants.workspaceEdit}
+      path={routeConstants.workStationEdit}
       component={WorkSpaceEditPanel}
+    />
+    <Route
+      exact={true}
+      path={routeConstants.workStation}
+      component={WorkStationContainer}
     />
   </Switch>
 );

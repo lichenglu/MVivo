@@ -96,7 +96,7 @@ const WordSpaceCard = ({
   <Container>
     <Card
       cover={
-        <Link to={`/workspace/${data.id}`}>
+        <Link to={`/workspace/${data.id}/document`}>
           <CardCover cover={data.cover ? generateGradient(data.cover) : ''}>
             <Icon
               type="star"

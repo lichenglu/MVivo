@@ -1,11 +1,10 @@
-import { notification, Switch } from 'antd';
+import { values } from 'mobx';
 import { inject, observer } from 'mobx-react';
+import { concat, mergeDeepWithKey } from 'ramda';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { Value } from 'slate';
-import styled from 'styled-components';
 
-import { RootStore } from '~/stores/root-store';
+import { Document, RootStore } from '~/stores/root-store';
 
 import { getCodeSummary } from '~/lib/slate-plugins';
 
@@ -21,6 +20,16 @@ interface SummaryState {
   showAPA: boolean;
 }
 
+const mergeCodeSummary = (key: string, l: any, r: any) => {
+  if (key === 'examples') {
+    return concat(l, r);
+  }
+  if (key === 'count') {
+    return l + r;
+  }
+  return r;
+};
+
 @inject('rootStore')
 @observer
 export class Summary extends React.Component<SummaryProps, SummaryState> {
@@ -35,14 +44,20 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
   }
 
   get codeList() {
-    if (
-      this.workSpace &&
-      this.workSpace.codeBook &&
-      this.workSpace.document &&
-      this.workSpace.document.editorContentState
-    ) {
-      const editorState: Value = this.workSpace.document.editorContentState;
-      const summary = getCodeSummary({ value: editorState });
+    if (this.workSpace && this.workSpace.codeBook && this.workSpace.documents) {
+      const summaries = values(this.workSpace.documents).map(
+        (document: Document) => {
+          return document.editorContentState
+            ? getCodeSummary({
+                value: document.editorContentState,
+              })
+            : {};
+        }
+      );
+
+      const summary = summaries.reduce((cur, next) => {
+        return mergeDeepWithKey(mergeCodeSummary, cur, next);
+      }, {});
 
       return this.workSpace.codeBook.codeList.map(code => {
         return {
