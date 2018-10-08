@@ -34,7 +34,7 @@
   },
   "scripts": {
     "start": "parcel src/index.html",
-    "start:heroku": "serve -s build",
+    "start:heroku": "serve -s dist",
     "prebuild": "rm -rf dist/",
     "heroku-postbuild": "npm run build",
     "build": "PUBLIC_URL='.' parcel build src/index.html"
