@@ -7,9 +7,10 @@ if (shell.exec('npm run build').code !== 0) {
   shell.exit(1);
 }
 
-shell.exec(
-  `echo "<?php header( 'Location: /index.html' ) ;  ?>" > ./dist/index.php`
-);
+shell.exec(`echo "<?php header( 'Location: /' ) ;  ?>" > ./dist/index.php`);
+
+shell.exec(`git add .`);
+shell.exec(`git commit -m "New build @${Date.now()}"`);
 
 if (shell.exec('git subtree push --prefix dist heroku master').code !== 0) {
   shell.echo('Error: Failed to deploy build folder to heroku');

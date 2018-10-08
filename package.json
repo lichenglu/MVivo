@@ -34,7 +34,7 @@
   "scripts": {
     "start": "parcel src/index.html",
     "prebuild": "rm -rf dist/",
-    "build": "parcel build src/index.html",
+    "build": "PUBLIC_URL='.' parcel build src/index.html",
     "deploy:heroku": "node ./scripts/deploy.js"
   },
   "devDependencies": {
