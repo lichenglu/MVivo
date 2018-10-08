@@ -35,7 +35,8 @@
     "start": "parcel src/index.html",
     "prebuild": "rm -rf dist/",
     "build": "parcel build src/index.html",
-    "deploy:heroku": "node ./scripts/deploy.js"
+    "build:github": "npm run prebuild && parcel build src/index.html --public-url '/MVivo'",
+    "deploy:github": "node ./scripts/deploy.js"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
