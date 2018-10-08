@@ -31,8 +31,9 @@
   },
   "scripts": {
     "start": "parcel src/index.html",
+    "postinstall": "npm run build",
     "prebuild": "rm -rf dist/",
-    "build": "NODE_ENV=production node ./node_modules/parcel-bundler/bin/cli build src/index.html"
+    "build": "parcel build src/index.html"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
