@@ -35,7 +35,7 @@
     "start": "parcel src/index.html",
     "prebuild": "rm -rf dist/",
     "build": "parcel build src/index.html",
-    "build:github": "npm run prebuild && parcel build src/index.html --public-url '/MVivo'",
+    "build:github": "npm run prebuild && parcel build src/index.html --public-url '.'",
     "deploy:github": "node ./scripts/deploy.js"
   },
   "devDependencies": {
