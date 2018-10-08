@@ -1,24 +1,23 @@
 import { message, notification } from 'antd';
 import { inject, observer } from 'mobx-react';
-import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Value as SlateValue } from 'slate';
 import styled from 'styled-components';
 
-import { CodeModel, RootStore } from '~/stores/root-store';
+import { DocumentSnapshot, RootStore } from '~/stores/root-store';
 
 // components
+import DocumentList from './components/documentList';
 import ManualUpload from './components/manualUpload';
 import Uploader from './components/upload';
-import { WorkStation } from './components/workStation';
 
-interface WorkSpaceDetailProps extends RouteCompProps<{ id: string }> {
+interface DocumentManagementProps extends RouteCompProps<{ id: string }> {
   rootStore: RootStore;
 }
 
-interface WorkSpaceDetailState {
+interface DocumentManagementState {
   manualInputDocument: boolean;
+  viewingDocs: boolean;
 }
 
 const UploadContainer = styled.div`
@@ -45,19 +44,15 @@ const Switch = styled.a`
   align-self: flex-end;
 `;
 
-// TODO:
-// 1. Asked to upload text file if not available
-// 2. Add more text file, unlink text file
-// 3. Link/unlink more code book
-// 4. Update workSpace info
 @inject('rootStore')
 @observer
-export class WorkSpaceDetail extends React.Component<
-  WorkSpaceDetailProps,
-  WorkSpaceDetailState
+export class DocumentManagement extends React.Component<
+  DocumentManagementProps,
+  DocumentManagementState
 > {
   public state = {
     manualInputDocument: false,
+    viewingDocs: this.hasDocument,
   };
 
   public onCompleteUpload = (data: { text: string; name: string }) => {
@@ -74,7 +69,7 @@ export class WorkSpaceDetail extends React.Component<
         this.workSpace.setCodeBook(codeBook);
       }
 
-      this.workSpace.setDocument(documentT);
+      this.workSpace.addDocument(documentT);
       notification.success({
         description: 'Now you are all set to start coding!',
         message: 'Document uploaded!',
@@ -87,51 +82,29 @@ export class WorkSpaceDetail extends React.Component<
   public onSwitchUploadMode = () =>
     this.setState({ manualInputDocument: !this.state.manualInputDocument });
 
-  public onCreateCode = (data: {
-    name: string;
-    definition?: string;
-    bgColor?: string;
-    tint?: string;
-  }) => {
-    if (this.workSpace && this.workSpace.codeBook) {
-      const code = CodeModel.create(data);
-      this.props.rootStore.codeBookStore.createCodeAndAddTo(
-        this.workSpace.codeBook.id,
-        code
+  public onOpenFile = ({ document }: { document: DocumentSnapshot }) => {
+    if (!this.workSpace) {
+      console.log(
+        `[onOpenFile] Cannot open document. Because workspace is null`
       );
-      return getSnapshot(code);
+      return;
     }
-    return null;
+    this.props.history.push(
+      `/workspace/${this.workSpace.id}/document/${document.id}`
+    );
   };
 
-  public onDeleteCode = (codeID: string) => {
-    if (this.workSpace && this.workSpace.codeBook) {
-      const success = this.props.rootStore.codeBookStore.removeCodeOf(
-        this.workSpace.codeBook.id,
-        codeID
-      );
-      return success;
-    }
-    return false;
-  };
-
-  public onUpdateEditorContent = (contentState: SlateValue) => {
-    if (this.document) {
-      this.props.rootStore.workSpaceStore.updateEditorState(
-        this.document.id,
-        contentState
-      );
-    }
-  };
+  public onSwitchViewingMode = () =>
+    this.setState({ viewingDocs: !this.state.viewingDocs });
 
   get workSpace() {
     const workSpaceID = this.props.match.params.id;
     return this.props.rootStore.workSpaceStore.workSpaceBy(workSpaceID);
   }
 
-  get document() {
+  get documents() {
     if (!this.workSpace) return null;
-    return this.workSpace.document;
+    return this.workSpace.documentList;
   }
 
   get codeList() {
@@ -142,29 +115,35 @@ export class WorkSpaceDetail extends React.Component<
   }
 
   get hasDocument() {
-    if (!this.document) return false;
-    return !!this.document.id;
+    return this.documents && this.documents.length > 0;
   }
 
   public render(): JSX.Element | null {
     // if (!this.workSpace) return null;
-    const { manualInputDocument } = this.state;
+    const { manualInputDocument, viewingDocs } = this.state;
 
     return (
       <React.Fragment>
         <Helmet>
           <title>WorkSpace Detail</title>
         </Helmet>
-        {this.hasDocument ? (
-          <WorkStation
-            codeList={this.codeList}
-            onCreateCode={this.onCreateCode}
-            onDeleteCode={this.onDeleteCode}
-            onUpdateEditorContent={this.onUpdateEditorContent}
-            editorState={this.document && this.document.editorContentState}
+        {viewingDocs ? (
+          <DocumentList
+            documents={this.documents}
+            onOpenFile={this.onOpenFile}
+            onCreate={this.onSwitchViewingMode}
           />
         ) : (
           <UploadContainer>
+            {this.hasDocument && (
+              <Switch
+                onClick={this.onSwitchViewingMode}
+                style={{ alignSelf: 'flex-start', marginBottom: '0.5rem' }}
+              >
+                {'Go to document list'}
+              </Switch>
+            )}
+
             {!manualInputDocument && (
               <Uploader onCompleteUpload={this.onCompleteUpload} />
             )}

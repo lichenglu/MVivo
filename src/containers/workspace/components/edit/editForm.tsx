@@ -44,7 +44,7 @@ export const EditForm = ({
   handleDescChange,
   codeBooks,
   codeBook,
-  document: textDocument,
+  documents: textDocuments,
   handleSelectCodeBook,
 }: EditFormProps) => (
   <Container>
@@ -75,7 +75,7 @@ export const EditForm = ({
       placeholder="Select existing code books"
       value={codeBook && codeBook.name}
       onSelect={handleSelectCodeBook}
-      disabled={!!textDocument}
+      disabled={!!textDocuments}
     >
       {codeBooks.map(({ name: codeName, id }: { name: string; id: string }) => (
         <Select.Option key={id} value={id}>

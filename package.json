@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/ramda": "^0.25.39",
     "antd": "^3.10.0",
     "apisauce": "^0.16.0",
     "color": "^3.0.0",
@@ -13,6 +14,7 @@
     "mobx-react": "^5.2.8",
     "mobx-state-tree": "^3.5.0",
     "normalize.css": "^8.0.0",
+    "ramda": "^0.25.0",
     "randomcolor": "^0.5.3",
     "react": ">=15.0.0",
     "react-contexify": "^3.0.3",

@@ -65,7 +65,7 @@ export const RootStoreModel = types
 
       if (data.documentID) {
         const documentT = self.workSpaceStore.documentBy(data.documentID);
-        workSpace.setDocument(documentT);
+        workSpace.addDocument(documentT);
       }
 
       self.workSpaceStore.workSpaces.put(workSpace);
@@ -77,10 +77,10 @@ export const RootStoreModel = types
         self.workSpaceStore.currentWorkSpace &&
         self.workSpaceStore.currentWorkSpace.id === id
       ) {
-        if (self.workSpaceStore.currentWorkSpace.document) {
-          self.workSpaceStore.documents.delete(
-            self.workSpaceStore.currentWorkSpace.document.id
-          );
+        if (self.workSpaceStore.currentWorkSpace.documents) {
+          self.workSpaceStore.currentWorkSpace.documents.forEach(doc => {
+            self.workSpaceStore.documents.delete(doc.id);
+          });
         }
         self.workSpaceStore.setWorkSpaceBy('');
       }
