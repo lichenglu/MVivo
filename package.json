@@ -31,9 +31,9 @@
   },
   "scripts": {
     "start": "parcel src/index.html",
-    "postinstall": "npm run build",
     "prebuild": "rm -rf dist/",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html",
+    "deploy:heroku": "node ./scripts/deploy.js"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -61,6 +61,7 @@
     "react-hot-loader": "^4.3.11",
     "reactotron-mst": "^2.1.0",
     "reactotron-react-js": "^2.1.1",
+    "shelljs": "^0.8.2",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
