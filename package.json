@@ -32,7 +32,7 @@
   "scripts": {
     "start": "parcel src/index.html",
     "prebuild": "rm -rf dist/",
-    "build": "parcel build src/index.html"
+    "build": "NODE_ENV=production node ./node_modules/parcel-bundler/bin/cli build src/index.html"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
