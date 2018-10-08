@@ -25,6 +25,7 @@
     "react-router-dom": "^4.3.1",
     "react-svg-inline": "^2.1.1",
     "recompose": "^0.30.0",
+    "serve": "^10.0.2",
     "slate": "^0.41.2",
     "slate-plain-serializer": "^0.6.2",
     "slate-react": "^0.18.10",
@@ -33,9 +34,10 @@
   },
   "scripts": {
     "start": "parcel src/index.html",
+    "start:heroku": "serve -s build",
     "prebuild": "rm -rf dist/",
-    "build": "PUBLIC_URL='.' parcel build src/index.html",
-    "deploy:heroku": "node ./scripts/deploy.js"
+    "heroku-postbuild": "npm run build",
+    "build": "PUBLIC_URL='.' parcel build src/index.html"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
