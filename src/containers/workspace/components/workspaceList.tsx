@@ -11,6 +11,7 @@ const Container = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
+  transition: 0.2s;
 `;
 
 interface WorkSpaceListProps {

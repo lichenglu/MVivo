@@ -12,4 +12,9 @@ if (shell.exec('git subtree push --prefix dist heroku master').code !== 0) {
   shell.exit(1);
 }
 
+if (shell.exec('rm -rf ./dist').code !== 0) {
+  shell.echo('Error: Failed to remove built folder');
+  shell.exit(1);
+}
+
 shell.echo('Hurray!');
