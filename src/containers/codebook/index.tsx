@@ -7,6 +7,6 @@ import { CodeBook } from '~/containers/codebook/list';
 
 export default () => (
   <Switch>
-    <Route path={routeConstants.root} component={CodeBook} />
+    <Route path={routeConstants.codebooks} component={CodeBook} exact={true} />
   </Switch>
 );

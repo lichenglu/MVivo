@@ -1,10 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader';
-import { Route } from 'react-router-dom';
+import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 // components
+import NotFound from './components/404';
+import { breadcrumbRoutes, Breadcrumbs } from './components/breadcrumb';
 import Header from './components/header';
 
 // containers
@@ -22,16 +25,25 @@ const Container = styled.div`
 `;
 const ContentContainer = styled.div`
   padding: 24px;
+  padding-top: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
+
+  &&&& {
+    .ant-breadcrumb {
+      padding-top: 12px;
+      padding-bottom: 16px;
+      padding-left: 10px;
+    }
+  }
 `;
 
 class App extends React.Component {
-  get items() {
+  get navItems() {
     return [
-      { key: 'workspace', title: 'Work Spaces', path: routeConstants.root },
-      { key: 'codebook', title: 'Code Books', path: routeConstants.codebooks },
+      { key: 'workspaces', title: 'Work Spaces', path: routeConstants.root },
+      { key: 'codebooks', title: 'Code Books', path: routeConstants.codebooks },
     ];
   }
 
@@ -39,14 +51,20 @@ class App extends React.Component {
     return (
       <Container>
         <Helmet titleTemplate="MVivo - %s" />
-        <Header items={this.items} />
+        <Header items={this.navItems} />
         <ContentContainer>
-          <Route path={routeConstants.root} component={WorkSpace} />
-          <Route path={routeConstants.codebooks} component={CodeBook} />
+          <Breadcrumbs breadcrumbs={this.props.breadcrumbs} />
+          <Switch>
+            <Route path={routeConstants.root} component={WorkSpace} />
+            <Route path={routeConstants.codebooks} component={CodeBook} />
+            <Redirect from="/" to={routeConstants.root} exact={true} />
+            <Route path="*" component={NotFound} />
+          </Switch>
         </ContentContainer>
       </Container>
     );
   }
 }
 
-export default hot(module)(App);
+const AppWithBreadcrumbs = withBreadcrumbs(breadcrumbRoutes)(App);
+export default hot(module)(AppWithBreadcrumbs);

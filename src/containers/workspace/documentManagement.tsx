@@ -11,6 +11,9 @@ import DocumentList from './components/documentList';
 import ManualUpload from './components/manualUpload';
 import Uploader from './components/upload';
 
+// utils
+import { routeConstants } from '~/lib/constants';
+
 interface DocumentManagementProps extends RouteCompProps<{ id: string }> {
   rootStore: RootStore;
 }
@@ -95,7 +98,9 @@ export class DocumentManagement extends React.Component<
       return;
     }
     this.props.history.push(
-      `/workspace/${this.workSpace.id}/document/${document.id}`
+      routeConstants.workStation
+        .replace(':wsID', this.workSpace.id)
+        .replace(':docID', document.id)
     );
   };
 

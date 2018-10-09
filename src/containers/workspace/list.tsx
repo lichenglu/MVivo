@@ -11,6 +11,9 @@ import CreateWSModal from '~/containers/workspace/components/createModal';
 import EmptyView from '~/containers/workspace/components/emptyView';
 import WorkspaceList from '~/containers/workspace/components/workspaceList';
 
+// utils
+import { routeConstants } from '~/lib/constants';
+
 interface WorkSpaceProps extends RouteCompProps<{}> {
   rootStore: RootStore;
 }
@@ -41,14 +44,17 @@ export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
   public onSelectExtraAction = (
     params: AntClickParam & { workSpaceID: string }
   ) => {
-    switch (params.key) {
+    const { workSpaceID, key } = params;
+    switch (key) {
       case 'delete':
-        this.props.rootStore.deleteWorkSpaceBy(params.workSpaceID);
+        this.props.rootStore.deleteWorkSpaceBy(workSpaceID);
         break;
       case 'share':
         break;
       case 'summary':
-        this.props.history.push(`workspace/${params.workSpaceID}/summary`);
+        this.props.history.push(
+          routeConstants.workspaceSummary.replace(':id', workSpaceID)
+        );
         break;
       default:
         break;

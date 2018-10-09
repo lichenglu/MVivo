@@ -38,7 +38,7 @@ class Header extends React.PureComponent<HeaderProps> {
 
     return Object.values(this.props.items)
       .filter(item => {
-        if (location.pathname === '/') return item.key === 'workspace';
+        if (location.pathname === '/') return item.key === 'workspaces';
         return location.pathname.includes(item.key);
       })
       .map(item => item.key);
