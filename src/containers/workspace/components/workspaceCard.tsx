@@ -6,6 +6,7 @@ import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
 
 import { generateGradient } from '~/lib/colorPalette';
+import { routeConstants } from '~/lib/constants';
 import { WorkSpaceSnapshot } from '~/stores';
 import { Colors, Styles } from '~/themes';
 
@@ -96,7 +97,7 @@ const WordSpaceCard = ({
   <Container>
     <Card
       cover={
-        <Link to={`/workspace/${data.id}/document`}>
+        <Link to={routeConstants.workspaceDocs.replace(':id', data.id)}>
           <CardCover cover={data.cover ? generateGradient(data.cover) : ''}>
             <Icon
               type="star"
@@ -114,7 +115,10 @@ const WordSpaceCard = ({
         </Link>
       }
       actions={[
-        <Link key="edit" to={`/workspace/${data.id}/edit`}>
+        <Link
+          key="edit"
+          to={routeConstants.workStationEdit.replace(':id', data.id)}
+        >
           <Icon type="edit" onClick={onEdit} />
         </Link>,
         <Dropdown

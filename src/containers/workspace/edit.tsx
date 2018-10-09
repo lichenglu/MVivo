@@ -37,7 +37,6 @@ export class WorkSpaceEditPanel extends React.Component<
         <Helmet>
           <title>WorkSpace - edit</title>
         </Helmet>
-
         <EditForm {...this.workSpace} codeBooks={this.codeBooks} />
       </React.Fragment>
     );
