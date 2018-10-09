@@ -4,17 +4,27 @@ import { NavLink } from 'react-router-dom';
 
 import { routeConstants } from '~/lib/constants';
 
-import { WorkSpaceBreadcrumb, WorkSpaceDocBreadcrumb } from './index';
+import {
+  FirstLevelFactory,
+  WorkSpaceBreadcrumb,
+  WorkSpaceDocBreadcrumb,
+} from './index';
 
 export const breadcrumbRoutes = [
   { path: '/', breadcrumb: null },
-  { path: routeConstants.root, breadcrumb: 'Workspaces' },
+  {
+    path: routeConstants.root,
+    breadcrumb: FirstLevelFactory({ name: 'Workspaces' }),
+  },
   { path: `${routeConstants.root}/:id`, breadcrumb: null },
   { path: routeConstants.workStationEdit, breadcrumb: WorkSpaceBreadcrumb },
   { path: routeConstants.workspaceSummary, breadcrumb: WorkSpaceBreadcrumb },
   { path: routeConstants.workspaceDocs, breadcrumb: WorkSpaceBreadcrumb },
   { path: routeConstants.workStation, breadcrumb: WorkSpaceDocBreadcrumb },
-  { path: routeConstants.codebooks, breadcrumb: 'Codebooks' },
+  {
+    path: routeConstants.codebooks,
+    breadcrumb: FirstLevelFactory({ name: 'Codebooks' }),
+  },
   { path: '*', breadcrumb: null },
 ];
 
