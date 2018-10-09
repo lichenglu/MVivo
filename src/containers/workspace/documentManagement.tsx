@@ -52,7 +52,7 @@ export class DocumentManagement extends React.Component<
 > {
   public state = {
     manualInputDocument: false,
-    viewingDocs: this.hasDocument,
+    viewingDocs: !!this.hasDocument,
   };
 
   public onCompleteUpload = (data: { text: string; name: string }) => {
@@ -68,8 +68,13 @@ export class DocumentManagement extends React.Component<
         });
         this.workSpace.setCodeBook(codeBook);
       }
-
       this.workSpace.addDocument(documentT);
+
+      // If this is the first document uploaded, we want to switch to
+      // document list automatically.
+      if (this.documents && this.documents.length === 1) {
+        this.setState({ viewingDocs: true });
+      }
       notification.success({
         description: 'Now you are all set to start coding!',
         message: 'Document uploaded!',
@@ -119,7 +124,6 @@ export class DocumentManagement extends React.Component<
   }
 
   public render(): JSX.Element | null {
-    // if (!this.workSpace) return null;
     const { manualInputDocument, viewingDocs } = this.state;
 
     return (
