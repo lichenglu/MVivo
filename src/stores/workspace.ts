@@ -108,7 +108,7 @@ export const WorkSpaceStore = types
       data: Omit<DocumentSnapshot, 'id' | 'editorContentState'>,
       options: {
         isHTML?: boolean;
-      }
+      } = {}
     ) {
       const document = DocumentModel.create(data);
       if (!document.editorContentState) {

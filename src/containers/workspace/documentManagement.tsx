@@ -2,7 +2,6 @@ import { message, notification } from 'antd';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Value } from 'slate';
 import styled from 'styled-components';
 
 import { DocumentSnapshot, RootStore } from '~/stores/root-store';
@@ -63,7 +62,6 @@ export class DocumentManagement extends React.Component<
     data: {
       text: string;
       name: string;
-      editorContentState?: Value;
     },
     options: { isHTML: boolean }
   ) => {
@@ -73,12 +71,14 @@ export class DocumentManagement extends React.Component<
         options
       );
 
-      let codeBook = this.workSpace.codeBook;
+      const codeBook = this.workSpace.codeBook;
       if (!codeBook) {
-        codeBook = this.props.rootStore.createCodeBook({
+        const newCodeBook = this.props.rootStore.createCodeBook({
           name: `${this.workSpace.id}_code_book`,
         });
-        this.workSpace.setCodeBook(codeBook);
+        if (newCodeBook) {
+          this.workSpace.setCodeBook(newCodeBook);
+        }
       }
       this.workSpace.addDocument(documentT);
 
