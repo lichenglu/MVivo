@@ -2,6 +2,7 @@ import { message, notification } from 'antd';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { Value } from 'slate';
 import styled from 'styled-components';
 
 import { DocumentSnapshot, RootStore } from '~/stores/root-store';
@@ -58,10 +59,18 @@ export class DocumentManagement extends React.Component<
     viewingDocs: !!this.hasDocument,
   };
 
-  public onCompleteUpload = (data: { text: string; name: string }) => {
+  public onCompleteUpload = (
+    data: {
+      text: string;
+      name: string;
+      editorContentState?: Value;
+    },
+    options: { isHTML: boolean }
+  ) => {
     if (this.workSpace) {
       const documentT = this.props.rootStore.workSpaceStore.createDocument(
-        data
+        data,
+        options
       );
 
       let codeBook = this.workSpace.codeBook;
