@@ -1,4 +1,5 @@
 import { Button, Input } from 'antd';
+import { ButtonProps } from 'antd/lib/button';
 import { TextAreaProps } from 'antd/lib/input';
 import React from 'react';
 import styled from 'styled-components';
@@ -8,7 +9,7 @@ interface EditableTextState {
   text: string;
 }
 
-interface EditableTextProps {
+export interface EditableTextProps {
   text: string;
   onChangeText: (data: EditableTextProps) => void;
   placeholder: string;
@@ -27,7 +28,7 @@ const EditAreaContainer = styled.div`
   align-items: flex-end;
 `;
 
-const UpdateButton = styled(Button)`
+const UpdateButton = styled<ButtonProps>(Button)`
   margin-top: 0.5rem;
 `;
 

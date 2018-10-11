@@ -2,6 +2,7 @@ import { AutoComplete as AntAutoComplete } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 
+import { ColorGrid } from '~/components/colorGrid';
 import { CodeSnapshot } from '~/stores';
 
 const Option = AntAutoComplete.Option;
@@ -15,14 +16,6 @@ export const ContentContainer = styled.div`
 
 export const CreationHint = styled.a`
   margin-right: 6px;
-`;
-
-export const ColorGrid = styled.div<{ bgColor: string }>`
-  width: 1rem;
-  height: 1rem;
-  border-radius: 5px;
-  margin-right: 6px;
-  background-color: ${({ bgColor }) => bgColor};
 `;
 
 const StyledAutoComplete = styled(AntAutoComplete)`

@@ -1,70 +1,41 @@
 import { values } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { concat, mergeDeepWithKey } from 'ramda';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
 
-import { Document, RootStore } from '~/stores/root-store';
-
-import { getCodeSummary } from '~/lib/slate-plugins';
+import { RootStore } from '~/stores/root-store';
 
 // components
 import { APATable, CheckList, PivotTable } from '~/components/codebook';
 
-interface SummaryProps extends RouteCompProps<{ id: string }> {
+interface CodeBookEditProps extends RouteCompProps<{ id: string }> {
   rootStore: RootStore;
 }
 
-interface SummaryState {
+interface CodeBookEditState {
   checkedCodes: string[];
   showAPA: boolean;
 }
 
-const mergeCodeSummary = (key: string, l: any, r: any) => {
-  if (key === 'examples') {
-    return concat(l, r);
-  }
-  if (key === 'count') {
-    return l + r;
-  }
-  return r;
-};
-
 @inject('rootStore')
 @observer
-export class Summary extends React.Component<SummaryProps, SummaryState> {
+export class CodeBookEdit extends React.Component<
+  CodeBookEditProps,
+  CodeBookEditState
+> {
   public state = {
     checkedCodes: this.codeList.map(c => c.id),
     showAPA: false,
   };
 
-  get workSpace() {
-    const workSpaceID = this.props.match.params.id;
-    return this.props.rootStore.workSpaceStore.workSpaceBy(workSpaceID);
+  get codeBook() {
+    const codebookID = this.props.match.params.id;
+    return this.props.rootStore.codeBookStore.codeBookBy(codebookID);
   }
 
   get codeList() {
-    if (this.workSpace && this.workSpace.codeBook && this.workSpace.documents) {
-      const summaries = values(this.workSpace.documents).map(
-        (document: Document) => {
-          return document.editorContentState
-            ? getCodeSummary({
-                value: document.editorContentState,
-              })
-            : {};
-        }
-      );
-
-      const summary = summaries.reduce((cur, next) => {
-        return mergeDeepWithKey(mergeCodeSummary, cur, next);
-      }, {});
-
-      return this.workSpace.codeBook.codeList.map(code => {
-        return {
-          ...code,
-          ...summary[code.id],
-        };
-      });
+    if (this.codeBook && this.codeBook.codes) {
+      return this.codeBook.codeList;
     }
     return [];
   }
@@ -85,9 +56,9 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     codeID: string;
     text: string;
   }) => {
-    if (this.workSpace && this.workSpace.codeBook) {
+    if (this.codeBook) {
       this.props.rootStore.codeBookStore.updateCodeOf(
-        this.workSpace.codeBook.id,
+        this.codeBook.id,
         codeID,
         { definition: text }
       );
@@ -102,7 +73,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     return (
       <React.Fragment>
         <Helmet>
-          <title>WorkSpace - summary</title>
+          <title>CodeBook - edit</title>
         </Helmet>
 
         <CheckList
@@ -114,10 +85,16 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
           <PivotTable
             codes={this.filteredCodes}
             rowKey={'id'}
+            omittedColumns={['count', 'examples']}
             onChangeDefinition={this.onChangeDefinition}
           />
         )}
-        {showAPA && <APATable rows={this.filteredCodes} />}
+        {showAPA && (
+          <APATable
+            omittedColumns={['count', 'examples']}
+            rows={this.filteredCodes}
+          />
+        )}
       </React.Fragment>
     );
   }

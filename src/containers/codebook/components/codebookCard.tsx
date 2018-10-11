@@ -1,10 +1,11 @@
-import { Avatar, Card, Dropdown, Icon, Menu } from 'antd';
+import { Card, Dropdown, Icon, Menu } from 'antd';
 import Color from 'color';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
 
+import { routeConstants } from '~/lib/constants';
 import { CodeBookSnapshot } from '~/stores';
 import { Colors, Styles } from '~/themes';
 
@@ -61,10 +62,6 @@ const Action = styled.a<{ important?: boolean }>`
   }
 `;
 
-const CardCover = styled.div`
-  pointer: cursor;
-`;
-
 const actions = [
   { key: 'share', text: 'Share' },
   { key: 'delete', text: 'Delete', important: true },
@@ -73,19 +70,13 @@ const actions = [
 const CodeBookCard = ({ data, onEdit, handleAction }: CodeBookCardProps) => (
   <Container>
     <Card
-      cover={
-        <CardCover>
-          <Link to={`/codebook/${data.id}`}>
-            <img
-              alt="cover image"
-              src="https://source.unsplash.com/800x450/?research"
-              style={{ width: '100%', height: '100%' }}
-            />
-          </Link>
-        </CardCover>
-      }
       actions={[
-        <Icon key="edit" type="edit" onClick={onEdit} />,
+        <Link
+          key="edit"
+          to={routeConstants.codebookEdit.replace(':id', data.id)}
+        >
+          <Icon type="edit" onClick={onEdit} />
+        </Link>,
         <Dropdown
           key="ellipsis"
           placement="bottomCenter"
