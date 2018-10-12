@@ -1,1 +1,11 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1534393834956" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3057" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css"></style></defs><path d="M512 0C229.216 0 0 229.216 0 512c0 282.768 229.216 512 512 512 282.752 0 512-229.232 512-512C1024 229.216 794.752 0 512 0zM512 992C246.896 992 32 777.088 32 512 32 246.896 246.896 32 512 32c265.072 0 480 214.896 480 480C992 777.088 777.072 992 512 992z" p-id="3058" fill="#ffffff"></path><path d="M792 496l-560 0c-8.848 0-16 7.152-16 16s7.152 16 16 16l560 0c8.848 0 16-7.152 16-16S800.848 496 792 496z" p-id="3059" fill="#ffffff"></path><path d="M528 792l0-560c0-8.848-7.152-16-16-16s-16 7.152-16 16l0 560c0 8.848 7.152 16 16 16S528 800.848 528 792z" p-id="3060" fill="#ffffff"></path></svg>
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg t="1534393834956" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" 
+    xmlns="http://www.w3.org/2000/svg" p-id="3057" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+    <defs>
+        <style type="text/css"></style>
+    </defs>
+    <path d="M512 0C229.216 0 0 229.216 0 512c0 282.768 229.216 512 512 512 282.752 0 512-229.232 512-512C1024 229.216 794.752 0 512 0zM512 992C246.896 992 32 777.088 32 512 32 246.896 246.896 32 512 32c265.072 0 480 214.896 480 480C992 777.088 777.072 992 512 992z" p-id="3058" fill="#ffffff"></path>
+    <path d="M792 496l-560 0c-8.848 0-16 7.152-16 16s7.152 16 16 16l560 0c8.848 0 16-7.152 16-16S800.848 496 792 496z" p-id="3059" fill="#ffffff"></path>
+    <path d="M528 792l0-560c0-8.848-7.152-16-16-16s-16 7.152-16 16l0 560c0 8.848 7.152 16 16 16S528 800.848 528 792z" p-id="3060" fill="#ffffff"></path>
+</svg>
