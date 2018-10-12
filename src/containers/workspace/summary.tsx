@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 
 import { Document, RootStore } from '~/stores/root-store';
 
-import { getCodeSummary } from '~/lib/slate-plugins';
+import { getCodeSummary, migrateCodedInlines } from '~/lib/slate-plugins';
 
 // components
 import { APATable, CheckList, PivotTable } from '~/components/codebook';
@@ -44,7 +44,11 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
   }
 
   get codeList() {
-    if (this.workSpace && this.workSpace.codeBook && this.workSpace.documents) {
+    if (
+      this.workSpace &&
+      this.workSpace.codeBook &&
+      this.workSpace.documentList.length > 0
+    ) {
       const summaries = values(this.workSpace.documents).map(
         (document: Document) => {
           return document.editorContentState
@@ -85,12 +89,72 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     codeID: string;
     text: string;
   }) => {
+    const { rootStore } = this.props;
     if (this.workSpace && this.workSpace.codeBook) {
-      this.props.rootStore.codeBookStore.updateCodeOf(
-        this.workSpace.codeBook.id,
-        codeID,
-        { definition: text }
-      );
+      const {
+        id: curCodeBookID,
+        name: curCodeBookName,
+      } = this.workSpace.codeBook;
+      if (rootStore.isSharedCodeBook(curCodeBookID)) {
+        if (
+          confirm(
+            'This codebook is shared by more than one workspace! Do you want to make a copy of this codebook so that the changes only apply to this project'
+          )
+        ) {
+          // TODO:
+          // 1. make a copy of codebook
+          const copy = rootStore.codeBookStore.copyCodeBookBy(curCodeBookID, {
+            name: `Copied from ${curCodeBookName}`,
+          });
+          if (copy) {
+            // 2. migrate coded texts
+            const mapper = copy.codeList.reduce((cur, next) => {
+              const delimiter = '_@';
+              const newIDInArr = next.id.split(delimiter);
+              const originalID = newIDInArr
+                .slice(0, newIDInArr.length - 1)
+                .join(delimiter);
+
+              console.log(newIDInArr);
+              cur[originalID] = next.id;
+              return cur;
+            }, {});
+
+            console.log(mapper);
+
+            this.workSpace.documents.forEach(doc => {
+              if (!doc || !doc.editorContentState) return;
+              const { value } = migrateCodedInlines({
+                value: doc.editorContentState,
+                mapper,
+              });
+              this.props.rootStore.workSpaceStore.updateEditorState(
+                doc.id,
+                value
+              );
+            });
+
+            this.workSpace.setCodeBook(copy);
+
+            rootStore.codeBookStore.updateCodeOf(
+              this.workSpace.codeBook.id,
+              mapper[codeID],
+              {
+                definition: text,
+              }
+            );
+
+            this.setState({
+              checkedCodes: this.state.checkedCodes.map(c => mapper[c]),
+            });
+            return;
+          }
+        }
+      }
+
+      rootStore.codeBookStore.updateCodeOf(this.workSpace.codeBook.id, codeID, {
+        definition: text,
+      });
     }
   };
 

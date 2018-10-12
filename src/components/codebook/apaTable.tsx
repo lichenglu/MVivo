@@ -77,7 +77,8 @@ const enhance = withProps(
           title: 'Examples',
           dataIndex: 'examples',
           key: 'examples',
-          render: (examples: string[]) =>
+          render: (examples?: string[]) =>
+            examples &&
             examples.map((example, idx) => (
               <p key={`${example.slice(0, 10)}_${idx}`}>{example}</p>
             )),

@@ -58,19 +58,21 @@ const enhance = withProps(
         title: 'Coded Texts',
         dataIndex: 'examples',
         key: 'examples',
-        render: (examples: string[]) => (
-          <React.Fragment>
-            {examples.map((example, idx) => (
-              <p key={idx}>{example}</p>
-            ))}
-          </React.Fragment>
-        ),
+        render: (examples: string[]) =>
+          examples && (
+            <React.Fragment>
+              {examples.map((example, idx) => (
+                <p key={idx}>{example}</p>
+              ))}
+            </React.Fragment>
+          ),
         width: '40%',
       },
       {
         title: 'Count',
         dataIndex: 'count',
         key: 'count',
+        render: (count: number) => count || 0,
       },
     ];
 
