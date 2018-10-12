@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from '~/App';
 import { RootStore, setupRootStore } from '~/stores';
+import registerServiceWorker from './registerServiceWorker';
 
 import 'normalize.css';
 
@@ -50,3 +51,5 @@ class RootComponent extends React.PureComponent<{}, RootComponentState> {
 ReactDOM.render(<RootComponent />, document.getElementById(
   'root'
 ) as HTMLElement);
+
+registerServiceWorker();
