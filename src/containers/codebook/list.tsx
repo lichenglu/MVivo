@@ -22,7 +22,10 @@ interface CodeBookState {
 
 @inject('rootStore')
 @observer
-export class CodeBook extends React.Component<CodeBookProps, CodeBookState> {
+export default class CodeBook extends React.Component<
+  CodeBookProps,
+  CodeBookState
+> {
   public state = {
     cbModalVisible: false,
   };

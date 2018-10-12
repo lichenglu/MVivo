@@ -32,7 +32,7 @@ const SummaryLoadable = Loadable({
 });
 
 const WorkStationContainerLoadable = Loadable({
-  loader: () => import('./summary'),
+  loader: () => import('./workStation'),
   loading: Loading,
 });
 

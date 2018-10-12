@@ -4,6 +4,7 @@
     "outDir": "build/dist",
     "module": "commonjs",
     "target": "es5",
+    "importHelpers": true,
     "lib": ["es2017", "dom"],
     "sourceMap": true,
     "allowJs": true,
@@ -22,7 +23,8 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
   "parcelTsPluginOptions": {},
   "exclude": [

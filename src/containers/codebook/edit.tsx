@@ -19,7 +19,7 @@ interface CodeBookEditState {
 
 @inject('rootStore')
 @observer
-export class CodeBookEdit extends React.Component<
+export default class CodeBookEdit extends React.Component<
   CodeBookEditProps,
   CodeBookEditState
 > {

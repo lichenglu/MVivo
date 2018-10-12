@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader';
-import Loadable from 'react-loadable';
 import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,11 +9,11 @@ import styled from 'styled-components';
 import NotFound from './components/404';
 import { breadcrumbRoutes, Breadcrumbs } from './components/breadcrumb';
 import Header from './components/header';
-import { Loading } from './components/loading';
+// import { Loading } from './components/loading';
 
 // containers
 import CodeBook from './containers/codebook';
-// import WorkSpace from './containers/workspace';
+import WorkSpace from './containers/workspace';
 
 // utils
 import { routeConstants } from './lib/constants';
@@ -57,13 +56,7 @@ class App extends React.Component {
         <ContentContainer>
           <Breadcrumbs breadcrumbs={this.props.breadcrumbs} />
           <Switch>
-            <Route
-              path={routeConstants.root}
-              component={Loadable({
-                loader: () => import('./containers/workspace'),
-                loading: Loading,
-              })}
-            />
+            <Route path={routeConstants.root} component={WorkSpace} />
             <Route path={routeConstants.codebooks} component={CodeBook} />
             <Redirect from="/" to={routeConstants.root} exact={true} />
             <Route path="*" component={NotFound} />
