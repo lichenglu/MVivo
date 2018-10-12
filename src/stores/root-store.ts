@@ -18,6 +18,17 @@ export const RootStoreModel = types
     codeBookStore: types.optional(CodeBookStore, {}),
     workSpaceStore: types.optional(WorkSpaceStore, {}),
   })
+  .views(self => ({
+    isSharedCodeBook(codeBookID: string) {
+      let count = 0;
+      self.workSpaceStore.workSpaces.forEach(ws => {
+        if (ws.codeBook && ws.codeBook.id === codeBookID) {
+          count++;
+        }
+      });
+      return count > 1;
+    },
+  }))
   .actions(self => ({
     createCodeBook(data: {
       name: string;

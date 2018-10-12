@@ -4,7 +4,7 @@ import { withProps } from 'recompose';
 import styled from 'styled-components';
 
 import { export2Word } from '~/lib/utils';
-import { CodeSnapshot } from '~/stores';
+import { CodeBookRow } from './index';
 
 const Container = styled.div`
   display: flex;
@@ -53,64 +53,70 @@ interface Column {
 type Row = Array<{ value: any; style?: object }>;
 interface APATableProps {
   columns?: Column[];
-  rows: Array<CodeSnapshot & { count: number; examples: string[] }>;
+  rows: CodeBookRow[];
+  omittedColumns?: Array<'count' | 'examples'>;
 }
 
-const enhance = withProps(({ rows, columns }: APATableProps) => {
-  const finalColumns = columns || [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Definition',
-      dataIndex: 'definition',
-      key: 'definition',
-      style: { width: '15%' },
-    },
-    {
-      title: 'Examples',
-      dataIndex: 'examples',
-      key: 'examples',
-      render: (examples: string[]) =>
-        examples.map((example, idx) => (
-          <p key={`${example.slice(0, 10)}_${idx}`}>{example}</p>
-        )),
-      style: { width: '30%' },
-    },
-    {
-      title: 'Count',
-      dataIndex: 'count',
-      key: 'count',
-      style: { textAlign: 'center' },
-    },
-  ];
+const enhance = withProps(
+  ({ rows, columns, omittedColumns = [] }: APATableProps) => {
+    const finalColumns =
+      columns ||
+      [
+        {
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+        },
+        {
+          title: 'Definition',
+          dataIndex: 'definition',
+          key: 'definition',
+          style: { width: '15%' },
+        },
+        {
+          title: 'Examples',
+          dataIndex: 'examples',
+          key: 'examples',
+          render: (examples?: string[]) =>
+            examples &&
+            examples.map((example, idx) => (
+              <p key={`${example.slice(0, 10)}_${idx}`}>{example}</p>
+            )),
+          style: { width: '30%' },
+        },
+        {
+          title: 'Count',
+          dataIndex: 'count',
+          key: 'count',
+          style: { textAlign: 'center' },
+        },
+      ].filter(column => !omittedColumns.includes(column.dataIndex));
 
-  let formattedRows: Row[] = [];
-  for (const row of rows) {
-    const newRow = finalColumns.map(column => {
-      return {
-        value: column.render
-          ? column.render(row[column.dataIndex])
-          : row[column.dataIndex],
-        style: column.style,
-      };
-    });
-    formattedRows = [...formattedRows, newRow];
+    let formattedRows: Row[] = [];
+    for (const row of rows) {
+      const newRow = finalColumns.map(column => {
+        return {
+          value: column.render
+            ? column.render(row[column.dataIndex])
+            : row[column.dataIndex],
+          style: column.style,
+        };
+      });
+      formattedRows = [...formattedRows, newRow];
+    }
+
+    return {
+      columns: finalColumns,
+      rows: formattedRows,
+      exportToWord: () =>
+        export2Word({
+          element: document.getElementById('docx'),
+          containerID: 'apa-table',
+          docName: 'APA Table',
+        }),
+    };
   }
-
-  return {
-    columns: finalColumns,
-    rows: formattedRows,
-    exportToWord: () =>
-      export2Word({
-        element: document.getElementById('docx'),
-        containerID: 'apa-table',
-        docName: 'APA Table',
-      }),
-  };
-});
+);
 
 const _APATable = ({
   rows,

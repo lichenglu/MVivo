@@ -1,12 +1,14 @@
 import { values } from 'mobx';
 import { getSnapshot, types } from 'mobx-state-tree';
 import { Value as SlateValue } from 'slate';
-import Serializer from 'slate-plain-serializer';
+import HTMLSerializer from 'slate-html-serializer';
+import PlainSerializer from 'slate-plain-serializer';
 
 import { CodeBook, CodeBookModel } from './codebook';
 import { assignUUID, EditorContentState } from './utils';
 
 import { generateGradient, gradients } from '~/lib/colorPalette';
+import { HTML_RULES } from '~/lib/slate-plugins';
 
 export const DocumentModel = types
   .model('Document', {
@@ -102,10 +104,18 @@ export const WorkSpaceStore = types
     },
   }))
   .actions(self => ({
-    createDocument(data: Omit<DocumentSnapshot, 'id' | 'editorContentState'>) {
+    createDocument(
+      data: Omit<DocumentSnapshot, 'id' | 'editorContentState'>,
+      options: {
+        isHTML?: boolean;
+      } = {}
+    ) {
       const document = DocumentModel.create(data);
       if (!document.editorContentState) {
-        document.updateEditorState(Serializer.deserialize(document.text));
+        const value = options.isHTML
+          ? new HTMLSerializer({ rules: HTML_RULES }).deserialize(document.text)
+          : PlainSerializer.deserialize(document.text);
+        document.updateEditorState(value);
       }
       self.documents.put(document);
       return document;

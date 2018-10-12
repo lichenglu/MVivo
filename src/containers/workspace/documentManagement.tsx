@@ -58,18 +58,27 @@ export class DocumentManagement extends React.Component<
     viewingDocs: !!this.hasDocument,
   };
 
-  public onCompleteUpload = (data: { text: string; name: string }) => {
+  public onCompleteUpload = (
+    data: {
+      text: string;
+      name: string;
+    },
+    options: { isHTML: boolean }
+  ) => {
     if (this.workSpace) {
       const documentT = this.props.rootStore.workSpaceStore.createDocument(
-        data
+        data,
+        options
       );
 
-      let codeBook = this.workSpace.codeBook;
+      const codeBook = this.workSpace.codeBook;
       if (!codeBook) {
-        codeBook = this.props.rootStore.createCodeBook({
+        const newCodeBook = this.props.rootStore.createCodeBook({
           name: `${this.workSpace.id}_code_book`,
         });
-        this.workSpace.setCodeBook(codeBook);
+        if (newCodeBook) {
+          this.workSpace.setCodeBook(newCodeBook);
+        }
       }
       this.workSpace.addDocument(documentT);
 

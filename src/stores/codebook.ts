@@ -128,7 +128,13 @@ export const CodeBookStore = types
 
         const codes = copiedCodeBook.codeList;
         codes.forEach(({ id, ...codeData }) => {
-          this.createCodeAndAddTo(codeBook.id, CodeModel.create(codeData));
+          this.createCodeAndAddTo(
+            codeBook.id,
+            CodeModel.create({
+              ...codeData,
+              id: `${id}_@${Date.now()}`,
+            })
+          );
         });
         return self.codeBooks.get(codeBook.id);
       }

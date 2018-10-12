@@ -3,7 +3,7 @@ import { CheckboxChangeEvent, CheckboxOptionType } from 'antd/lib/checkbox';
 import React from 'react';
 import styled from 'styled-components';
 
-import { CodeSnapshot } from '~/stores';
+import { CodeBookRow } from './index';
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -15,7 +15,7 @@ interface CheckListState {
 }
 
 interface CheckListProps {
-  codes: Array<CodeSnapshot & { count: number; examples: string[] }>;
+  codes: CodeBookRow[];
   onChangeAPASwitch: (checked: boolean) => void;
   onCheckCode: (checked: string[]) => void;
 }

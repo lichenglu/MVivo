@@ -2,6 +2,7 @@ import { Inline, Node } from 'slate';
 
 import { INLINES } from '../utils/constants';
 import { getCodeSummary } from './getCodeSummary';
+import { migrateCodedInlines } from './migrateCodedInlines';
 import { RenderCodedText } from './renderCodedText';
 import { updateCodeForBlocks } from './updateCodeForBlocks';
 import { updateSelectedCode } from './updateSelectedCode';
@@ -24,4 +25,9 @@ export default function CodedText({
   };
 }
 
-export { updateCodeForBlocks, updateSelectedCode, getCodeSummary };
+export {
+  updateCodeForBlocks,
+  updateSelectedCode,
+  getCodeSummary,
+  migrateCodedInlines,
+};

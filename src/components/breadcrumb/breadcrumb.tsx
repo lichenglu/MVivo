@@ -1,43 +1,71 @@
-import { Breadcrumb } from 'antd';
+import { inject } from 'mobx-react';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 
-import { routeConstants } from '~/lib/constants';
+import { RootStore } from '~/stores';
 
-import {
-  FirstLevelFactory,
-  WorkSpaceBreadcrumb,
-  WorkSpaceDocBreadcrumb,
-} from './index';
+interface BreadcrumbFactoryParams {
+  nameExtractor:
+    | string
+    | ((
+        {
+          store,
+          routeParams,
+          path,
+        }: { store: RootStore; routeParams: object; path: string }
+      ) => string);
+  shouldShow?:
+    | boolean
+    | ((
+        { location }: { location: RouteCompProps<any>['location'] }
+      ) => boolean);
+}
 
-export const breadcrumbRoutes = [
-  { path: '/', breadcrumb: null },
-  {
-    path: routeConstants.root,
-    breadcrumb: FirstLevelFactory({ name: 'Workspaces' }),
+export const breadcrumbFactory = ({
+  nameExtractor,
+  shouldShow = true,
+}: BreadcrumbFactoryParams) =>
+  inject('rootStore')(({ rootStore, match, location }) => {
+    let name = nameExtractor;
+    if (typeof nameExtractor === 'function') {
+      name = nameExtractor({
+        store: rootStore,
+        routeParams: match.params,
+        path: match.path,
+      });
+    }
+
+    let visible = shouldShow;
+    if (typeof shouldShow === 'function') {
+      visible = shouldShow({ location });
+    }
+
+    return visible ? <span>{name}</span> : null;
+  });
+
+export const WorkSpaceBreadcrumb = breadcrumbFactory({
+  nameExtractor: ({ store, routeParams, path }) => {
+    const wsID = routeParams.id;
+    const ws = store.workSpaceStore.workSpaceBy(wsID);
+    const suffix = path.split('/').pop();
+    const name = ws ? ws.name : 'Workspace of no name';
+    return `${name} (${suffix})`;
   },
-  { path: `${routeConstants.root}/:id`, breadcrumb: null },
-  { path: routeConstants.workStationEdit, breadcrumb: WorkSpaceBreadcrumb },
-  { path: routeConstants.workspaceSummary, breadcrumb: WorkSpaceBreadcrumb },
-  { path: routeConstants.workspaceDocs, breadcrumb: WorkSpaceBreadcrumb },
-  { path: routeConstants.workStation, breadcrumb: WorkSpaceDocBreadcrumb },
-  {
-    path: routeConstants.codebooks,
-    breadcrumb: FirstLevelFactory({ name: 'Codebooks' }),
-  },
-  { path: '*', breadcrumb: null },
-];
+});
 
-export const Breadcrumbs = ({
-  breadcrumbs,
-}: {
-  breadcrumbs: JSX.Element[];
-}) => (
-  <Breadcrumb>
-    {breadcrumbs.map((breadcrumb: JSX.Element, index: number) => (
-      <Breadcrumb.Item key={breadcrumb.key || index}>
-        <NavLink to={breadcrumb.props.match.url}>{breadcrumb}</NavLink>
-      </Breadcrumb.Item>
-    ))}
-  </Breadcrumb>
-);
+export const WorkSpaceDocBreadcrumb = breadcrumbFactory({
+  nameExtractor: ({ store, routeParams, path }) => {
+    const docID = routeParams.docID;
+    const doc = store.workSpaceStore.documentBy(docID);
+    return doc ? doc.name : 'Document of no name';
+  },
+});
+
+export const CodeBookBreadcrumb = breadcrumbFactory({
+  nameExtractor: ({ store, routeParams, path }) => {
+    const codebookID = routeParams.id;
+    const codebook = store.codeBookStore.codeBookBy(codebookID);
+    const suffix = path.split('/').pop();
+    const name = codebook ? codebook.name : 'CodeBook of no name';
+    return `${name} (${suffix})`;
+  },
+});

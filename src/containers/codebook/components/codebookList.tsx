@@ -21,12 +21,17 @@ interface CodeBookListProps {
   ) => void;
 }
 
-export default ({ codeBooks, onSelectExtraAction }: CodeBookListProps) => (
+export default ({
+  codeBooks,
+  onSelectExtraAction,
+  onEdit,
+}: CodeBookListProps) => (
   <Container>
     {codeBooks.map(codebook => (
       <CodebookCard
         key={codebook.id}
         data={codebook}
+        onEdit={onEdit}
         onSelectExtraAction={onSelectExtraAction}
       />
     ))}
