@@ -81,5 +81,8 @@
     "moduleNameMapper": {
       "^~/(.*)$": "<rootDir>/src/$1"
     }
+  },
+  "cache": {
+    "maximumFileSizeToCacheInBytes": 5000000
   }
 }
