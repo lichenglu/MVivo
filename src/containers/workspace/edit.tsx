@@ -16,7 +16,7 @@ interface WorkSpaceEditState {}
 
 @inject('rootStore')
 @observer
-export class WorkSpaceEditPanel extends React.Component<
+export default class WorkSpaceEditPanel extends React.Component<
   WorkSpaceEditProps,
   WorkSpaceEditState
 > {

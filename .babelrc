@@ -3,6 +3,7 @@
       "@babel/preset-react"
     ],
     "plugins": [
+      "@babel/plugin-syntax-dynamic-import",
       "transform-class-properties",
       "react-hot-loader/babel",
       ["import", { "libraryName": "antd", "style": true }]

@@ -24,7 +24,10 @@ interface WorkSpaceState {
 
 @inject('rootStore')
 @observer
-export class WorkSpace extends React.Component<WorkSpaceProps, WorkSpaceState> {
+export default class WorkSpace extends React.Component<
+  WorkSpaceProps,
+  WorkSpaceState
+> {
   public state = {
     wsModalVisible: false,
   };

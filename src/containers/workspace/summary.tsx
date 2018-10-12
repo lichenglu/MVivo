@@ -32,7 +32,10 @@ const mergeCodeSummary = (key: string, l: any, r: any) => {
 
 @inject('rootStore')
 @observer
-export class Summary extends React.Component<SummaryProps, SummaryState> {
+export default class Summary extends React.Component<
+  SummaryProps,
+  SummaryState
+> {
   public state = {
     checkedCodes: this.codeList.map(c => c.id),
     showAPA: false,

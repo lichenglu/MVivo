@@ -27,7 +27,7 @@ interface WorkStationState {
 // 4. Update workSpace info
 @inject('rootStore')
 @observer
-export class WorkStationContainer extends React.Component<
+export default class WorkStationContainer extends React.Component<
   WorkStationProps,
   WorkStationState
 > {

@@ -1,38 +1,69 @@
 import React from 'react';
+import Loadable from 'react-loadable';
 import { Route, Switch } from 'react-router-dom';
 
+import { Loading } from '~/components/loading';
 import { routeConstants } from '~/lib/constants';
 
-import { WorkSpace } from '~/containers/workspace/list';
-import { DocumentManagement } from './documentManagement';
-import { WorkSpaceEditPanel } from './edit';
-import { Summary } from './summary';
-import { WorkStationContainer } from './workStation';
+// import { DocumentManagement } from './documentManagement';
+// import { WorkSpaceEditPanel } from './edit';
+// import { WorkSpace } from './list';
+// import { Summary } from './summary';
+// import { WorkStationContainer } from './workStation';
+
+const WorkSpaceLoadable = Loadable({
+  loader: () => import('./list'),
+  loading: Loading,
+});
+
+const DocumentManagementLoadable = Loadable({
+  loader: () => import('./documentManagement'),
+  loading: Loading,
+});
+
+const WorkSpaceEditPanelLoadable = Loadable({
+  loader: () => import('./edit'),
+  loading: Loading,
+});
+
+const SummaryLoadable = Loadable({
+  loader: () => import('./summary'),
+  loading: Loading,
+});
+
+const WorkStationContainerLoadable = Loadable({
+  loader: () => import('./summary'),
+  loading: Loading,
+});
 
 export * from './components';
 
 export default () => (
   <Switch>
-    <Route exact={true} path={routeConstants.root} component={WorkSpace} />
+    <Route
+      exact={true}
+      path={routeConstants.root}
+      component={WorkSpaceLoadable}
+    />
     <Route
       exact={true}
       path={routeConstants.workspaceDocs}
-      component={DocumentManagement}
+      component={DocumentManagementLoadable}
     />
     <Route
       exact={true}
       path={routeConstants.workspaceSummary}
-      component={Summary}
+      component={SummaryLoadable}
     />
     <Route
       exact={true}
       path={routeConstants.workStationEdit}
-      component={WorkSpaceEditPanel}
+      component={WorkSpaceEditPanelLoadable}
     />
     <Route
       exact={true}
       path={routeConstants.workStation}
-      component={WorkStationContainer}
+      component={WorkStationContainerLoadable}
     />
   </Switch>
 );

@@ -21,6 +21,7 @@
     "react-dom": "^16.5.2",
     "react-flip-move": "^3.0.2",
     "react-helmet": "^5.2.0",
+    "react-loadable": "^5.5.0",
     "react-router": "^4.3.1",
     "react-router-breadcrumbs-hoc": "^2.1.5",
     "react-router-dom": "^4.3.1",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@types/color": "^3.0.0",
     "@types/jest": "^23.3.5",
@@ -52,6 +54,7 @@
     "@types/react": "^16.4.16",
     "@types/react-dom": "^16.0.9",
     "@types/react-helmet": "^5.0.7",
+    "@types/react-loadable": "^5.4.1",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-svg-inline": "^2.1.1",
     "@types/recompose": "^0.27.0",

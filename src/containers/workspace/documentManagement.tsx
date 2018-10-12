@@ -49,7 +49,7 @@ const Switch = styled.a`
 
 @inject('rootStore')
 @observer
-export class DocumentManagement extends React.Component<
+export default class DocumentManagement extends React.Component<
   DocumentManagementProps,
   DocumentManagementState
 > {
