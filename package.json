@@ -65,7 +65,7 @@
     "less": "^2.7.3",
     "parcel-bundler": "^1.10.2",
     "parcel-plugin-inlinesvg": "0.0.14",
-    "parcel-plugin-sw-precache": "^1.0.1",
+    "parcel-plugin-sw-cache": "^0.2.6",
     "prettier": "^1.14.3",
     "react-hot-loader": "^4.3.11",
     "reactotron-mst": "^2.1.0",
@@ -81,5 +81,8 @@
     "moduleNameMapper": {
       "^~/(.*)$": "<rootDir>/src/$1"
     }
+  },
+  "cache": {
+    "maximumFileSizeToCacheInBytes": 5000000
   }
 }
