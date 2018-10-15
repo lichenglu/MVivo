@@ -20,8 +20,10 @@ If you have heard of qualitative research, then you are likely to have heard of 
 
 1. Offline first. Open the web app for the first time, and you should be able to use it without any internet.
 2. Select to code. Designed for qualitative research in mind.
-3. Sort corpus by code.
-4. Output formatted code book, APA format.
+3. Easy and powerful codebook management (drag and drop to reorder, merge codes to themes) - Planned
+4. Audio trancribing powered by Google's speech recognition - Planned
+5. Audio and video coding - Planned 
+6. Output formatted code book, APA format.
 
 ### Hot Keys
 
@@ -32,9 +34,9 @@ If you have heard of qualitative research, then you are likely to have heard of 
 | cmd + z (mac), ctrl + z (windows/linux)                 | Undo                                                                                            |
 | cmd + shift + z (mac), ctrl + shift + z (windows/linux) | Redo. Note: currently deleted codes can be restored from the document, but not from the storage |
 
-## Version 0.1 Roadmap
+## Version 0.2 Roadmap
 
-You can see version 0.1's roadmap [here](https://github.com/lichenglu/MVivo/issues/4)
+You can see version 0.2's roadmap [here](https://github.com/lichenglu/MVivo/issues/17)
 
 ## Development
 
