@@ -29,7 +29,7 @@ export function RenderHighlight({
   Component = props => <Highlight {...props} />,
 }: RenderHighlightOptions): SlatePlugin {
   return {
-    renderNode: props => {
+    renderNode: (props, next) => {
       const { node, attributes, children, editor } = props;
 
       if (node instanceof Inline && node.get('type') === type) {
@@ -49,6 +49,8 @@ export function RenderHighlight({
           </Component>
         );
       }
+
+      return next();
     },
   };
 }

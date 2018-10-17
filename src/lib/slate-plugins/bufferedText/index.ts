@@ -29,12 +29,12 @@ export default function BufferedText(options: BufferedText = {}) {
         },
       },
     },
-    onKeyDown(event: KeyboardEvent, change: Change) {
+    onKeyDown(event: KeyboardEvent, change: Change, next: Function) {
       if (isHotkey('Escape', event)) {
-        if (!options.clearOnEscape) return;
+        if (!options.clearOnEscape) return next();
         const { value } = change;
         const { selection } = value;
-        if (event.key !== 'Escape') return;
+        if (event.key !== 'Escape') return next();
 
         change.moveToRangeOfDocument();
         change.value.inlines.forEach(inline => {
@@ -56,6 +56,7 @@ export default function BufferedText(options: BufferedText = {}) {
           })
         );
       }
+      return next();
     },
   };
 }

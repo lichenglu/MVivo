@@ -9,9 +9,9 @@ export interface SlatePlugin {
    * This handler is instead meant to give you lower-level access to the DOM selection handling,
    * which is not always triggered as you'd expect.
    */
-  onSelect?: (event: Event, change: Change, editor: Editor) => Change;
-  renderMark?: (props: RenderMarkProps) => any;
-  renderNode?: (props: RenderNodeProps) => any;
+  onSelect?: (event: Event, change: Change, next: Function) => Change;
+  renderMark?: (props: RenderMarkProps, next: Function) => any;
+  renderNode?: (props: RenderNodeProps, next: Function) => any;
 }
 
 export * from './bufferedText';

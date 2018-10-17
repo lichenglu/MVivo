@@ -22,7 +22,7 @@ export function RenderCodedText({
   mixBgColor,
 }: RenderCodedTextOptions): SlatePlugin {
   return {
-    renderNode: props => {
+    renderNode: (props, next) => {
       const { node, parent, attributes, children, editor, isSelected } = props;
 
       if (node instanceof Inline && node.get('type') === type) {
@@ -53,6 +53,7 @@ export function RenderCodedText({
           />
         );
       }
+      return next();
     },
   };
 }

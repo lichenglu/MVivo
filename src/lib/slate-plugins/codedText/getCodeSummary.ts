@@ -8,11 +8,8 @@ export const getCodeSummary = ({
   value: Value;
   type?: INLINES;
 }) => {
-  const change = value.change({});
-  change.moveToRangeOfDocument();
-
   const codeSummary = {};
-  change.value.inlines.forEach(inline => {
+  value.document.getInlines().forEach(inline => {
     if (inline && inline.type === type) {
       const data = inline.get('data');
       const codeIDs = data.get('codeIDs');

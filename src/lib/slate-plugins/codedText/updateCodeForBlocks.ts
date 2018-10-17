@@ -1,11 +1,12 @@
-import { Change, Inline, Value } from 'slate';
+import { Change, Inline } from 'slate';
+import { Editor } from 'slate-react';
 
 import { INLINES } from '../utils/constants';
 
 interface UpdateCodeForBlocks {
   codeID: string;
   action: 'add' | 'delete';
-  value: Value;
+  editor: Editor;
   type?: string;
 }
 
@@ -17,19 +18,19 @@ export function updateCodeForBlocks({
   codeID,
   type = INLINES.CodedText,
   action,
-  value,
+  editor,
 }: UpdateCodeForBlocks) {
   if (action === 'add') {
     return addCode({
       codeID,
       type,
-      value,
+      editor,
     });
   } else if (action === 'delete') {
     return removeCode({
       codeID,
       type,
-      value,
+      editor,
     });
   }
 }
@@ -37,66 +38,67 @@ export function updateCodeForBlocks({
 export const addCode = ({
   codeID,
   type = INLINES.CodedText,
-  value,
+  editor,
 }: {
   codeID: string;
-  value: Value;
+  editor: Editor;
   type?: string;
 }) => {
-  let change = value.change({});
+  editor.change(change => {
+    change.moveToRangeOfDocument();
+    const originalRange = change.value.selection;
+    change.value.inlines.forEach(inline => {
+      if (inline && inline.type === INLINES.BufferedText) {
+        change.moveToRangeOfNode(inline);
 
-  change.moveToRangeOfDocument();
-  const originalRange = change.value.selection;
-  change.value.inlines.forEach(inline => {
-    if (inline && inline.type === INLINES.BufferedText) {
-      change.moveToRangeOfNode(inline);
-
-      const codedInline = Inline.create({
-        type,
-        data: { codeIDs: [codeID] },
-      });
-
-      const nestedInlines = inline.nodes.toArray().filter(node => {
-        return node instanceof Inline && node.type === INLINES.CodedText;
-      });
-
-      change = change.unwrapInline(inline).wrapInline(codedInline);
-
-      // This is the step to merge nested inlines with the same codeID
-      // with the parent inline. It is important to do this step LAST, because
-      // merging could end up with structure change, which will in turn fail
-      // parent inline creation
-      if (nestedInlines.length > 0) {
-        safelyUnwrapCodedInlines({
-          inlines: nestedInlines as Inline[],
-          change,
+        const codedInline = Inline.create({
           type,
-          codeID,
+          data: { codeIDs: [codeID] },
         });
+
+        const nestedInlines = inline.nodes.toArray().filter(node => {
+          return node instanceof Inline && node.type === INLINES.CodedText;
+        });
+
+        change = change.unwrapInline(inline).wrapInline(codedInline);
+
+        // This is the step to merge nested inlines with the same codeID
+        // with the parent inline. It is important to do this step LAST, because
+        // merging could end up with structure change, which will in turn fail
+        // parent inline creation
+        if (nestedInlines.length > 0) {
+          safelyUnwrapCodedInlines({
+            inlines: nestedInlines as Inline[],
+            change,
+            type,
+            codeID,
+          });
+        }
       }
-    }
+    });
+    change.select(originalRange).moveToStart();
   });
-  return change.select(originalRange).moveToStart();
 };
 
 const removeCode = ({
   codeID,
   type = INLINES.CodedText,
-  value,
+  editor,
 }: {
   codeID: string;
-  value: Value;
+  editor: Editor;
   type?: string;
 }) => {
-  const change = value.change({});
-  change.moveToRangeOfDocument();
-  safelyUnwrapCodedInlines({
-    change,
-    codeID,
-    inlines: change.value.inlines.toArray(),
-    type,
+  editor.change(change => {
+    change.moveToRangeOfDocument();
+    safelyUnwrapCodedInlines({
+      change,
+      codeID,
+      inlines: change.value.inlines.toArray(),
+      type,
+    });
+    change.deselect();
   });
-  return change.deselect();
 };
 /**
  * safelyUnwrapCodedInlines
