@@ -47,9 +47,6 @@ interface WorkStationState {
   currentInlineCodeIDs: string[];
 }
 
-// TODO:
-// 1. Solve jumping cursor
-// 2. Autocomplete value
 export class WorkStation extends React.Component<
   WorkStationProps,
   WorkStationState
@@ -130,15 +127,11 @@ export class WorkStation extends React.Component<
       ? updateSelectedCode
       : updateCodeForBlocks;
 
-    const change = updateFn({
+    updateFn({
       codeID: code.id,
       action: 'add',
-      value: this.state.editorState,
+      editor: this.editor!,
     });
-
-    if (change) {
-      this.onChangeEditor(change);
-    }
   };
 
   public onDeleteCode = (code: CodeSnapshot) => {
@@ -149,15 +142,12 @@ export class WorkStation extends React.Component<
       ? updateSelectedCode
       : updateCodeForBlocks;
 
-    const change = updateFn({
+    updateFn({
       codeID: code.id,
       action: 'delete',
-      value: this.state.editorState,
+      editor: this.editor!,
     });
 
-    if (change) {
-      this.onChangeEditor(change);
-    }
     if (!hasSelectedCodedInline) {
       this.props.onDeleteCode(code.id);
     }
@@ -256,7 +246,7 @@ export class WorkStation extends React.Component<
           <AutoComplete
             onSelect={this.onSelectOption}
             onSearch={this.onSearchCode}
-            onFocus={(e: React.FocusEvent<any>) => this.onSearchCode('')}
+            onFocus={() => this.onSearchCode('')}
             dataSource={dataSource}
             placeholder="Type to search codes or create a new one"
             allowClear

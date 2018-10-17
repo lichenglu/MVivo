@@ -10,6 +10,7 @@ import { getCodeSummary, migrateCodedInlines } from '~/lib/slate-plugins';
 
 // components
 import { APATable, CheckList, PivotTable } from '~/components/codebook';
+import { Editor } from 'slate';
 
 interface SummaryProps extends RouteCompProps<{ id: string }> {
   rootStore: RootStore;
@@ -115,17 +116,14 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
                 .slice(0, newIDInArr.length - 1)
                 .join(delimiter);
 
-              console.log(newIDInArr);
               cur[originalID] = next.id;
               return cur;
             }, {});
 
-            console.log(mapper);
-
             this.workSpace.documents.forEach(doc => {
               if (!doc || !doc.editorContentState) return;
               const { value } = migrateCodedInlines({
-                value: doc.editorContentState,
+                editor: new Editor({ value: doc.editorContentState }),
                 mapper,
               });
               this.props.rootStore.workSpaceStore.updateEditorState(

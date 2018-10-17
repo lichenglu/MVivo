@@ -1,31 +1,31 @@
-import { Value } from 'slate';
+import { Editor } from 'slate-react';
 
 import { INLINES } from '../utils/constants';
 
 export const migrateCodedInlines = ({
   mapper,
-  value,
+  editor,
   type = INLINES.CodedText,
 }: {
   mapper: { [key: string]: string };
-  value: Value;
+  editor: Editor;
   type?: INLINES;
 }) => {
-  const change = value.change({});
-  change.moveToRangeOfDocument();
+  editor.change(change => {
+    change.moveToRangeOfDocument();
 
-  change.value.inlines
-    .toArray()
-    .filter(inline => inline && inline.type === type)
-    .forEach(inline => {
-      const data = inline.data;
-      const codeIDs: string[] = data.get('codeIDs');
-      change.moveToRangeOfNode(inline).setInlines({
-        data: {
-          codeIDs: codeIDs.map(codeID => mapper[codeID]).filter(id => !!id),
-        },
+    change.value.inlines
+      .toArray()
+      .filter(inline => inline && inline.type === type)
+      .forEach(inline => {
+        const data = inline.data;
+        const codeIDs: string[] = data.get('codeIDs');
+        change.moveToRangeOfNode(inline).setInlines({
+          data: {
+            codeIDs: codeIDs.map(codeID => mapper[codeID]).filter(id => !!id),
+          },
+        });
       });
-    });
-
-  return change;
+  });
+  return editor;
 };
