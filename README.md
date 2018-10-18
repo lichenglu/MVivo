@@ -1,10 +1,12 @@
+<img src="https://user-images.githubusercontent.com/14342440/47126347-d2750800-d24d-11e8-8472-9a1c03a48266.png" width="256" height="256" />
+
 # Table of Content
 
 <!-- TOC -->
 
 - [Table of Content](#table-of-content)
   - [Introduction](#introduction)
-  - [Version 0.1 Roadmap](#version-01-roadmap)
+  - [Version 0.2 Roadmap](#version-02-roadmap)
   - [Development](#development)
   - [Contribution](#contribution)
 
