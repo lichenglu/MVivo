@@ -1,13 +1,17 @@
 import isHotkey from 'is-hotkey';
 import { Change } from 'slate';
 
-import { mapSelectionToInlines } from '~/lib/slate-plugins/bufferedText/mapSelectionToInlines';
+import {
+  endSelection,
+  mapSelectionToInlines,
+} from '~/lib/slate-plugins/bufferedText/mapSelectionToInlines';
 
 import { Highlight } from '../components';
 // import { SelectToHighlight } from '../utils/changes';
 import { INLINES } from '../utils/constants';
 import { RenderHighlight } from '../utils/render';
 
+import { Colors } from '~/themes';
 interface BufferedText {
   clearOnEscape?: boolean;
 }
@@ -51,7 +55,7 @@ export default function BufferedText(options: BufferedText = {}) {
         change.call(
           mapSelectionToInlines({
             type: INLINES.BufferedText,
-            highlightColor: '#adb5bd',
+            highlightColor: Colors.bufferedText,
             allowMultipleSelection: true,
           })
         );
@@ -61,4 +65,4 @@ export default function BufferedText(options: BufferedText = {}) {
   };
 }
 
-export { Highlight, mapSelectionToInlines };
+export { Highlight, mapSelectionToInlines, endSelection };

@@ -25,7 +25,7 @@ export const mapSelectionToInlines = (options: SelectToHighlightOptions) => (
   return change.wrapInline(highlightInline).call(endSelection);
 };
 
-const endSelection = (change: Change) => {
+export const endSelection = (change: Change) => {
   if (change.value.selection.isBackward) {
     change.moveToStart();
   } else {

@@ -1,5 +1,7 @@
 export enum MARKS {
-  BufferedText = 'BufferedText',
+  Bold = 'Bold',
+  Italic = 'Italic',
+  Underlined = 'Underlined',
 }
 
 export enum INLINES {
