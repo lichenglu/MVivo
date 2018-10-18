@@ -1,7 +1,7 @@
 import { Value, ValueJSON } from 'slate';
 
 import { types } from 'mobx-state-tree';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 
 // @ts-ignore
 export function assignUUID(snapshot) {

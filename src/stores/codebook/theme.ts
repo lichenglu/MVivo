@@ -1,18 +1,27 @@
-import { applySnapshot, getSnapshot, types } from 'mobx-state-tree';
+import { types } from 'mobx-state-tree';
 
-import { CodeModel } from './code';
+import { Code, CodeModel } from './code';
 
-export const ThemeModel = CodeModel.named('Theme').props({
-  children: types.optional(
-    types.map(
-      types.union(
-        types.reference(CodeModel),
-        types.reference(types.late((): any => ThemeModel))
-      )
+export const ThemeModel = CodeModel.named('Theme')
+  .props({
+    children: types.optional(
+      types.map(
+        types.union(
+          types.reference(CodeModel),
+          types.reference(types.late((): any => ThemeModel))
+        )
+      ),
+      {}
     ),
-    {}
-  ),
-});
+  })
+  .actions(self => ({
+    // adopt children....
+    adopt(children: Array<Theme | Code>) {
+      for (const child of children) {
+        self.children.put(child);
+      }
+    },
+  }));
 
 export type Theme = typeof ThemeModel.Type;
 export type ThemeSnapshot = typeof ThemeModel.SnapshotType;

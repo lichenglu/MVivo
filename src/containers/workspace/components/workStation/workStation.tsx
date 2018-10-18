@@ -16,9 +16,9 @@ import { UsedCodeTags } from './usedCodeTags';
 import {
   BufferedText,
   CodedText,
-  RichText,
-  HoverMenu,
   getCodeSummary,
+  HoverMenu,
+  RichText,
   SoftBreak,
   updateCodeForBlocks,
   updateSelectedCode,
