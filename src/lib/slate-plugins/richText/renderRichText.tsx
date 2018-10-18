@@ -2,7 +2,7 @@ import React from 'react';
 import { SlatePlugin } from '~/lib/slate-plugins';
 import { MARKS } from '../utils/constants';
 
-export const renderRichText = (): SlatePlugin => {
+export const RenderRichText = (): SlatePlugin => {
   return {
     renderMark: (props, next) => {
       const { children, mark, attributes } = props;

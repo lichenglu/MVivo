@@ -1,7 +1,10 @@
+import React from 'react';
 import { Change } from 'slate';
-import { renderHoverMenu } from './renderHoverMenu';
+import { RenderHoverMenu } from './renderHoverMenu';
 
-interface HoverMenuOptions {}
+interface HoverMenuOptions {
+  menuDebounceTime?: 100;
+}
 
 const updateMenu = ({
   menu,
@@ -31,18 +34,20 @@ const updateMenu = ({
     rect.width / 2}px`;
 };
 
-export default function HoverMenu({  }: HoverMenuOptions) {
-  let menu: HTMLDivElement | null = null;
+export default function HoverMenu({
+  menuDebounceTime = 100,
+}: HoverMenuOptions) {
+  const menu: React.RefObject<HTMLDivElement> = React.createRef();
   let timer: NodeJS.Timeout;
 
   return {
-    ...renderHoverMenu({ menuRef: (ref: HTMLDivElement) => (menu = ref) }),
+    ...RenderHoverMenu({ menuRef: menu }),
     onChange(change: Change, next: Function) {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        updateMenu({ menu, change });
+        updateMenu({ menu: menu.current, change });
         next();
-      }, 100);
+      }, menuDebounceTime);
     },
   };
 }

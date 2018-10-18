@@ -1,7 +1,13 @@
 import React from 'react';
-import { HoverMenu } from '~/components/hoveringMenu';
+import { HoverMenu } from '../components';
 
-export const renderHoverMenu = ({ menuRef }: { menuRef: any }) => {
+import { SlatePlugin } from '~/lib/slate-plugins';
+
+export const RenderHoverMenu = ({
+  menuRef,
+}: {
+  menuRef: React.RefObject<HTMLDivElement>;
+}): SlatePlugin => {
   return {
     renderEditor: (props, next) => {
       const { editor } = props;
@@ -9,7 +15,7 @@ export const renderHoverMenu = ({ menuRef }: { menuRef: any }) => {
       return (
         <React.Fragment>
           {children}
-          <HoverMenu innerRef={menuRef} editor={editor} rootHTMLID="root" />
+          <HoverMenu menuRef={menuRef} editor={editor} />
         </React.Fragment>
       );
     },

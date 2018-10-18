@@ -16,11 +16,11 @@ const StyledMenu = styled(Menu)`
   z-index: 1;
   top: -10000px;
   left: -10000px;
-  margin-top: -6px;
+  margin-top: -8px;
   opacity: 0;
   background-color: #222;
   border-radius: 4px;
-  transition: opacity 0.75s;
+  transition: opacity 0.5s;
 `;
 
 interface HoverMenuItem {
@@ -32,16 +32,18 @@ interface HoverMenuItem {
 
 interface HoverMenuProps {
   rootHTMLID: string;
-  innerRef: string & ((instance: HTMLDivElement | null) => any);
   editor: Editor;
+  menuPosition?: 'top' | 'bottom';
+  menuRef?: React.RefObject<any>;
   className?: string;
   items?: HoverMenuItem[];
 }
 
 export class HoverMenu extends React.Component<HoverMenuProps> {
-  public static defaultProps = {
-    innerRef: (instance: HTMLDivElement) =>
-      console.log('No menu innerRef passed'),
+  public static defaultProps: HoverMenuProps = {
+    menuRef: React.createRef<HTMLDivElement>(),
+    rootHTMLID: 'root',
+    menuPosition: 'top',
     items: [
       { dataType: 'mark', type: MARKS.Bold, icon: 'bold' },
       { dataType: 'mark', type: MARKS.Italic, icon: 'italic' },
@@ -129,7 +131,7 @@ export class HoverMenu extends React.Component<HoverMenuProps> {
   }
 
   public render() {
-    const { className, innerRef, rootHTMLID, items } = this.props;
+    const { className, menuRef, rootHTMLID, items, menuPosition } = this.props;
 
     if (!this.root) {
       throw new Error(
@@ -139,7 +141,11 @@ export class HoverMenu extends React.Component<HoverMenuProps> {
 
     return this.root
       ? ReactDOM.createPortal(
-          <StyledMenu className={className} ref={innerRef}>
+          <StyledMenu
+            className={className}
+            ref={menuRef}
+            position={menuPosition}
+          >
             {items &&
               items.map((item, idx) => (
                 <React.Fragment key={idx}>

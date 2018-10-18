@@ -1,7 +1,7 @@
 import isHotkey from 'is-hotkey';
 import { Change } from 'slate';
 import { MARKS } from '../utils/constants';
-import { renderRichText } from './renderRichText';
+import { RenderRichText } from './renderRichText';
 
 interface RichTextOptions {
   enableHotKeys?: boolean;
@@ -9,7 +9,7 @@ interface RichTextOptions {
 
 export default function RichText({ enableHotKeys = true }: RichTextOptions) {
   return {
-    ...renderRichText(),
+    ...RenderRichText(),
     onKeyDown(event: KeyboardEvent, change: Change, next: Function) {
       if (!enableHotKeys) return next();
       if (isHotkey('mod+b', event)) {

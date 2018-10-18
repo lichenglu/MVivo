@@ -1,6 +1,10 @@
 import { Change } from 'slate';
 import { Editor, RenderMarkProps, RenderNodeProps } from 'slate-react';
 
+interface RenderEditorProps {
+  editor: Editor;
+}
+
 export interface SlatePlugin {
   onChange?: (change: Change) => void;
   /**
@@ -12,6 +16,7 @@ export interface SlatePlugin {
   onSelect?: (event: Event, change: Change, next: Function) => Change;
   renderMark?: (props: RenderMarkProps, next: Function) => any;
   renderNode?: (props: RenderNodeProps, next: Function) => any;
+  renderEditor?: (props: RenderEditorProps, next: Function) => any;
 }
 
 export * from './bufferedText';

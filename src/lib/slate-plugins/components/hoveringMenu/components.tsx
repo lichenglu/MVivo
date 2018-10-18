@@ -18,7 +18,7 @@ export const Icon = styled(AntIcon)`
   vertical-align: text-bottom;
 `;
 
-export const Menu = styled.div`
+export const Menu = styled.div<{ position?: 'top' | 'bottom' }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -26,6 +26,39 @@ export const Menu = styled.div`
   & > * + * {
     margin-left: 15px;
   }
+
+  ${props =>
+    props.position === 'top'
+      ? `
+    &:after {
+      top: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-top-color: #151515;
+      border-width: 5px;
+      margin-left: -5px;
+    }
+  `
+      : `
+    &:after {
+      bottom: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-bottom-color: #151515;
+      border-width: 5px;
+      margin-left: -5px;
+    }
+  `};
 `;
 
 export const Divider = styled.div<{ reversed?: boolean }>`
