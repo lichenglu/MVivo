@@ -19,4 +19,6 @@ export { default as BufferedText } from './bufferedText';
 export * from './codedText';
 export { default as CodedText } from './codedText';
 export { default as SoftBreak } from './softbreak';
+export { default as RichText } from './richText';
+export { default as HoverMenu } from './hoverMenu';
 export * from './utils/serialize';

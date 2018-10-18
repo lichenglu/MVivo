@@ -16,6 +16,8 @@ import { UsedCodeTags } from './usedCodeTags';
 import {
   BufferedText,
   CodedText,
+  RichText,
+  HoverMenu,
   getCodeSummary,
   SoftBreak,
   updateCodeForBlocks,
@@ -76,6 +78,8 @@ export class WorkStation extends React.Component<
         mixBgColor: true,
       }),
       SoftBreak(),
+      RichText({}),
+      HoverMenu({}),
     ];
   }
 
