@@ -12,6 +12,9 @@ export const CodeBookStore = types
     themes: types.optional(types.map(ThemeModel), {}),
   })
   .actions(self => ({
+    addCodeBook(codebook: CodeBook) {
+      self.codeBooks.put(codebook);
+    },
     createCodeAndAddTo(codeBookID: string, code: Code) {
       const codeBook = self.codeBooks.get(codeBookID);
 
