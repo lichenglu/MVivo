@@ -14,7 +14,7 @@ const Container = styled.div`
   margin-right: 8px;
   border: solid 1px ${Colors.borderGray.toString()};
   border-radius: 5px;
-  min-width: 15rem;
+  min-width: 18rem;
 `;
 
 const Title = styled.p`
@@ -22,6 +22,12 @@ const Title = styled.p`
   border-bottom: solid 1px ${Colors.borderGray.toString()};
   padding-bottom: 0.5rem;
   width: 100%;
+`;
+
+const ContentContainer = styled.div`
+  max-height: calc(100vh - 64px - 49px - 100px);
+  flex: 1;
+  overflow-y: auto;
 `;
 
 export interface ColumnData {
@@ -45,9 +51,11 @@ export class Column extends React.PureComponent<ColumnProps, {}> {
         {provided => (
           <Container ref={provided.innerRef} {...provided.droppableProps}>
             <Title>{title}</Title>
-            {children.map((child, idx) => (
-              <DraggableCard data={child} key={child.id} index={idx} />
-            ))}
+            <ContentContainer>
+              {children.map((child, idx) => (
+                <DraggableCard data={child} key={child.id} index={idx} />
+              ))}
+            </ContentContainer>
             {provided.placeholder}
           </Container>
         )}

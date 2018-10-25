@@ -30,24 +30,18 @@ export const ThemeModel = CodeModel.named('Theme')
     },
     swap(at: number, originalPos: number) {
       const children = [...values(self.children)];
-      const toBeSwaped = children[at];
+      const toBeSwapped = children[at];
       children[at] = children[originalPos];
-      children[originalPos] = toBeSwaped;
+      children[originalPos] = toBeSwapped;
 
       this.abandon(values(self.children).map(c => c.id));
       this.adopt(children);
     },
     insert(child: any, at: number) {
-      const castChildren = child as Theme | Code;
-      const children = values(self.children);
-      const newChildren = children
-        .slice(0, at)
-        .concat([castChildren])
-        .concat(children.slice(at));
-      for (const c of children) {
-        self.children.delete(c.id);
-      }
-      this.adopt(newChildren);
+      const children = [...values(self.children)];
+      children.splice(at, 0, child);
+      this.abandon(values(self.children).map(c => c.id));
+      this.adopt(children);
     },
   }));
 

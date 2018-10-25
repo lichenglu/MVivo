@@ -7,6 +7,8 @@ import { ColorGrid } from '../colorGrid';
 
 import { Colors, hoverWithShadow } from '~/themes';
 
+import { trimText } from '~/lib/utils';
+
 const Container = styled.div<{ isDragging: boolean; bgColor: string }>`
   display: flex;
   flex-direction: column;
@@ -72,7 +74,9 @@ export class DraggableCard extends React.PureComponent<DraggableCardProps, {}> {
               {content}
             </Title>
 
-            {description && <Description>{description}</Description>}
+            {description && (
+              <Description>{trimText(description, 'tail', 100)}</Description>
+            )}
           </Container>
         )}
       </Draggable>
