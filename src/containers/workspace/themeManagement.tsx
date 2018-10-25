@@ -1,8 +1,6 @@
-import { message, notification } from 'antd';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import styled from 'styled-components';
 
 import { RootStore, ThemeModel } from '~/stores/root-store';
 
@@ -42,24 +40,16 @@ export class ThemeManagement extends React.Component<
 
   get themes() {
     if (this.workSpace && this.workSpace.codeBook) {
-      const { themeList, codeList } = this.workSpace.codeBook;
-      if (themeList.length === 0) {
-        return [
-          {
-            id: 'test',
-            title: 'All your codes',
-            children: convertCodesToDraggable(codeList),
-          },
-        ];
+      const { themeList } = this.workSpace.codeBook;
+      if (themeList.length > 0) {
+        return this.workSpace.codeBook.themeList.map(
+          ({ id, name, children }) => ({
+            id,
+            title: name,
+            children: convertCodesToDraggable(children),
+          })
+        );
       }
-
-      return this.workSpace.codeBook.themeList.map(
-        ({ id, name, children }) => ({
-          id,
-          title: name,
-          children: convertCodesToDraggable(children),
-        })
-      );
     }
     return [];
   }
@@ -78,7 +68,26 @@ export class ThemeManagement extends React.Component<
   };
 
   public onDragEnd = result => {
-    console.log(result);
+    if (!this.codeBook) return;
+    const { destination, draggableId, source } = result;
+    const { droppableId, index } = destination;
+    const { droppableId: originalParentId, index: originalIdx } = source;
+    const target = this.codeBook.themes.get(droppableId);
+    const beingDragged = this.codeBook.codes.get(draggableId);
+
+    const originalZone = this.codeBook.themes.get(originalParentId);
+
+    if (!target) {
+      return;
+    }
+    target.adopt([beingDragged]);
+
+    if (droppableId !== originalParentId && originalZone) {
+      originalZone.abandon([draggableId]);
+      target.insert(beingDragged, index);
+    } else {
+      target.swap(index, originalIdx);
+    }
   };
 
   public render(): JSX.Element | null {

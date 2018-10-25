@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd-next';
+import styled from 'styled-components';
 
 import { Colors } from '~/themes';
 
@@ -14,7 +14,7 @@ const Container = styled.div`
   margin-right: 8px;
   border: solid 1px ${Colors.borderGray.toString()};
   border-radius: 5px;
-  min-width: 230px;
+  min-width: 15rem;
 `;
 
 const Title = styled.p`

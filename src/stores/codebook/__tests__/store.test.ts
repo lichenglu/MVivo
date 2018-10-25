@@ -4,6 +4,7 @@ import { getSnapshot } from 'mobx-state-tree';
 import { CodeModel } from '../code';
 import { CodeBookModel } from '../codebook';
 import { CodeBookStore } from '../store';
+import { ThemeModel } from '../theme';
 
 let store: typeof CodeBookStore.Type;
 const CODEBOOK = {
@@ -68,6 +69,13 @@ it('can updates codes of a specific codebook', () => {
 
   expect(code.name).not.toEqual(originalName);
   expect(code.name).toEqual(updatedName);
+});
+
+it('can add themes to a specific codebook', () => {
+  const codebook = CodeBookModel.create(CODEBOOK);
+  const theme = ThemeModel.create({ name: 'theme 1' });
+  store.createThemeAndAddTo(codebook.id, theme);
+  expect(store.codeBookBy(codebook.id)!.themeList).toContainEqual(theme);
 });
 
 it('can copy an existing codebook', () => {

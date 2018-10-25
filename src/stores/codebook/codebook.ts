@@ -44,6 +44,11 @@ export const CodeBookModel = types
         }
       },
       addTheme(theme: Theme) {
+        // if it is the first theme we created, by default
+        // we put all the codes into the theme
+        if (values(self.themes).length === 0) {
+          theme.adopt(values(self.codes));
+        }
         self.themes.put(theme);
       },
       randomColorFromPalette() {
@@ -61,10 +66,11 @@ export const CodeBookModel = types
       return values(self.codes).map((code: Code) => getSnapshot(code));
     },
     get themeList() {
+      // TODO: solve recursive issues of children
       return values(self.themes).map((theme: Theme) => {
         const themeSnapshot = getSnapshot(theme);
-        const children = Object.values(themeSnapshot.children).map(
-          (code: Code) => getSnapshot(code)
+        const children = values(theme.children).map((child: any) =>
+          getSnapshot(child)
         );
         return { ...themeSnapshot, children };
       });
