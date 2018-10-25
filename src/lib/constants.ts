@@ -6,4 +6,5 @@ export const routeConstants = {
   workStation: '/workspaces/:wsID/documents/:docID',
   workStationEdit: '/workspaces/:id/edit',
   workspaceSummary: '/workspaces/:id/summary',
+  workspaceTheme: '/workspaces/:id/themes',
 };

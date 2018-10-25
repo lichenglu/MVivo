@@ -6,7 +6,7 @@ import { assignUUID } from '../utils';
 import { colorPalette } from '~/lib/colorPalette';
 
 import { Code, CodeModel } from './code';
-import { ThemeModel } from './theme';
+import { Theme, ThemeModel } from './theme';
 
 export const CodeBookModel = types
   .model('CodeBook', {
@@ -43,6 +43,9 @@ export const CodeBookModel = types
           code.update(data);
         }
       },
+      addTheme(theme: Theme) {
+        self.themes.put(theme);
+      },
       randomColorFromPalette() {
         const randomIdx = Math.floor(
           Math.random() * self.availableColors.length
@@ -56,6 +59,15 @@ export const CodeBookModel = types
   .views(self => ({
     get codeList() {
       return values(self.codes).map((code: Code) => getSnapshot(code));
+    },
+    get themeList() {
+      return values(self.themes).map((theme: Theme) => {
+        const themeSnapshot = getSnapshot(theme);
+        const children = Object.values(themeSnapshot.children).map(
+          (code: Code) => getSnapshot(code)
+        );
+        return { ...themeSnapshot, children };
+      });
     },
   }))
   .preProcessSnapshot(assignUUID);

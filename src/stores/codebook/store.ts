@@ -3,7 +3,7 @@ import { applySnapshot, getSnapshot, types } from 'mobx-state-tree';
 
 import { Code, CodeModel } from './code';
 import { CodeBook, CodeBookModel, CodesSnapshot } from './codebook';
-import { ThemeModel } from './theme';
+import { Theme, ThemeModel } from './theme';
 
 export const CodeBookStore = types
   .model('CodeBookStore', {
@@ -41,6 +41,13 @@ export const CodeBookStore = types
       const codeBook = self.codeBooks.get(codeBookID);
       if (codeBook) {
         codeBook.updateCode(codeID, data);
+      }
+    },
+    createThemeAndAddTo(codeBookID: string, theme: Theme) {
+      const codeBook = self.codeBooks.get(codeBookID);
+      self.themes.put(theme);
+      if (codeBook) {
+        codeBook.addTheme(theme);
       }
     },
     copyCodeBookBy(
