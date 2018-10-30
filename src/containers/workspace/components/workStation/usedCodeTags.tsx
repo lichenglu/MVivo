@@ -48,7 +48,7 @@ export const UsedCodeTags = ({
 }: UsedCodeTagsProps) => (
   <Container>
     {codes &&
-      codes.slice(0, 5).map(code => (
+      codes.map(code => (
         <EnhancedTag
           color={code.bgColor}
           onClose={onClose}

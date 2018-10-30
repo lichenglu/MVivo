@@ -12,6 +12,10 @@ import { AutoComplete } from './autoComplete';
 import { Container, SideContainer } from './layout';
 import { UsedCodeTags } from './usedCodeTags';
 
+// fakes
+import binaryCodeDict from '../../fake/binary_dict.json';
+import fakeCodeMap from '../../fake/data_binary_filtered.json';
+
 // slate-plugins
 import {
   BufferedText,
@@ -69,6 +73,7 @@ export class WorkStation extends React.Component<
       dataSource: this.codes,
       hasSelectedCodedInline: false,
       currentInlineCodeIDs: [],
+      isPositive: null,
     };
 
     this.plugins = [
@@ -93,10 +98,21 @@ export class WorkStation extends React.Component<
 
   public onChangeEditor = ({ value }: Change) => {
     this.setState({ editorState: value }, () => {
+      let isPositive = null;
+      if (value.fragment.text && value.selection.isExpanded) {
+        const selectedText = value.fragment.text.trim().replace('"', '');
+        if (fakeCodeMap.positive.includes(selectedText)) {
+          isPositive = true;
+        } else if (fakeCodeMap.negative.includes(selectedText)) {
+          isPositive = false;
+        }
+      }
+
       this.setState({
         hasSelectedCodedInline: this.state.editorState.inlines.some(
           i => i.get('type') === INLINES.CodedText
         ),
+        isPositive,
       });
     });
     this.props.onUpdateEditorContent(value);
@@ -204,13 +220,23 @@ export class WorkStation extends React.Component<
   }
 
   get sortedCodes() {
-    return this.codes.sort((a, b) => {
-      if (a && b && a.count && b.count) {
-        return b.count - a.count;
-      } else {
-        return 1;
-      }
-    });
+    const { isPositive } = this.state;
+    return this.codes
+      .filter(code => {
+        if (isPositive) {
+          return binaryCodeDict[code.name] === 1;
+        } else if (isPositive === false) {
+          return binaryCodeDict[code.name] === 2;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        if (a && b && a.count && b.count) {
+          return b.count - a.count;
+        } else {
+          return 1;
+        }
+      });
   }
 
   get currentCodes() {

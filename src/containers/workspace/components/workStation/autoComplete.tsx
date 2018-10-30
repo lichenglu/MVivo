@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { ColorGrid } from '~/components/colorGrid';
 import { CodeSnapshot } from '~/stores';
 
+import { trimText } from '~/lib/utils';
+
 const Option = AntAutoComplete.Option;
 
 export const ContentContainer = styled.div`
@@ -38,15 +40,18 @@ export const AutoComplete = ({
       onSelect={onSelect}
       onSearch={onSearch}
       optionLabelProp={'text'}
-      dataSource={dataSource.map(({ bgColor, id, name }) => (
-        <Option key={id} value={id} title={name}>
-          <ContentContainer>
-            {bgColor && <ColorGrid bgColor={bgColor} />}
-            {!bgColor && <CreationHint>Create Code: </CreationHint>}
-            <span>{name}</span>
-          </ContentContainer>
-        </Option>
-      ))}
+      dataSource={dataSource.map(({ bgColor, id, name }) => {
+        const trimmedName = trimText(name, 'middle', 30);
+        return (
+          <Option key={id} value={id} title={trimmedName}>
+            <ContentContainer>
+              {bgColor && <ColorGrid bgColor={bgColor} />}
+              {!bgColor && <CreationHint>Create Code: </CreationHint>}
+              <span>{trimmedName}</span>
+            </ContentContainer>
+          </Option>
+        );
+      })}
       {...rest}
     />
   );
