@@ -1,0 +1,2431 @@
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "transcript": "We're back again with dr. Steven kornguth about paraneoplasia as an autoimmune disease Lessons Learned From basic research Steve when we spoke last time you talked about autoimmune diseases such as those in which a compromise and function is caused by the patient's own immune system. What is paraneoplasia? How is it an autoimmune disease is a dysfunctional a disease seen in cancer patients, which has an autoimmune basis. What's happening? Is that the patient with the tumor begins to produce antibodies reactive with the tumor these antibodies from the tumor?",
+          "confidence": 0.9669540524482727,
+          "words": [
+            {
+              "startTime": {},
+              "endTime": { "nanos": 200000000 },
+              "word": "We're"
+            },
+            {
+              "startTime": { "nanos": 200000000 },
+              "endTime": { "nanos": 400000000 },
+              "word": "back"
+            },
+            {
+              "startTime": { "nanos": 400000000 },
+              "endTime": { "nanos": 600000000 },
+              "word": "again"
+            },
+            {
+              "startTime": { "nanos": 600000000 },
+              "endTime": { "seconds": "1", "nanos": 200000000 },
+              "word": "with"
+            },
+            {
+              "startTime": { "seconds": "1", "nanos": 200000000 },
+              "endTime": { "seconds": "1", "nanos": 500000000 },
+              "word": "dr."
+            },
+            {
+              "startTime": { "seconds": "1", "nanos": 500000000 },
+              "endTime": { "seconds": "1", "nanos": 800000000 },
+              "word": "Steven"
+            },
+            {
+              "startTime": { "seconds": "1", "nanos": 800000000 },
+              "endTime": { "seconds": "2" },
+              "word": "kornguth"
+            },
+            {
+              "startTime": { "seconds": "2" },
+              "endTime": { "seconds": "4", "nanos": 100000000 },
+              "word": "about"
+            },
+            {
+              "startTime": { "seconds": "4", "nanos": 100000000 },
+              "endTime": { "seconds": "4", "nanos": 200000000 },
+              "word": "paraneoplasia"
+            },
+            {
+              "startTime": { "seconds": "4", "nanos": 200000000 },
+              "endTime": { "seconds": "5", "nanos": 500000000 },
+              "word": "as"
+            },
+            {
+              "startTime": { "seconds": "5", "nanos": 500000000 },
+              "endTime": { "seconds": "5", "nanos": 600000000 },
+              "word": "an"
+            },
+            {
+              "startTime": { "seconds": "5", "nanos": 600000000 },
+              "endTime": { "seconds": "6" },
+              "word": "autoimmune"
+            },
+            {
+              "startTime": { "seconds": "6" },
+              "endTime": { "seconds": "6", "nanos": 600000000 },
+              "word": "disease"
+            },
+            {
+              "startTime": { "seconds": "6", "nanos": 600000000 },
+              "endTime": { "seconds": "7", "nanos": 100000000 },
+              "word": "Lessons"
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 100000000 },
+              "endTime": { "seconds": "7", "nanos": 400000000 },
+              "word": "Learned"
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 400000000 },
+              "endTime": { "seconds": "7", "nanos": 500000000 },
+              "word": "From"
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 500000000 },
+              "endTime": { "seconds": "7", "nanos": 900000000 },
+              "word": "basic"
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 900000000 },
+              "endTime": { "seconds": "8", "nanos": 200000000 },
+              "word": "research"
+            },
+            {
+              "startTime": { "seconds": "8", "nanos": 200000000 },
+              "endTime": { "seconds": "9", "nanos": 500000000 },
+              "word": "Steve"
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 500000000 },
+              "endTime": { "seconds": "9", "nanos": 600000000 },
+              "word": "when"
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 600000000 },
+              "endTime": { "seconds": "9", "nanos": 700000000 },
+              "word": "we"
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 700000000 },
+              "endTime": { "seconds": "9", "nanos": 900000000 },
+              "word": "spoke"
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 900000000 },
+              "endTime": { "seconds": "10" },
+              "word": "last"
+            },
+            {
+              "startTime": { "seconds": "10" },
+              "endTime": { "seconds": "10", "nanos": 300000000 },
+              "word": "time"
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 300000000 },
+              "endTime": { "seconds": "10", "nanos": 600000000 },
+              "word": "you"
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 600000000 },
+              "endTime": { "seconds": "10", "nanos": 800000000 },
+              "word": "talked"
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 800000000 },
+              "endTime": { "seconds": "10", "nanos": 800000000 },
+              "word": "about"
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 800000000 },
+              "endTime": { "seconds": "11", "nanos": 500000000 },
+              "word": "autoimmune"
+            },
+            {
+              "startTime": { "seconds": "11", "nanos": 500000000 },
+              "endTime": { "seconds": "11", "nanos": 900000000 },
+              "word": "diseases"
+            },
+            {
+              "startTime": { "seconds": "11", "nanos": 900000000 },
+              "endTime": { "seconds": "12" },
+              "word": "such"
+            },
+            {
+              "startTime": { "seconds": "12" },
+              "endTime": { "seconds": "12", "nanos": 100000000 },
+              "word": "as"
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 100000000 },
+              "endTime": { "seconds": "12", "nanos": 400000000 },
+              "word": "those"
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 400000000 },
+              "endTime": { "seconds": "12", "nanos": 500000000 },
+              "word": "in"
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 500000000 },
+              "endTime": { "seconds": "12", "nanos": 700000000 },
+              "word": "which"
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 700000000 },
+              "endTime": { "seconds": "12", "nanos": 700000000 },
+              "word": "a"
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 700000000 },
+              "endTime": { "seconds": "13", "nanos": 200000000 },
+              "word": "compromise"
+            },
+            {
+              "startTime": { "seconds": "13", "nanos": 200000000 },
+              "endTime": { "seconds": "13", "nanos": 300000000 },
+              "word": "and"
+            },
+            {
+              "startTime": { "seconds": "13", "nanos": 300000000 },
+              "endTime": { "seconds": "13", "nanos": 800000000 },
+              "word": "function"
+            },
+            {
+              "startTime": { "seconds": "13", "nanos": 800000000 },
+              "endTime": { "seconds": "14", "nanos": 500000000 },
+              "word": "is"
+            },
+            {
+              "startTime": { "seconds": "14", "nanos": 500000000 },
+              "endTime": { "seconds": "14", "nanos": 700000000 },
+              "word": "caused"
+            },
+            {
+              "startTime": { "seconds": "14", "nanos": 700000000 },
+              "endTime": { "seconds": "14", "nanos": 800000000 },
+              "word": "by"
+            },
+            {
+              "startTime": { "seconds": "14", "nanos": 800000000 },
+              "endTime": { "seconds": "15" },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "15" },
+              "endTime": { "seconds": "15", "nanos": 400000000 },
+              "word": "patient's"
+            },
+            {
+              "startTime": { "seconds": "15", "nanos": 400000000 },
+              "endTime": { "seconds": "15", "nanos": 500000000 },
+              "word": "own"
+            },
+            {
+              "startTime": { "seconds": "15", "nanos": 500000000 },
+              "endTime": { "seconds": "15", "nanos": 800000000 },
+              "word": "immune"
+            },
+            {
+              "startTime": { "seconds": "15", "nanos": 800000000 },
+              "endTime": { "seconds": "16", "nanos": 400000000 },
+              "word": "system."
+            },
+            {
+              "startTime": { "seconds": "16", "nanos": 400000000 },
+              "endTime": { "seconds": "17" },
+              "word": "What"
+            },
+            {
+              "startTime": { "seconds": "17" },
+              "endTime": { "seconds": "17", "nanos": 100000000 },
+              "word": "is"
+            },
+            {
+              "startTime": { "seconds": "17", "nanos": 100000000 },
+              "endTime": { "seconds": "17", "nanos": 200000000 },
+              "word": "paraneoplasia?"
+            },
+            {
+              "startTime": { "seconds": "17", "nanos": 200000000 },
+              "endTime": { "seconds": "18", "nanos": 600000000 },
+              "word": "How"
+            },
+            {
+              "startTime": { "seconds": "18", "nanos": 600000000 },
+              "endTime": { "seconds": "18", "nanos": 700000000 },
+              "word": "is"
+            },
+            {
+              "startTime": { "seconds": "18", "nanos": 700000000 },
+              "endTime": { "seconds": "18", "nanos": 800000000 },
+              "word": "it"
+            },
+            {
+              "startTime": { "seconds": "18", "nanos": 800000000 },
+              "endTime": { "seconds": "19" },
+              "word": "an"
+            },
+            {
+              "startTime": { "seconds": "19" },
+              "endTime": { "seconds": "19", "nanos": 600000000 },
+              "word": "autoimmune"
+            },
+            {
+              "startTime": { "seconds": "19", "nanos": 600000000 },
+              "endTime": { "seconds": "20", "nanos": 100000000 },
+              "word": "disease"
+            },
+            {
+              "startTime": { "seconds": "20", "nanos": 100000000 },
+              "endTime": { "seconds": "24", "nanos": 800000000 },
+              "word": "is"
+            },
+            {
+              "startTime": { "seconds": "24", "nanos": 800000000 },
+              "endTime": { "seconds": "25" },
+              "word": "a"
+            },
+            {
+              "startTime": { "seconds": "25" },
+              "endTime": { "seconds": "26", "nanos": 100000000 },
+              "word": "dysfunctional"
+            },
+            {
+              "startTime": { "seconds": "26", "nanos": 100000000 },
+              "endTime": { "seconds": "26", "nanos": 200000000 },
+              "word": "a"
+            },
+            {
+              "startTime": { "seconds": "26", "nanos": 200000000 },
+              "endTime": { "seconds": "27" },
+              "word": "disease"
+            },
+            {
+              "startTime": { "seconds": "27" },
+              "endTime": { "seconds": "27", "nanos": 500000000 },
+              "word": "seen"
+            },
+            {
+              "startTime": { "seconds": "27", "nanos": 500000000 },
+              "endTime": { "seconds": "27", "nanos": 800000000 },
+              "word": "in"
+            },
+            {
+              "startTime": { "seconds": "27", "nanos": 800000000 },
+              "endTime": { "seconds": "28", "nanos": 400000000 },
+              "word": "cancer"
+            },
+            {
+              "startTime": { "seconds": "28", "nanos": 400000000 },
+              "endTime": { "seconds": "29", "nanos": 100000000 },
+              "word": "patients,"
+            },
+            {
+              "startTime": { "seconds": "29", "nanos": 100000000 },
+              "endTime": { "seconds": "29", "nanos": 900000000 },
+              "word": "which"
+            },
+            {
+              "startTime": { "seconds": "29", "nanos": 900000000 },
+              "endTime": { "seconds": "30", "nanos": 200000000 },
+              "word": "has"
+            },
+            {
+              "startTime": { "seconds": "30", "nanos": 200000000 },
+              "endTime": { "seconds": "30", "nanos": 400000000 },
+              "word": "an"
+            },
+            {
+              "startTime": { "seconds": "30", "nanos": 400000000 },
+              "endTime": { "seconds": "31" },
+              "word": "autoimmune"
+            },
+            {
+              "startTime": { "seconds": "31" },
+              "endTime": { "seconds": "32" },
+              "word": "basis."
+            },
+            {
+              "startTime": { "seconds": "32" },
+              "endTime": { "seconds": "33", "nanos": 100000000 },
+              "word": "What's"
+            },
+            {
+              "startTime": { "seconds": "33", "nanos": 100000000 },
+              "endTime": { "seconds": "33", "nanos": 700000000 },
+              "word": "happening?"
+            },
+            {
+              "startTime": { "seconds": "33", "nanos": 700000000 },
+              "endTime": { "seconds": "34", "nanos": 400000000 },
+              "word": "Is"
+            },
+            {
+              "startTime": { "seconds": "34", "nanos": 400000000 },
+              "endTime": { "seconds": "34", "nanos": 400000000 },
+              "word": "that"
+            },
+            {
+              "startTime": { "seconds": "34", "nanos": 400000000 },
+              "endTime": { "seconds": "34", "nanos": 700000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "34", "nanos": 700000000 },
+              "endTime": { "seconds": "35", "nanos": 300000000 },
+              "word": "patient"
+            },
+            {
+              "startTime": { "seconds": "35", "nanos": 300000000 },
+              "endTime": { "seconds": "35", "nanos": 600000000 },
+              "word": "with"
+            },
+            {
+              "startTime": { "seconds": "35", "nanos": 600000000 },
+              "endTime": { "seconds": "35", "nanos": 600000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "35", "nanos": 600000000 },
+              "endTime": { "seconds": "36", "nanos": 100000000 },
+              "word": "tumor"
+            },
+            {
+              "startTime": { "seconds": "36", "nanos": 100000000 },
+              "endTime": { "seconds": "37", "nanos": 600000000 },
+              "word": "begins"
+            },
+            {
+              "startTime": { "seconds": "37", "nanos": 600000000 },
+              "endTime": { "seconds": "37", "nanos": 800000000 },
+              "word": "to"
+            },
+            {
+              "startTime": { "seconds": "37", "nanos": 800000000 },
+              "endTime": { "seconds": "38", "nanos": 100000000 },
+              "word": "produce"
+            },
+            {
+              "startTime": { "seconds": "38", "nanos": 100000000 },
+              "endTime": { "seconds": "39", "nanos": 100000000 },
+              "word": "antibodies"
+            },
+            {
+              "startTime": { "seconds": "39", "nanos": 100000000 },
+              "endTime": { "seconds": "40", "nanos": 400000000 },
+              "word": "reactive"
+            },
+            {
+              "startTime": { "seconds": "40", "nanos": 400000000 },
+              "endTime": { "seconds": "40", "nanos": 900000000 },
+              "word": "with"
+            },
+            {
+              "startTime": { "seconds": "40", "nanos": 900000000 },
+              "endTime": { "seconds": "41" },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "41" },
+              "endTime": { "seconds": "41", "nanos": 500000000 },
+              "word": "tumor"
+            },
+            {
+              "startTime": { "seconds": "41", "nanos": 500000000 },
+              "endTime": { "seconds": "42", "nanos": 900000000 },
+              "word": "these"
+            },
+            {
+              "startTime": { "seconds": "42", "nanos": 900000000 },
+              "endTime": { "seconds": "43", "nanos": 500000000 },
+              "word": "antibodies"
+            },
+            {
+              "startTime": { "seconds": "43", "nanos": 500000000 },
+              "endTime": { "seconds": "43", "nanos": 900000000 },
+              "word": "from"
+            },
+            {
+              "startTime": { "seconds": "43", "nanos": 900000000 },
+              "endTime": { "seconds": "44", "nanos": 300000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "44", "nanos": 300000000 },
+              "endTime": { "seconds": "45", "nanos": 100000000 },
+              "word": "tumor?"
+            }
+          ]
+        }
+      ],
+      "languageCode": "en-us"
+    },
+    {
+      "alternatives": [
+        {
+          "transcript": "Recognize not only tumor material typically proteins and sugar proteins, but they also recognize a normal protein in another organ system such as the retina the brain the cerebellum the thyroid gland ovary and peripheral nervous system.",
+          "confidence": 0.9687454104423523,
+          "words": [
+            {
+              "startTime": { "seconds": "46", "nanos": 100000000 },
+              "endTime": { "seconds": "47", "nanos": 300000000 },
+              "word": "Recognize"
+            },
+            {
+              "startTime": { "seconds": "47", "nanos": 300000000 },
+              "endTime": { "seconds": "47", "nanos": 600000000 },
+              "word": "not"
+            },
+            {
+              "startTime": { "seconds": "47", "nanos": 600000000 },
+              "endTime": { "seconds": "48" },
+              "word": "only"
+            },
+            {
+              "startTime": { "seconds": "48" },
+              "endTime": { "seconds": "48", "nanos": 800000000 },
+              "word": "tumor"
+            },
+            {
+              "startTime": { "seconds": "48", "nanos": 800000000 },
+              "endTime": { "seconds": "49", "nanos": 900000000 },
+              "word": "material"
+            },
+            {
+              "startTime": { "seconds": "49", "nanos": 900000000 },
+              "endTime": { "seconds": "50", "nanos": 600000000 },
+              "word": "typically"
+            },
+            {
+              "startTime": { "seconds": "50", "nanos": 600000000 },
+              "endTime": { "seconds": "51", "nanos": 500000000 },
+              "word": "proteins"
+            },
+            {
+              "startTime": { "seconds": "51", "nanos": 500000000 },
+              "endTime": { "seconds": "51", "nanos": 700000000 },
+              "word": "and"
+            },
+            {
+              "startTime": { "seconds": "51", "nanos": 700000000 },
+              "endTime": { "seconds": "52" },
+              "word": "sugar"
+            },
+            {
+              "startTime": { "seconds": "52" },
+              "endTime": { "seconds": "52", "nanos": 800000000 },
+              "word": "proteins,"
+            },
+            {
+              "startTime": { "seconds": "52", "nanos": 800000000 },
+              "endTime": { "seconds": "53", "nanos": 600000000 },
+              "word": "but"
+            },
+            {
+              "startTime": { "seconds": "53", "nanos": 600000000 },
+              "endTime": { "seconds": "53", "nanos": 700000000 },
+              "word": "they"
+            },
+            {
+              "startTime": { "seconds": "53", "nanos": 700000000 },
+              "endTime": { "seconds": "54", "nanos": 100000000 },
+              "word": "also"
+            },
+            {
+              "startTime": { "seconds": "54", "nanos": 100000000 },
+              "endTime": { "seconds": "54", "nanos": 600000000 },
+              "word": "recognize"
+            },
+            {
+              "startTime": { "seconds": "54", "nanos": 600000000 },
+              "endTime": { "seconds": "55", "nanos": 200000000 },
+              "word": "a"
+            },
+            {
+              "startTime": { "seconds": "55", "nanos": 200000000 },
+              "endTime": { "seconds": "55", "nanos": 900000000 },
+              "word": "normal"
+            },
+            {
+              "startTime": { "seconds": "55", "nanos": 900000000 },
+              "endTime": { "seconds": "56", "nanos": 600000000 },
+              "word": "protein"
+            },
+            {
+              "startTime": { "seconds": "56", "nanos": 600000000 },
+              "endTime": { "seconds": "57", "nanos": 400000000 },
+              "word": "in"
+            },
+            {
+              "startTime": { "seconds": "57", "nanos": 400000000 },
+              "endTime": { "seconds": "58" },
+              "word": "another"
+            },
+            {
+              "startTime": { "seconds": "58" },
+              "endTime": { "seconds": "58", "nanos": 500000000 },
+              "word": "organ"
+            },
+            {
+              "startTime": { "seconds": "58", "nanos": 500000000 },
+              "endTime": { "seconds": "59" },
+              "word": "system"
+            },
+            {
+              "startTime": { "seconds": "59" },
+              "endTime": { "seconds": "59", "nanos": 300000000 },
+              "word": "such"
+            },
+            {
+              "startTime": { "seconds": "59", "nanos": 300000000 },
+              "endTime": { "seconds": "59", "nanos": 400000000 },
+              "word": "as"
+            },
+            {
+              "startTime": { "seconds": "59", "nanos": 400000000 },
+              "endTime": { "seconds": "59", "nanos": 500000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "59", "nanos": 500000000 },
+              "endTime": { "seconds": "60" },
+              "word": "retina"
+            },
+            {
+              "startTime": { "seconds": "60" },
+              "endTime": { "seconds": "60", "nanos": 300000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "60", "nanos": 300000000 },
+              "endTime": { "seconds": "60", "nanos": 800000000 },
+              "word": "brain"
+            },
+            {
+              "startTime": { "seconds": "60", "nanos": 800000000 },
+              "endTime": { "seconds": "61" },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "61" },
+              "endTime": { "seconds": "61", "nanos": 800000000 },
+              "word": "cerebellum"
+            },
+            {
+              "startTime": { "seconds": "61", "nanos": 800000000 },
+              "endTime": { "seconds": "62", "nanos": 700000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "62", "nanos": 700000000 },
+              "endTime": { "seconds": "63", "nanos": 400000000 },
+              "word": "thyroid"
+            },
+            {
+              "startTime": { "seconds": "63", "nanos": 400000000 },
+              "endTime": { "seconds": "64" },
+              "word": "gland"
+            },
+            {
+              "startTime": { "seconds": "64" },
+              "endTime": { "seconds": "65" },
+              "word": "ovary"
+            },
+            {
+              "startTime": { "seconds": "65" },
+              "endTime": { "seconds": "65", "nanos": 500000000 },
+              "word": "and"
+            },
+            {
+              "startTime": { "seconds": "65", "nanos": 500000000 },
+              "endTime": { "seconds": "66", "nanos": 700000000 },
+              "word": "peripheral"
+            },
+            {
+              "startTime": { "seconds": "66", "nanos": 700000000 },
+              "endTime": { "seconds": "67" },
+              "word": "nervous"
+            },
+            {
+              "startTime": { "seconds": "67" },
+              "endTime": { "seconds": "67", "nanos": 500000000 },
+              "word": "system."
+            }
+          ]
+        }
+      ],
+      "languageCode": "en-us"
+    },
+    {
+      "alternatives": [
+        {
+          "transcript": " These antibodies are recognizing structural features in both the tumor material and in the normal organ.",
+          "confidence": 0.9405534267425537,
+          "words": [
+            {
+              "startTime": { "seconds": "68", "nanos": 400000000 },
+              "endTime": { "seconds": "68", "nanos": 900000000 },
+              "word": "These"
+            },
+            {
+              "startTime": { "seconds": "68", "nanos": 900000000 },
+              "endTime": { "seconds": "69", "nanos": 500000000 },
+              "word": "antibodies"
+            },
+            {
+              "startTime": { "seconds": "69", "nanos": 500000000 },
+              "endTime": { "seconds": "70", "nanos": 200000000 },
+              "word": "are"
+            },
+            {
+              "startTime": { "seconds": "70", "nanos": 200000000 },
+              "endTime": { "seconds": "71", "nanos": 100000000 },
+              "word": "recognizing"
+            },
+            {
+              "startTime": { "seconds": "71", "nanos": 100000000 },
+              "endTime": { "seconds": "71", "nanos": 800000000 },
+              "word": "structural"
+            },
+            {
+              "startTime": { "seconds": "71", "nanos": 800000000 },
+              "endTime": { "seconds": "72", "nanos": 400000000 },
+              "word": "features"
+            },
+            {
+              "startTime": { "seconds": "72", "nanos": 400000000 },
+              "endTime": { "seconds": "72", "nanos": 900000000 },
+              "word": "in"
+            },
+            {
+              "startTime": { "seconds": "72", "nanos": 900000000 },
+              "endTime": { "seconds": "73", "nanos": 100000000 },
+              "word": "both"
+            },
+            {
+              "startTime": { "seconds": "73", "nanos": 100000000 },
+              "endTime": { "seconds": "73", "nanos": 300000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "73", "nanos": 300000000 },
+              "endTime": { "seconds": "73", "nanos": 700000000 },
+              "word": "tumor"
+            },
+            {
+              "startTime": { "seconds": "73", "nanos": 700000000 },
+              "endTime": { "seconds": "74", "nanos": 400000000 },
+              "word": "material"
+            },
+            {
+              "startTime": { "seconds": "74", "nanos": 400000000 },
+              "endTime": { "seconds": "75", "nanos": 100000000 },
+              "word": "and"
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 100000000 },
+              "endTime": { "seconds": "75", "nanos": 300000000 },
+              "word": "in"
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 300000000 },
+              "endTime": { "seconds": "75", "nanos": 400000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 400000000 },
+              "endTime": { "seconds": "75", "nanos": 900000000 },
+              "word": "normal"
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 900000000 },
+              "endTime": { "seconds": "76", "nanos": 400000000 },
+              "word": "organ."
+            }
+          ]
+        }
+      ],
+      "languageCode": "en-us"
+    },
+    {
+      "alternatives": [
+        {
+          "transcript": " What the antibodies are doing in the normal organ for instance the retina, they are affecting negatively the function of that other organ. So for instance if it's a Target in the eye there is seen visual dysfunction visual disorder as an Optima logical problem. If the cerebellum then there is a gate or self orientation space phenomenon.",
+          "confidence": 0.9593413472175598,
+          "words": [
+            {
+              "startTime": { "seconds": "77", "nanos": 700000000 },
+              "endTime": { "seconds": "78", "nanos": 100000000 },
+              "word": "What"
+            },
+            {
+              "startTime": { "seconds": "78", "nanos": 100000000 },
+              "endTime": { "seconds": "78", "nanos": 300000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "78", "nanos": 300000000 },
+              "endTime": { "seconds": "79", "nanos": 400000000 },
+              "word": "antibodies"
+            },
+            {
+              "startTime": { "seconds": "79", "nanos": 400000000 },
+              "endTime": { "seconds": "79", "nanos": 500000000 },
+              "word": "are"
+            },
+            {
+              "startTime": { "seconds": "79", "nanos": 500000000 },
+              "endTime": { "seconds": "80" },
+              "word": "doing"
+            },
+            {
+              "startTime": { "seconds": "80" },
+              "endTime": { "seconds": "80", "nanos": 300000000 },
+              "word": "in"
+            },
+            {
+              "startTime": { "seconds": "80", "nanos": 300000000 },
+              "endTime": { "seconds": "80", "nanos": 600000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "80", "nanos": 600000000 },
+              "endTime": { "seconds": "81", "nanos": 200000000 },
+              "word": "normal"
+            },
+            {
+              "startTime": { "seconds": "81", "nanos": 200000000 },
+              "endTime": { "seconds": "81", "nanos": 600000000 },
+              "word": "organ"
+            },
+            {
+              "startTime": { "seconds": "81", "nanos": 600000000 },
+              "endTime": { "seconds": "81", "nanos": 800000000 },
+              "word": "for"
+            },
+            {
+              "startTime": { "seconds": "81", "nanos": 800000000 },
+              "endTime": { "seconds": "82", "nanos": 300000000 },
+              "word": "instance"
+            },
+            {
+              "startTime": { "seconds": "82", "nanos": 300000000 },
+              "endTime": { "seconds": "82", "nanos": 300000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "82", "nanos": 300000000 },
+              "endTime": { "seconds": "82", "nanos": 800000000 },
+              "word": "retina,"
+            },
+            {
+              "startTime": { "seconds": "82", "nanos": 800000000 },
+              "endTime": { "seconds": "83", "nanos": 700000000 },
+              "word": "they"
+            },
+            {
+              "startTime": { "seconds": "83", "nanos": 700000000 },
+              "endTime": { "seconds": "84", "nanos": 300000000 },
+              "word": "are"
+            },
+            {
+              "startTime": { "seconds": "84", "nanos": 300000000 },
+              "endTime": { "seconds": "85", "nanos": 800000000 },
+              "word": "affecting"
+            },
+            {
+              "startTime": { "seconds": "85", "nanos": 800000000 },
+              "endTime": { "seconds": "86", "nanos": 500000000 },
+              "word": "negatively"
+            },
+            {
+              "startTime": { "seconds": "86", "nanos": 500000000 },
+              "endTime": { "seconds": "87" },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "87" },
+              "endTime": { "seconds": "87", "nanos": 600000000 },
+              "word": "function"
+            },
+            {
+              "startTime": { "seconds": "87", "nanos": 600000000 },
+              "endTime": { "seconds": "87", "nanos": 700000000 },
+              "word": "of"
+            },
+            {
+              "startTime": { "seconds": "87", "nanos": 700000000 },
+              "endTime": { "seconds": "88", "nanos": 100000000 },
+              "word": "that"
+            },
+            {
+              "startTime": { "seconds": "88", "nanos": 100000000 },
+              "endTime": { "seconds": "88", "nanos": 300000000 },
+              "word": "other"
+            },
+            {
+              "startTime": { "seconds": "88", "nanos": 300000000 },
+              "endTime": { "seconds": "89" },
+              "word": "organ."
+            },
+            {
+              "startTime": { "seconds": "89" },
+              "endTime": { "seconds": "89", "nanos": 300000000 },
+              "word": "So"
+            },
+            {
+              "startTime": { "seconds": "89", "nanos": 300000000 },
+              "endTime": { "seconds": "89", "nanos": 600000000 },
+              "word": "for"
+            },
+            {
+              "startTime": { "seconds": "89", "nanos": 600000000 },
+              "endTime": { "seconds": "89", "nanos": 800000000 },
+              "word": "instance"
+            },
+            {
+              "startTime": { "seconds": "89", "nanos": 800000000 },
+              "endTime": { "seconds": "90", "nanos": 200000000 },
+              "word": "if"
+            },
+            {
+              "startTime": { "seconds": "90", "nanos": 200000000 },
+              "endTime": { "seconds": "90", "nanos": 400000000 },
+              "word": "it's"
+            },
+            {
+              "startTime": { "seconds": "90", "nanos": 400000000 },
+              "endTime": { "seconds": "90", "nanos": 600000000 },
+              "word": "a"
+            },
+            {
+              "startTime": { "seconds": "90", "nanos": 600000000 },
+              "endTime": { "seconds": "91", "nanos": 300000000 },
+              "word": "Target"
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 300000000 },
+              "endTime": { "seconds": "91", "nanos": 500000000 },
+              "word": "in"
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 500000000 },
+              "endTime": { "seconds": "91", "nanos": 600000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 600000000 },
+              "endTime": { "seconds": "91", "nanos": 900000000 },
+              "word": "eye"
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 900000000 },
+              "endTime": { "seconds": "93", "nanos": 100000000 },
+              "word": "there"
+            },
+            {
+              "startTime": { "seconds": "93", "nanos": 100000000 },
+              "endTime": { "seconds": "93", "nanos": 200000000 },
+              "word": "is"
+            },
+            {
+              "startTime": { "seconds": "93", "nanos": 200000000 },
+              "endTime": { "seconds": "93", "nanos": 800000000 },
+              "word": "seen"
+            },
+            {
+              "startTime": { "seconds": "93", "nanos": 800000000 },
+              "endTime": { "seconds": "94", "nanos": 700000000 },
+              "word": "visual"
+            },
+            {
+              "startTime": { "seconds": "94", "nanos": 700000000 },
+              "endTime": { "seconds": "95", "nanos": 400000000 },
+              "word": "dysfunction"
+            },
+            {
+              "startTime": { "seconds": "95", "nanos": 400000000 },
+              "endTime": { "seconds": "95", "nanos": 800000000 },
+              "word": "visual"
+            },
+            {
+              "startTime": { "seconds": "95", "nanos": 800000000 },
+              "endTime": { "seconds": "96", "nanos": 100000000 },
+              "word": "disorder"
+            },
+            {
+              "startTime": { "seconds": "96", "nanos": 100000000 },
+              "endTime": { "seconds": "96", "nanos": 800000000 },
+              "word": "as"
+            },
+            {
+              "startTime": { "seconds": "96", "nanos": 800000000 },
+              "endTime": { "seconds": "97", "nanos": 200000000 },
+              "word": "an"
+            },
+            {
+              "startTime": { "seconds": "97", "nanos": 200000000 },
+              "endTime": { "seconds": "97", "nanos": 600000000 },
+              "word": "Optima"
+            },
+            {
+              "startTime": { "seconds": "97", "nanos": 600000000 },
+              "endTime": { "seconds": "97", "nanos": 800000000 },
+              "word": "logical"
+            },
+            {
+              "startTime": { "seconds": "97", "nanos": 800000000 },
+              "endTime": { "seconds": "98", "nanos": 600000000 },
+              "word": "problem."
+            },
+            {
+              "startTime": { "seconds": "98", "nanos": 600000000 },
+              "endTime": { "seconds": "99", "nanos": 400000000 },
+              "word": "If"
+            },
+            {
+              "startTime": { "seconds": "99", "nanos": 400000000 },
+              "endTime": { "seconds": "99", "nanos": 500000000 },
+              "word": "the"
+            },
+            {
+              "startTime": { "seconds": "99", "nanos": 500000000 },
+              "endTime": { "seconds": "100", "nanos": 300000000 },
+              "word": "cerebellum"
+            },
+            {
+              "startTime": { "seconds": "100", "nanos": 300000000 },
+              "endTime": { "seconds": "101" },
+              "word": "then"
+            },
+            {
+              "startTime": { "seconds": "101" },
+              "endTime": { "seconds": "101", "nanos": 200000000 },
+              "word": "there"
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 200000000 },
+              "endTime": { "seconds": "101", "nanos": 300000000 },
+              "word": "is"
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 300000000 },
+              "endTime": { "seconds": "101", "nanos": 400000000 },
+              "word": "a"
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 400000000 },
+              "endTime": { "seconds": "101", "nanos": 700000000 },
+              "word": "gate"
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 700000000 },
+              "endTime": { "seconds": "102", "nanos": 900000000 },
+              "word": "or"
+            },
+            {
+              "startTime": { "seconds": "102", "nanos": 900000000 },
+              "endTime": { "seconds": "103", "nanos": 500000000 },
+              "word": "self"
+            },
+            {
+              "startTime": { "seconds": "103", "nanos": 500000000 },
+              "endTime": { "seconds": "104", "nanos": 300000000 },
+              "word": "orientation"
+            },
+            {
+              "startTime": { "seconds": "104", "nanos": 300000000 },
+              "endTime": { "seconds": "105" },
+              "word": "space"
+            },
+            {
+              "startTime": { "seconds": "105" },
+              "endTime": { "seconds": "105", "nanos": 900000000 },
+              "word": "phenomenon."
+            }
+          ]
+        }
+      ],
+      "languageCode": "en-us"
+    },
+    {
+      "alternatives": [
+        {
+          "transcript": " What the antibodies are doing is reacting both with tumor and with the target organ namely the retina the good news. Is that these antibodies?",
+          "confidence": 0.9563292264938354,
+          "words": [
+            {
+              "startTime": {},
+              "endTime": { "nanos": 200000000 },
+              "word": "We're",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "nanos": 200000000 },
+              "endTime": { "nanos": 400000000 },
+              "word": "back",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "nanos": 400000000 },
+              "endTime": { "nanos": 600000000 },
+              "word": "again",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "nanos": 600000000 },
+              "endTime": { "seconds": "1", "nanos": 200000000 },
+              "word": "with",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "1", "nanos": 200000000 },
+              "endTime": { "seconds": "1", "nanos": 500000000 },
+              "word": "dr.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "1", "nanos": 500000000 },
+              "endTime": { "seconds": "1", "nanos": 800000000 },
+              "word": "Steven",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "1", "nanos": 800000000 },
+              "endTime": { "seconds": "2" },
+              "word": "kornguth",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "2" },
+              "endTime": { "seconds": "4", "nanos": 100000000 },
+              "word": "about",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "4", "nanos": 100000000 },
+              "endTime": { "seconds": "4", "nanos": 200000000 },
+              "word": "paraneoplasia",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "4", "nanos": 200000000 },
+              "endTime": { "seconds": "5", "nanos": 500000000 },
+              "word": "as",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "5", "nanos": 500000000 },
+              "endTime": { "seconds": "5", "nanos": 600000000 },
+              "word": "an",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "5", "nanos": 600000000 },
+              "endTime": { "seconds": "6" },
+              "word": "autoimmune",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "6" },
+              "endTime": { "seconds": "6", "nanos": 600000000 },
+              "word": "disease",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "6", "nanos": 600000000 },
+              "endTime": { "seconds": "7", "nanos": 100000000 },
+              "word": "Lessons",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 100000000 },
+              "endTime": { "seconds": "7", "nanos": 400000000 },
+              "word": "Learned",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 400000000 },
+              "endTime": { "seconds": "7", "nanos": 500000000 },
+              "word": "From",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 500000000 },
+              "endTime": { "seconds": "7", "nanos": 900000000 },
+              "word": "basic",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "7", "nanos": 900000000 },
+              "endTime": { "seconds": "8", "nanos": 200000000 },
+              "word": "research",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "8", "nanos": 200000000 },
+              "endTime": { "seconds": "9", "nanos": 500000000 },
+              "word": "Steve",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 500000000 },
+              "endTime": { "seconds": "9", "nanos": 600000000 },
+              "word": "when",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 600000000 },
+              "endTime": { "seconds": "9", "nanos": 700000000 },
+              "word": "we",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 700000000 },
+              "endTime": { "seconds": "9", "nanos": 900000000 },
+              "word": "spoke",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "9", "nanos": 900000000 },
+              "endTime": { "seconds": "10" },
+              "word": "last",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "10" },
+              "endTime": { "seconds": "10", "nanos": 300000000 },
+              "word": "time",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 300000000 },
+              "endTime": { "seconds": "10", "nanos": 600000000 },
+              "word": "you",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 600000000 },
+              "endTime": { "seconds": "10", "nanos": 800000000 },
+              "word": "talked",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 800000000 },
+              "endTime": { "seconds": "10", "nanos": 800000000 },
+              "word": "about",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "10", "nanos": 800000000 },
+              "endTime": { "seconds": "11", "nanos": 500000000 },
+              "word": "autoimmune",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "11", "nanos": 500000000 },
+              "endTime": { "seconds": "11", "nanos": 900000000 },
+              "word": "diseases",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "11", "nanos": 900000000 },
+              "endTime": { "seconds": "12" },
+              "word": "such",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "12" },
+              "endTime": { "seconds": "12", "nanos": 100000000 },
+              "word": "as",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 100000000 },
+              "endTime": { "seconds": "12", "nanos": 400000000 },
+              "word": "those",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 400000000 },
+              "endTime": { "seconds": "12", "nanos": 500000000 },
+              "word": "in",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 500000000 },
+              "endTime": { "seconds": "12", "nanos": 700000000 },
+              "word": "which",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 700000000 },
+              "endTime": { "seconds": "12", "nanos": 700000000 },
+              "word": "a",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "12", "nanos": 700000000 },
+              "endTime": { "seconds": "13", "nanos": 200000000 },
+              "word": "compromise",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "13", "nanos": 200000000 },
+              "endTime": { "seconds": "13", "nanos": 300000000 },
+              "word": "and",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "13", "nanos": 300000000 },
+              "endTime": { "seconds": "13", "nanos": 800000000 },
+              "word": "function",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "13", "nanos": 800000000 },
+              "endTime": { "seconds": "14", "nanos": 500000000 },
+              "word": "is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "14", "nanos": 500000000 },
+              "endTime": { "seconds": "14", "nanos": 700000000 },
+              "word": "caused",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "14", "nanos": 700000000 },
+              "endTime": { "seconds": "14", "nanos": 800000000 },
+              "word": "by",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "14", "nanos": 800000000 },
+              "endTime": { "seconds": "15" },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "15" },
+              "endTime": { "seconds": "15", "nanos": 400000000 },
+              "word": "patient's",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "15", "nanos": 400000000 },
+              "endTime": { "seconds": "15", "nanos": 500000000 },
+              "word": "own",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "15", "nanos": 500000000 },
+              "endTime": { "seconds": "15", "nanos": 800000000 },
+              "word": "immune",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "15", "nanos": 800000000 },
+              "endTime": { "seconds": "16", "nanos": 400000000 },
+              "word": "system.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "16", "nanos": 400000000 },
+              "endTime": { "seconds": "17" },
+              "word": "What",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "17" },
+              "endTime": { "seconds": "17", "nanos": 100000000 },
+              "word": "is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "17", "nanos": 100000000 },
+              "endTime": { "seconds": "17", "nanos": 200000000 },
+              "word": "paraneoplasia?",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "17", "nanos": 200000000 },
+              "endTime": { "seconds": "18", "nanos": 600000000 },
+              "word": "How",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "18", "nanos": 600000000 },
+              "endTime": { "seconds": "18", "nanos": 700000000 },
+              "word": "is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "18", "nanos": 700000000 },
+              "endTime": { "seconds": "18", "nanos": 800000000 },
+              "word": "it",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "18", "nanos": 800000000 },
+              "endTime": { "seconds": "19" },
+              "word": "an",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "19" },
+              "endTime": { "seconds": "19", "nanos": 600000000 },
+              "word": "autoimmune",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "19", "nanos": 600000000 },
+              "endTime": { "seconds": "20", "nanos": 100000000 },
+              "word": "disease",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "20", "nanos": 100000000 },
+              "endTime": { "seconds": "24", "nanos": 800000000 },
+              "word": "is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "24", "nanos": 800000000 },
+              "endTime": { "seconds": "25" },
+              "word": "a",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "25" },
+              "endTime": { "seconds": "26", "nanos": 100000000 },
+              "word": "dysfunctional",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "26", "nanos": 100000000 },
+              "endTime": { "seconds": "26", "nanos": 200000000 },
+              "word": "a",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "26", "nanos": 200000000 },
+              "endTime": { "seconds": "27" },
+              "word": "disease",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "27" },
+              "endTime": { "seconds": "27", "nanos": 500000000 },
+              "word": "seen",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "27", "nanos": 500000000 },
+              "endTime": { "seconds": "27", "nanos": 800000000 },
+              "word": "in",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "27", "nanos": 800000000 },
+              "endTime": { "seconds": "28", "nanos": 400000000 },
+              "word": "cancer",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "28", "nanos": 400000000 },
+              "endTime": { "seconds": "29", "nanos": 100000000 },
+              "word": "patients,",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "29", "nanos": 100000000 },
+              "endTime": { "seconds": "29", "nanos": 900000000 },
+              "word": "which",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "29", "nanos": 900000000 },
+              "endTime": { "seconds": "30", "nanos": 200000000 },
+              "word": "has",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "30", "nanos": 200000000 },
+              "endTime": { "seconds": "30", "nanos": 400000000 },
+              "word": "an",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "30", "nanos": 400000000 },
+              "endTime": { "seconds": "31" },
+              "word": "autoimmune",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "31" },
+              "endTime": { "seconds": "32" },
+              "word": "basis.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "32" },
+              "endTime": { "seconds": "33", "nanos": 100000000 },
+              "word": "What's",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "33", "nanos": 100000000 },
+              "endTime": { "seconds": "33", "nanos": 700000000 },
+              "word": "happening?",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "33", "nanos": 700000000 },
+              "endTime": { "seconds": "34", "nanos": 400000000 },
+              "word": "Is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "34", "nanos": 400000000 },
+              "endTime": { "seconds": "34", "nanos": 400000000 },
+              "word": "that",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "34", "nanos": 400000000 },
+              "endTime": { "seconds": "34", "nanos": 700000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "34", "nanos": 700000000 },
+              "endTime": { "seconds": "35", "nanos": 300000000 },
+              "word": "patient",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "35", "nanos": 300000000 },
+              "endTime": { "seconds": "35", "nanos": 600000000 },
+              "word": "with",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "35", "nanos": 600000000 },
+              "endTime": { "seconds": "35", "nanos": 600000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "35", "nanos": 600000000 },
+              "endTime": { "seconds": "36", "nanos": 100000000 },
+              "word": "tumor",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "36", "nanos": 100000000 },
+              "endTime": { "seconds": "37", "nanos": 600000000 },
+              "word": "begins",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "37", "nanos": 600000000 },
+              "endTime": { "seconds": "37", "nanos": 800000000 },
+              "word": "to",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "37", "nanos": 800000000 },
+              "endTime": { "seconds": "38", "nanos": 100000000 },
+              "word": "produce",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "38", "nanos": 100000000 },
+              "endTime": { "seconds": "39", "nanos": 100000000 },
+              "word": "antibodies",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "39", "nanos": 100000000 },
+              "endTime": { "seconds": "40", "nanos": 400000000 },
+              "word": "reactive",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "40", "nanos": 400000000 },
+              "endTime": { "seconds": "40", "nanos": 900000000 },
+              "word": "with",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "40", "nanos": 900000000 },
+              "endTime": { "seconds": "41" },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "41" },
+              "endTime": { "seconds": "41", "nanos": 500000000 },
+              "word": "tumor",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "41", "nanos": 500000000 },
+              "endTime": { "seconds": "42", "nanos": 900000000 },
+              "word": "these",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "42", "nanos": 900000000 },
+              "endTime": { "seconds": "43", "nanos": 500000000 },
+              "word": "antibodies",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "43", "nanos": 500000000 },
+              "endTime": { "seconds": "43", "nanos": 900000000 },
+              "word": "from",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "43", "nanos": 900000000 },
+              "endTime": { "seconds": "44", "nanos": 300000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "44", "nanos": 300000000 },
+              "endTime": { "seconds": "45", "nanos": 100000000 },
+              "word": "tumor?",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "46", "nanos": 100000000 },
+              "endTime": { "seconds": "47", "nanos": 300000000 },
+              "word": "Recognize",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "47", "nanos": 300000000 },
+              "endTime": { "seconds": "47", "nanos": 600000000 },
+              "word": "not",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "47", "nanos": 600000000 },
+              "endTime": { "seconds": "48" },
+              "word": "only",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "48" },
+              "endTime": { "seconds": "48", "nanos": 800000000 },
+              "word": "tumor",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "48", "nanos": 800000000 },
+              "endTime": { "seconds": "49", "nanos": 900000000 },
+              "word": "material",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "49", "nanos": 900000000 },
+              "endTime": { "seconds": "50", "nanos": 600000000 },
+              "word": "typically",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "50", "nanos": 600000000 },
+              "endTime": { "seconds": "51", "nanos": 500000000 },
+              "word": "proteins",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "51", "nanos": 500000000 },
+              "endTime": { "seconds": "51", "nanos": 700000000 },
+              "word": "and",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "51", "nanos": 700000000 },
+              "endTime": { "seconds": "52" },
+              "word": "sugar",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "52" },
+              "endTime": { "seconds": "52", "nanos": 800000000 },
+              "word": "proteins,",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "52", "nanos": 800000000 },
+              "endTime": { "seconds": "53", "nanos": 600000000 },
+              "word": "but",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "53", "nanos": 600000000 },
+              "endTime": { "seconds": "53", "nanos": 700000000 },
+              "word": "they",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "53", "nanos": 700000000 },
+              "endTime": { "seconds": "54", "nanos": 100000000 },
+              "word": "also",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "54", "nanos": 100000000 },
+              "endTime": { "seconds": "54", "nanos": 600000000 },
+              "word": "recognize",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "54", "nanos": 600000000 },
+              "endTime": { "seconds": "55", "nanos": 200000000 },
+              "word": "a",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "55", "nanos": 200000000 },
+              "endTime": { "seconds": "55", "nanos": 900000000 },
+              "word": "normal",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "55", "nanos": 900000000 },
+              "endTime": { "seconds": "56", "nanos": 600000000 },
+              "word": "protein",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "56", "nanos": 600000000 },
+              "endTime": { "seconds": "57", "nanos": 400000000 },
+              "word": "in",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "57", "nanos": 400000000 },
+              "endTime": { "seconds": "58" },
+              "word": "another",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "58" },
+              "endTime": { "seconds": "58", "nanos": 500000000 },
+              "word": "organ",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "58", "nanos": 500000000 },
+              "endTime": { "seconds": "59" },
+              "word": "system",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "59" },
+              "endTime": { "seconds": "59", "nanos": 300000000 },
+              "word": "such",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "59", "nanos": 300000000 },
+              "endTime": { "seconds": "59", "nanos": 400000000 },
+              "word": "as",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "59", "nanos": 400000000 },
+              "endTime": { "seconds": "59", "nanos": 500000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "59", "nanos": 500000000 },
+              "endTime": { "seconds": "60" },
+              "word": "retina",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "60" },
+              "endTime": { "seconds": "60", "nanos": 300000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "60", "nanos": 300000000 },
+              "endTime": { "seconds": "60", "nanos": 800000000 },
+              "word": "brain",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "60", "nanos": 800000000 },
+              "endTime": { "seconds": "61" },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "61" },
+              "endTime": { "seconds": "61", "nanos": 800000000 },
+              "word": "cerebellum",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "61", "nanos": 800000000 },
+              "endTime": { "seconds": "62", "nanos": 700000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "62", "nanos": 700000000 },
+              "endTime": { "seconds": "63", "nanos": 400000000 },
+              "word": "thyroid",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "63", "nanos": 400000000 },
+              "endTime": { "seconds": "64" },
+              "word": "gland",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "64" },
+              "endTime": { "seconds": "65" },
+              "word": "ovary",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "65" },
+              "endTime": { "seconds": "65", "nanos": 500000000 },
+              "word": "and",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "65", "nanos": 500000000 },
+              "endTime": { "seconds": "66", "nanos": 700000000 },
+              "word": "peripheral",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "66", "nanos": 700000000 },
+              "endTime": { "seconds": "67" },
+              "word": "nervous",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "67" },
+              "endTime": { "seconds": "67", "nanos": 500000000 },
+              "word": "system.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "68", "nanos": 400000000 },
+              "endTime": { "seconds": "68", "nanos": 900000000 },
+              "word": "These",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "68", "nanos": 900000000 },
+              "endTime": { "seconds": "69", "nanos": 500000000 },
+              "word": "antibodies",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "69", "nanos": 500000000 },
+              "endTime": { "seconds": "70", "nanos": 200000000 },
+              "word": "are",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "70", "nanos": 200000000 },
+              "endTime": { "seconds": "71", "nanos": 100000000 },
+              "word": "recognizing",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "71", "nanos": 100000000 },
+              "endTime": { "seconds": "71", "nanos": 800000000 },
+              "word": "structural",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "71", "nanos": 800000000 },
+              "endTime": { "seconds": "72", "nanos": 400000000 },
+              "word": "features",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "72", "nanos": 400000000 },
+              "endTime": { "seconds": "72", "nanos": 900000000 },
+              "word": "in",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "72", "nanos": 900000000 },
+              "endTime": { "seconds": "73", "nanos": 100000000 },
+              "word": "both",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "73", "nanos": 100000000 },
+              "endTime": { "seconds": "73", "nanos": 300000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "73", "nanos": 300000000 },
+              "endTime": { "seconds": "73", "nanos": 700000000 },
+              "word": "tumor",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "73", "nanos": 700000000 },
+              "endTime": { "seconds": "74", "nanos": 400000000 },
+              "word": "material",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "74", "nanos": 400000000 },
+              "endTime": { "seconds": "75", "nanos": 100000000 },
+              "word": "and",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 100000000 },
+              "endTime": { "seconds": "75", "nanos": 300000000 },
+              "word": "in",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 300000000 },
+              "endTime": { "seconds": "75", "nanos": 400000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 400000000 },
+              "endTime": { "seconds": "75", "nanos": 900000000 },
+              "word": "normal",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "75", "nanos": 900000000 },
+              "endTime": { "seconds": "76", "nanos": 400000000 },
+              "word": "organ.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "77", "nanos": 700000000 },
+              "endTime": { "seconds": "78", "nanos": 100000000 },
+              "word": "What",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "78", "nanos": 100000000 },
+              "endTime": { "seconds": "78", "nanos": 300000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "78", "nanos": 300000000 },
+              "endTime": { "seconds": "79", "nanos": 400000000 },
+              "word": "antibodies",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "79", "nanos": 400000000 },
+              "endTime": { "seconds": "79", "nanos": 500000000 },
+              "word": "are",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "79", "nanos": 500000000 },
+              "endTime": { "seconds": "80" },
+              "word": "doing",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "80" },
+              "endTime": { "seconds": "80", "nanos": 300000000 },
+              "word": "in",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "80", "nanos": 300000000 },
+              "endTime": { "seconds": "80", "nanos": 600000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "80", "nanos": 600000000 },
+              "endTime": { "seconds": "81", "nanos": 200000000 },
+              "word": "normal",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "81", "nanos": 200000000 },
+              "endTime": { "seconds": "81", "nanos": 600000000 },
+              "word": "organ",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "81", "nanos": 600000000 },
+              "endTime": { "seconds": "81", "nanos": 800000000 },
+              "word": "for",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "81", "nanos": 800000000 },
+              "endTime": { "seconds": "82", "nanos": 300000000 },
+              "word": "instance",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "82", "nanos": 300000000 },
+              "endTime": { "seconds": "82", "nanos": 300000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "82", "nanos": 300000000 },
+              "endTime": { "seconds": "82", "nanos": 800000000 },
+              "word": "retina,",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "82", "nanos": 800000000 },
+              "endTime": { "seconds": "83", "nanos": 700000000 },
+              "word": "they",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "83", "nanos": 700000000 },
+              "endTime": { "seconds": "84", "nanos": 300000000 },
+              "word": "are",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "84", "nanos": 300000000 },
+              "endTime": { "seconds": "85", "nanos": 800000000 },
+              "word": "affecting",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "85", "nanos": 800000000 },
+              "endTime": { "seconds": "86", "nanos": 500000000 },
+              "word": "negatively",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "86", "nanos": 500000000 },
+              "endTime": { "seconds": "87" },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "87" },
+              "endTime": { "seconds": "87", "nanos": 600000000 },
+              "word": "function",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "87", "nanos": 600000000 },
+              "endTime": { "seconds": "87", "nanos": 700000000 },
+              "word": "of",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "87", "nanos": 700000000 },
+              "endTime": { "seconds": "88", "nanos": 100000000 },
+              "word": "that",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "88", "nanos": 100000000 },
+              "endTime": { "seconds": "88", "nanos": 300000000 },
+              "word": "other",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "88", "nanos": 300000000 },
+              "endTime": { "seconds": "89" },
+              "word": "organ.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "89" },
+              "endTime": { "seconds": "89", "nanos": 300000000 },
+              "word": "So",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "89", "nanos": 300000000 },
+              "endTime": { "seconds": "89", "nanos": 600000000 },
+              "word": "for",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "89", "nanos": 600000000 },
+              "endTime": { "seconds": "89", "nanos": 800000000 },
+              "word": "instance",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "89", "nanos": 800000000 },
+              "endTime": { "seconds": "90", "nanos": 200000000 },
+              "word": "if",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "90", "nanos": 200000000 },
+              "endTime": { "seconds": "90", "nanos": 400000000 },
+              "word": "it's",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "90", "nanos": 400000000 },
+              "endTime": { "seconds": "90", "nanos": 600000000 },
+              "word": "a",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "90", "nanos": 600000000 },
+              "endTime": { "seconds": "91", "nanos": 300000000 },
+              "word": "Target",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 300000000 },
+              "endTime": { "seconds": "91", "nanos": 500000000 },
+              "word": "in",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 500000000 },
+              "endTime": { "seconds": "91", "nanos": 600000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 600000000 },
+              "endTime": { "seconds": "91", "nanos": 900000000 },
+              "word": "eye",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "91", "nanos": 900000000 },
+              "endTime": { "seconds": "93", "nanos": 100000000 },
+              "word": "there",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "93", "nanos": 100000000 },
+              "endTime": { "seconds": "93", "nanos": 200000000 },
+              "word": "is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "93", "nanos": 200000000 },
+              "endTime": { "seconds": "93", "nanos": 800000000 },
+              "word": "seen",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "93", "nanos": 800000000 },
+              "endTime": { "seconds": "94", "nanos": 700000000 },
+              "word": "visual",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "94", "nanos": 700000000 },
+              "endTime": { "seconds": "95", "nanos": 400000000 },
+              "word": "dysfunction",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "95", "nanos": 400000000 },
+              "endTime": { "seconds": "95", "nanos": 800000000 },
+              "word": "visual",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "95", "nanos": 800000000 },
+              "endTime": { "seconds": "96", "nanos": 100000000 },
+              "word": "disorder",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "96", "nanos": 100000000 },
+              "endTime": { "seconds": "96", "nanos": 800000000 },
+              "word": "as",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "96", "nanos": 800000000 },
+              "endTime": { "seconds": "97", "nanos": 200000000 },
+              "word": "an",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "97", "nanos": 200000000 },
+              "endTime": { "seconds": "97", "nanos": 600000000 },
+              "word": "Optima",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "97", "nanos": 600000000 },
+              "endTime": { "seconds": "97", "nanos": 800000000 },
+              "word": "logical",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "97", "nanos": 800000000 },
+              "endTime": { "seconds": "98", "nanos": 600000000 },
+              "word": "problem.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "98", "nanos": 600000000 },
+              "endTime": { "seconds": "99", "nanos": 400000000 },
+              "word": "If",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "99", "nanos": 400000000 },
+              "endTime": { "seconds": "99", "nanos": 500000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "99", "nanos": 500000000 },
+              "endTime": { "seconds": "100", "nanos": 300000000 },
+              "word": "cerebellum",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "100", "nanos": 300000000 },
+              "endTime": { "seconds": "101" },
+              "word": "then",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "101" },
+              "endTime": { "seconds": "101", "nanos": 200000000 },
+              "word": "there",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 200000000 },
+              "endTime": { "seconds": "101", "nanos": 300000000 },
+              "word": "is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 300000000 },
+              "endTime": { "seconds": "101", "nanos": 400000000 },
+              "word": "a",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 400000000 },
+              "endTime": { "seconds": "101", "nanos": 700000000 },
+              "word": "gate",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "101", "nanos": 700000000 },
+              "endTime": { "seconds": "102", "nanos": 900000000 },
+              "word": "or",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "102", "nanos": 900000000 },
+              "endTime": { "seconds": "103", "nanos": 500000000 },
+              "word": "self",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "103", "nanos": 500000000 },
+              "endTime": { "seconds": "104", "nanos": 300000000 },
+              "word": "orientation",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "104", "nanos": 300000000 },
+              "endTime": { "seconds": "105" },
+              "word": "space",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "105" },
+              "endTime": { "seconds": "105", "nanos": 900000000 },
+              "word": "phenomenon.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "107", "nanos": 500000000 },
+              "endTime": { "seconds": "108" },
+              "word": "What",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "108" },
+              "endTime": { "seconds": "108", "nanos": 200000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "108", "nanos": 200000000 },
+              "endTime": { "seconds": "109" },
+              "word": "antibodies",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "109" },
+              "endTime": { "seconds": "109", "nanos": 200000000 },
+              "word": "are",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "109", "nanos": 200000000 },
+              "endTime": { "seconds": "109", "nanos": 700000000 },
+              "word": "doing",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "109", "nanos": 700000000 },
+              "endTime": { "seconds": "110" },
+              "word": "is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "110" },
+              "endTime": { "seconds": "110", "nanos": 500000000 },
+              "word": "reacting",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "110", "nanos": 500000000 },
+              "endTime": { "seconds": "111" },
+              "word": "both",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "111" },
+              "endTime": { "seconds": "111", "nanos": 300000000 },
+              "word": "with",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "111", "nanos": 300000000 },
+              "endTime": { "seconds": "111", "nanos": 900000000 },
+              "word": "tumor",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "111", "nanos": 900000000 },
+              "endTime": { "seconds": "112", "nanos": 500000000 },
+              "word": "and",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "112", "nanos": 500000000 },
+              "endTime": { "seconds": "112", "nanos": 900000000 },
+              "word": "with",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "112", "nanos": 900000000 },
+              "endTime": { "seconds": "113", "nanos": 200000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "113", "nanos": 200000000 },
+              "endTime": { "seconds": "114", "nanos": 500000000 },
+              "word": "target",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "114", "nanos": 500000000 },
+              "endTime": { "seconds": "115", "nanos": 200000000 },
+              "word": "organ",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "115", "nanos": 200000000 },
+              "endTime": { "seconds": "115", "nanos": 800000000 },
+              "word": "namely",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "115", "nanos": 800000000 },
+              "endTime": { "seconds": "115", "nanos": 900000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "115", "nanos": 900000000 },
+              "endTime": { "seconds": "116", "nanos": 400000000 },
+              "word": "retina",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "116", "nanos": 400000000 },
+              "endTime": { "seconds": "117", "nanos": 800000000 },
+              "word": "the",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "117", "nanos": 800000000 },
+              "endTime": { "seconds": "118", "nanos": 100000000 },
+              "word": "good",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "118", "nanos": 100000000 },
+              "endTime": { "seconds": "118", "nanos": 500000000 },
+              "word": "news.",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "118", "nanos": 500000000 },
+              "endTime": { "seconds": "118", "nanos": 800000000 },
+              "word": "Is",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "118", "nanos": 800000000 },
+              "endTime": { "seconds": "119" },
+              "word": "that",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "119" },
+              "endTime": { "seconds": "119", "nanos": 200000000 },
+              "word": "these",
+              "speakerTag": 2
+            },
+            {
+              "startTime": { "seconds": "119", "nanos": 200000000 },
+              "endTime": { "seconds": "119", "nanos": 800000000 },
+              "word": "antibodies?",
+              "speakerTag": 2
+            }
+          ]
+        }
+      ],
+      "languageCode": "en-us"
+    }
+  ]
+}
