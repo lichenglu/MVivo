@@ -24,6 +24,7 @@
     "react-router": "^4.3.1",
     "react-router-breadcrumbs-hoc": "^2.1.5",
     "react-router-dom": "^4.3.1",
+    "react-sound": "^1.2.0",
     "react-svg-inline": "^2.1.1",
     "recompose": "^0.30.0",
     "serve": "^10.0.2",

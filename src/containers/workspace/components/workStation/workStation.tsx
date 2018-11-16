@@ -234,6 +234,7 @@ export class WorkStation extends React.Component<
 
   public render() {
     const { editorState, dataSource, hasSelectedCodedInline } = this.state;
+    const { editorConfigs } = this.props;
     return (
       <Container>
         <Editor
@@ -244,6 +245,7 @@ export class WorkStation extends React.Component<
             this.editor = element;
           }}
           onChange={this.onChangeEditor}
+          {...editorConfigs}
         />
 
         <SideContainer>

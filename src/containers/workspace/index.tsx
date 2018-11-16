@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { routeConstants } from '~/lib/constants';
 
 import { WorkSpace } from '~/containers/workspace/list';
+import { AudioTranscriptionContainer } from './audioTranscribe';
 import { DocumentManagement } from './documentManagement';
 import { WorkSpaceEditPanel } from './edit';
 import { Summary } from './summary';
@@ -33,6 +34,11 @@ export default () => (
       exact={true}
       path={routeConstants.workStation}
       component={WorkStationContainer}
+    />
+    <Route
+      exact={true}
+      path={routeConstants.audioTrans}
+      component={AudioTranscriptionContainer}
     />
   </Switch>
 );
