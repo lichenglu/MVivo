@@ -11,9 +11,13 @@ import AudioMock from '~/fixtures/google_output.json';
 import { deserialize } from '~/lib/slate-plugins/google-speech-text-serializer';
 
 // components
+import { AudioPlayer } from '~/components/playback/audioPlayer';
+import { Colors } from '~/themes';
 import { WorkStation } from './components/workStation';
 
-import SoundPlayer from '~/components/soundplayer';
+import TimedText from '~/lib/slate-plugins/timedText';
+import { TimeStampContextProvider } from '~/lib/slate-plugins/timedText/timeStateContext';
+import { MARKS } from '~/lib/slate-plugins/utils/constants';
 
 interface AudioTranscriptionProps
   extends RouteCompProps<{ wsID: string; docID: string }> {
@@ -37,7 +41,10 @@ export class AudioTranscriptionContainer extends React.Component<
 > {
   public state = {
     manualInputDocument: false,
+    playedSeconds: 0,
   };
+
+  public plugins = [TimedText({ type: MARKS.TimedText })];
 
   public onCreateCode = (data: {
     name: string;
@@ -95,54 +102,44 @@ export class AudioTranscriptionContainer extends React.Component<
     return [];
   }
 
-  public renderMark = (props, editor, next) => {
-    const { children, mark, attributes } = props;
-    switch (mark.type) {
-      case 'GSWord':
-        const startTime = mark.data.get('startTime');
-        return (
-          <span
-            {...attributes}
-            onClick={() => this.changeAudioProgress(startTime)}
-          >
-            {children}
-          </span>
-        );
-      default:
-        return next();
-    }
-  };
-
   public changeAudioProgress = (currentTime: number) => {
     this.setState({ currentTime });
+    this.player.seekTo(currentTime);
   };
 
   public render(): JSX.Element | null {
-    const { currentTime } = this.state;
-    console.log(currentTime);
+    const { playedSeconds } = this.state;
+
     return (
-      <React.Fragment>
-        <Helmet>
-          <title>WorkSpace - transcription</title>
-        </Helmet>
-        <SoundPlayer
-          url="https://storage.googleapis.com/speech-file-store/CTE.mp3"
-          playFromPosition={(currentTime || 0) * 1000}
-          playStatus={true}
-          autoLoad
-        />
-        <WorkStation
-          codeList={this.codeList}
-          onCreateCode={this.onCreateCode}
-          onDeleteCode={this.onDeleteCode}
-          onUpdateEditorContent={this.onUpdateEditorContent}
-          editorState={deserialize(AudioMock, {
-            blockType: 'GSBlock',
-            wordMarkType: 'GSWord',
-          })}
-          editorConfigs={{ renderMark: this.renderMark }}
-        />
-      </React.Fragment>
+      <TimeStampContextProvider
+        value={{
+          changeAudioProgress: this.changeAudioProgress,
+          currentTime: playedSeconds,
+        }}
+      >
+        <React.Fragment>
+          <Helmet>
+            <title>WorkSpace - transcription</title>
+          </Helmet>
+          <AudioPlayer
+            url="https://storage.googleapis.com/speech-file-store/CTE.mp3"
+            playerRef={player => (this.player = player)}
+            containerStyle={{ marginBottom: '0.5rem' }}
+            onProgress={({ playedSeconds }) => this.setState({ playedSeconds })}
+          />
+          <WorkStation
+            codeList={this.codeList}
+            onCreateCode={this.onCreateCode}
+            onDeleteCode={this.onDeleteCode}
+            onUpdateEditorContent={this.onUpdateEditorContent}
+            editorState={deserialize(AudioMock, {
+              blockType: 'GSBlock',
+              wordMarkType: MARKS.TimedText,
+            })}
+            plugins={this.plugins}
+          />
+        </React.Fragment>
+      </TimeStampContextProvider>
     );
   }
 }

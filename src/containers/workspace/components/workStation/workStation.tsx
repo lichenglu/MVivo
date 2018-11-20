@@ -16,9 +16,9 @@ import { UsedCodeTags } from './usedCodeTags';
 import {
   BufferedText,
   CodedText,
-  RichText,
-  HoverMenu,
   getCodeSummary,
+  HoverMenu,
+  RichText,
   SoftBreak,
   updateCodeForBlocks,
   updateSelectedCode,
@@ -39,6 +39,7 @@ interface WorkStationProps {
   onDeleteCode: (codeID: string) => boolean;
   onUpdateEditorContent: (contentState: Value) => void;
   editorState?: Value | null;
+  plugins?: object[];
 }
 
 interface WorkStationState {
@@ -80,6 +81,7 @@ export class WorkStation extends React.Component<
       SoftBreak(),
       RichText({}),
       HoverMenu({}),
+      ...(this.props.plugins ? this.props.plugins : []),
     ];
   }
 
