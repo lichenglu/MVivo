@@ -10,22 +10,13 @@ export const TimedText = ({ mark, attributes, children }: RenderMarkProps) => (
   <TimeStampContextConsumer>
     {({ currentTime, changeAudioProgress }) => {
       const startTime = mark.data.get('startTime');
-      const farAway = Math.abs(startTime - currentTime) > 20;
-      const close =
-        0.5 < Math.abs(startTime - currentTime) &&
-        Math.abs(startTime - currentTime) <= 20;
-      let color = '#000';
-      if (farAway) {
-        color = Colors.shadowGray;
-      }
-      if (close) {
-        color = Colors.textLightGray;
-      }
-
+      const endTime = mark.data.get('endTime');
       return (
         <span
           {...attributes}
-          style={{ color }}
+          className="timestamped-text"
+          data-start={startTime}
+          data-end={endTime}
           onClick={() => changeAudioProgress(startTime)}
         >
           {children}

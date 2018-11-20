@@ -1,4 +1,5 @@
 import { message, notification } from 'antd';
+import $ from 'jquery';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
@@ -45,6 +46,30 @@ export class AudioTranscriptionContainer extends React.Component<
   };
 
   public plugins = [TimedText({ type: MARKS.TimedText })];
+
+  public componentDidUpdate(prevProps, prevState) {
+    if (prevState.playedSeconds !== this.state.playedSeconds) {
+      const { playedSeconds: currentTime } = this.state;
+      $(`span.timestamped-text`).each(function() {
+        const startTimeStr = $(this).attr('data-start');
+        if (startTimeStr === undefined) return;
+        const startTime = parseFloat(startTimeStr);
+        const diff = currentTime - startTime;
+        const hasPassed = diff > 0.6;
+        const isBefore = diff < -0.6;
+
+        let color = Colors.bloodOrange;
+        if (hasPassed) {
+          color = Colors.textBlack;
+        }
+        if (isBefore) {
+          color = Colors.textLightGray;
+        }
+
+        $(this).css('color', color);
+      });
+    }
+  }
 
   public onCreateCode = (data: {
     name: string;
