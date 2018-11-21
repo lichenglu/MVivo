@@ -1,4 +1,4 @@
-import { Icon, message } from 'antd';
+import { Icon, message, Select } from 'antd';
 import React from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import styled from 'styled-components';
@@ -19,7 +19,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const ControlContainer = styled.div`
+const PlayContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -29,12 +29,18 @@ const DurationContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 0.5rem;
 `;
 
 const StyledPlayer = styled(ReactPlayer)``;
 
-const ControlBtn = styled(Icon)`
+const ControlContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+`;
+
+const PlayBtn = styled(Icon)`
   color: ${Colors.surfGreenDark.toString()};
   font-size: 2rem;
   transition: 0.35s;
@@ -47,6 +53,10 @@ const ControlBtn = styled(Icon)`
 
 const StyledProgress = styled(Progress)`
   flex: 1;
+`;
+
+const RateBtn = styled(Select)`
+  width: 4rem;
 `;
 
 interface AudioPlayerProps extends ReactPlayerProps {
@@ -62,6 +72,7 @@ interface AudioPlayerState {
   loaded: number;
   loadedSeconds: number;
   duration: number;
+  playbackRate: number;
 }
 
 export class AudioPlayer extends React.PureComponent<
@@ -76,9 +87,14 @@ export class AudioPlayer extends React.PureComponent<
     loaded: 0,
     loadedSeconds: 0,
     duration: 0,
+    playbackRate: 1,
   };
 
   private player: ReactPlayer | null;
+
+  private get rateOptions() {
+    return [0.75, 1, 1.25, 1.5, 2];
+  }
 
   public componentDidMount() {
     const { url } = this.props;
@@ -118,8 +134,17 @@ export class AudioPlayer extends React.PureComponent<
     }
   };
 
+  public onChangePlayRate = (rate: number) =>
+    this.setState({ playbackRate: rate });
+
   public render() {
-    const { playing, playedSeconds, duration, ready } = this.state;
+    const {
+      playing,
+      playedSeconds,
+      playbackRate,
+      duration,
+      ready,
+    } = this.state;
     const { playerRef, containerStyle } = this.props;
 
     return (
@@ -127,7 +152,8 @@ export class AudioPlayer extends React.PureComponent<
         <StyledPlayer
           width="100%"
           height="100%"
-          progressInterval={200}
+          progressInterval={120}
+          playbackRate={playbackRate}
           {...this.props}
           playing={playing}
           onReady={() => this.setState({ ready: true })}
@@ -140,8 +166,8 @@ export class AudioPlayer extends React.PureComponent<
             if (playerRef) playerRef(player);
           }}
         />
-        <ControlContainer>
-          <ControlBtn
+        <PlayContainer>
+          <PlayBtn
             onClick={this.togglePlay}
             type={playing ? 'pause-circle' : 'right-circle'}
             theme="filled"
@@ -151,12 +177,25 @@ export class AudioPlayer extends React.PureComponent<
             duration={duration}
             onSeekTrack={this.onSeekTrack}
           />
+        </PlayContainer>
+        <ControlContainer>
+          <DurationContainer>
+            <Duration seconds={playedSeconds} />
+            <span style={{ margin: '0 0.3rem' }}>{'|'}</span>
+            <Duration seconds={duration} />
+          </DurationContainer>
+          <RateBtn
+            onChange={this.onChangePlayRate}
+            value={playbackRate}
+            showArrow={false}
+          >
+            {this.rateOptions.map(option => (
+              <Select.Option value={option} key={option.toString()}>
+                {`${option}x`}
+              </Select.Option>
+            ))}
+          </RateBtn>
         </ControlContainer>
-        <DurationContainer>
-          <Duration seconds={playedSeconds} />
-          <span style={{ margin: '0 0.3rem' }}>{'|'}</span>
-          <Duration seconds={duration} />
-        </DurationContainer>
       </Container>
     );
   }
