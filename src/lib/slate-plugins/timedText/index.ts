@@ -1,5 +1,6 @@
 import { MARKS } from '../utils/constants';
 
+import { calculateTextColor } from './calculateTextState';
 import { RenderTimedText } from './renderTimedText';
 
 interface TimedText {
@@ -11,3 +12,5 @@ export default function TimedText({ type = MARKS.TimedText }: TimedText) {
     ...RenderTimedText({ type }),
   };
 }
+
+export { calculateTextColor };

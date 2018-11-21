@@ -11,7 +11,7 @@ interface RenderTimedTextOptions {
 export function RenderTimedText({ type }: RenderTimedTextOptions): SlatePlugin {
   return {
     renderMark: (props, next) => {
-      const { mark, attributes, children, editor } = props;
+      const { mark, attributes, children } = props;
       if (mark.get('type') === type) {
         return (
           <TimedText attributes={attributes} mark={mark}>

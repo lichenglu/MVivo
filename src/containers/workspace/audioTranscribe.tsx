@@ -1,9 +1,9 @@
-import { message, notification } from 'antd';
 import $ from 'jquery';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import ReactPlayer from 'react-player';
 import { Value as SlateValue } from 'slate';
 
 import { CodeModel, RootStore } from '~/stores/root-store';
@@ -13,10 +13,9 @@ import { deserialize } from '~/lib/slate-plugins/google-speech-text-serializer';
 
 // components
 import { AudioPlayer } from '~/components/playback/audioPlayer';
-import { Colors } from '~/themes';
 import { WorkStation } from './components/workStation';
 
-import TimedText from '~/lib/slate-plugins/timedText';
+import TimedText, { calculateTextColor } from '~/lib/slate-plugins/timedText';
 import { TimeStampContextProvider } from '~/lib/slate-plugins/timedText/timeStateContext';
 import { MARKS } from '~/lib/slate-plugins/utils/constants';
 
@@ -27,6 +26,7 @@ interface AudioTranscriptionProps
 
 interface AudioTranscriptionState {
   manualInputDocument: boolean;
+  playedSeconds: number;
 }
 
 // TODO:
@@ -47,25 +47,19 @@ export class AudioTranscriptionContainer extends React.Component<
 
   public plugins = [TimedText({ type: MARKS.TimedText })];
 
-  public componentDidUpdate(prevProps, prevState) {
+  public player: ReactPlayer;
+
+  public componentDidUpdate(
+    prevProps: AudioTranscriptionProps,
+    prevState: AudioTranscriptionState
+  ) {
     if (prevState.playedSeconds !== this.state.playedSeconds) {
       const { playedSeconds: currentTime } = this.state;
       $(`span.timestamped-text`).each(function() {
         const startTimeStr = $(this).attr('data-start');
         if (startTimeStr === undefined) return;
         const startTime = parseFloat(startTimeStr);
-        const diff = currentTime - startTime;
-        const hasPassed = diff > 0.6;
-        const isBefore = diff < -0.6;
-
-        let color = Colors.bloodOrange;
-        if (hasPassed) {
-          color = Colors.textBlack;
-        }
-        if (isBefore) {
-          color = Colors.textLightGray;
-        }
-
+        const color = calculateTextColor(currentTime, startTime);
         $(this).css('color', color);
       });
     }
@@ -108,6 +102,14 @@ export class AudioTranscriptionContainer extends React.Component<
     }
   };
 
+  public onPlayBackProgress = ({
+    playedSeconds,
+  }: {
+    playedSeconds: number;
+  }) => {
+    this.setState({ playedSeconds });
+  };
+
   get workSpace() {
     const workSpaceID = this.props.match.params.wsID;
     return this.props.rootStore.workSpaceStore.workSpaceBy(workSpaceID);
@@ -127,9 +129,9 @@ export class AudioTranscriptionContainer extends React.Component<
     return [];
   }
 
-  public changeAudioProgress = (currentTime: number) => {
-    this.setState({ currentTime });
-    this.player.seekTo(currentTime);
+  public changeAudioProgress = (playedSeconds: number) => {
+    this.setState({ playedSeconds });
+    this.player.seekTo(playedSeconds);
   };
 
   public render(): JSX.Element | null {
@@ -150,7 +152,7 @@ export class AudioTranscriptionContainer extends React.Component<
             url="https://storage.googleapis.com/speech-file-store/CTE.mp3"
             playerRef={player => (this.player = player)}
             containerStyle={{ marginBottom: '0.5rem' }}
-            onProgress={({ playedSeconds }) => this.setState({ playedSeconds })}
+            onProgress={this.onPlayBackProgress}
           />
           <WorkStation
             codeList={this.codeList}

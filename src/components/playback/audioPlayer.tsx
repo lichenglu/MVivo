@@ -1,4 +1,4 @@
-import { Icon } from 'antd';
+import { Icon, message } from 'antd';
 import React from 'react';
 import ReactPlayer, { ReactPlayerProps } from 'react-player';
 import styled from 'styled-components';
@@ -78,7 +78,23 @@ export class AudioPlayer extends React.PureComponent<
     duration: 0,
   };
 
-  private player: React.RefObject<ReactPlayer>;
+  private player: ReactPlayer | null;
+
+  public componentDidMount() {
+    const { url } = this.props;
+    if (!url) {
+      message.error('Audio URL missing. URL is required for audio player!');
+      return;
+    }
+    if (Array.isArray(url)) {
+      return;
+    }
+    if (!ReactPlayer.canPlay(url)) {
+      message.error(
+        'Bad audio URL. Make sure this URL can be accessed publicly and can be played'
+      );
+    }
+  }
 
   public togglePlay = () => this.setState({ playing: !this.state.playing });
 
@@ -116,8 +132,10 @@ export class AudioPlayer extends React.PureComponent<
           playing={playing}
           onReady={() => this.setState({ ready: true })}
           onProgress={this.onProgress}
-          onDuration={(duration: number) => this.setState({ duration })}
-          ref={player => {
+          onDuration={(totalDuration: number) =>
+            this.setState({ duration: totalDuration })
+          }
+          ref={(player: ReactPlayer) => {
             this.player = player;
             if (playerRef) playerRef(player);
           }}
