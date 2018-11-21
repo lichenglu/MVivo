@@ -18,8 +18,10 @@ import WorkSpace from './containers/workspace';
 import { routeConstants } from './lib/constants';
 
 const Container = styled.div`
-  min-width: 100vw;
+  max-width: 100vw;
   min-height: 100vh;
+  max-width: 100vw;
+  // max-height: 100vh;
   display: flex;
   flex-direction: column;
 `;

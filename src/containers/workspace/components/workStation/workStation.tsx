@@ -1,6 +1,6 @@
 import React from 'react';
 import { Change, Inline, Value } from 'slate';
-import { Editor } from 'slate-react';
+import { Editor, EditorProps } from 'slate-react';
 
 import { CodeSnapshot } from '~/stores';
 
@@ -40,6 +40,7 @@ interface WorkStationProps {
   onUpdateEditorContent: (contentState: Value) => void;
   editorState?: Value | null;
   plugins?: object[];
+  editorConfigs?: EditorProps;
 }
 
 interface WorkStationState {
@@ -48,6 +49,8 @@ interface WorkStationState {
   dataSource: CodeSnapshot[];
   hasSelectedCodedInline: boolean;
   currentInlineCodeIDs: string[];
+  allowCoding: boolean;
+  allowEditing: boolean;
 }
 
 export class WorkStation extends React.Component<
@@ -70,6 +73,8 @@ export class WorkStation extends React.Component<
       dataSource: this.codes,
       hasSelectedCodedInline: false,
       currentInlineCodeIDs: [],
+      allowCoding: true,
+      allowEditing: true,
     };
 
     this.plugins = [
@@ -235,7 +240,12 @@ export class WorkStation extends React.Component<
   }
 
   public render() {
-    const { editorState, dataSource, hasSelectedCodedInline } = this.state;
+    const {
+      editorState,
+      dataSource,
+      hasSelectedCodedInline,
+      allowCoding,
+    } = this.state;
     const { editorConfigs } = this.props;
     return (
       <Container>
@@ -250,23 +260,25 @@ export class WorkStation extends React.Component<
           {...editorConfigs}
         />
 
-        <SideContainer>
-          <AutoComplete
-            onSelect={this.onSelectOption}
-            onSearch={this.onSearchCode}
-            onFocus={() => this.onSearchCode('')}
-            dataSource={dataSource}
-            placeholder="Type to search codes or create a new one"
-            allowClear
-          />
-          <UsedCodeTags
-            codes={
-              hasSelectedCodedInline ? this.currentCodes : this.sortedCodes
-            }
-            onClick={this.onSelectCode}
-            onClose={this.onDeleteCode}
-          />
-        </SideContainer>
+        {allowCoding && (
+          <SideContainer>
+            <AutoComplete
+              onSelect={this.onSelectOption}
+              onSearch={this.onSearchCode}
+              onFocus={() => this.onSearchCode('')}
+              dataSource={dataSource}
+              placeholder="Type to search codes or create a new one"
+              allowClear
+            />
+            <UsedCodeTags
+              codes={
+                hasSelectedCodedInline ? this.currentCodes : this.sortedCodes
+              }
+              onClick={this.onSelectCode}
+              onClose={this.onDeleteCode}
+            />
+          </SideContainer>
+        )}
       </Container>
     );
   }
