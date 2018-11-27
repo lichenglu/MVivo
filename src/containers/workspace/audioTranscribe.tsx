@@ -1,10 +1,11 @@
+import isHotkey from 'is-hotkey';
 import $ from 'jquery';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import ReactPlayer from 'react-player';
-import { Value as SlateValue } from 'slate';
+import { Change, Value as SlateValue } from 'slate';
 
 import { CodeModel, RootStore } from '~/stores/root-store';
 
@@ -45,9 +46,44 @@ export class AudioTranscriptionContainer extends React.Component<
     playedSeconds: 0,
   };
 
-  public plugins = [TimedText({ type: MARKS.TimedText })];
+  public get plugins() {
+    const self = this;
+    return [
+      TimedText({ type: MARKS.TimedText }),
+      {
+        onKeyDown(event: KeyboardEvent, change: Change, next: Function) {
+          if (isHotkey('control+space', event)) {
+            event.preventDefault();
+            console.log('lalal');
+            self.togglePlayer();
+          }
+          return next();
+        },
+      },
+    ];
+  }
 
   public player: ReactPlayer;
+
+  public componentDidMount() {
+    if (!this.document) {
+      const documentT = this.props.rootStore.workSpaceStore.createDocument(
+        {
+          text: 'blah',
+          name: 'transcribe',
+          editorContentState: deserialize(AudioMock, {
+            blockType: 'GSBlock',
+            wordMarkType: MARKS.TimedText,
+            toJSON: true,
+          }),
+        },
+        {
+          isHTML: false,
+        }
+      );
+      this.workSpace!.addDocument(documentT);
+    }
+  }
 
   public componentDidUpdate(
     prevProps: AudioTranscriptionProps,
@@ -64,6 +100,11 @@ export class AudioTranscriptionContainer extends React.Component<
       });
     }
   }
+
+  public togglePlayer = () => {
+    if (!this.player) return;
+    this.player.togglePlay();
+  };
 
   public onCreateCode = (data: {
     name: string;
@@ -117,9 +158,9 @@ export class AudioTranscriptionContainer extends React.Component<
 
   get document() {
     if (!this.workSpace) return null;
-    const documentID = this.props.match.params.docID;
-    const doc = this.workSpace.documents.get(documentID);
-    return doc;
+    return this.workSpace.documentList.filter(
+      doc => doc.name === 'transcribe'
+    )[0];
   }
 
   get codeList() {
@@ -159,10 +200,10 @@ export class AudioTranscriptionContainer extends React.Component<
             onCreateCode={this.onCreateCode}
             onDeleteCode={this.onDeleteCode}
             onUpdateEditorContent={this.onUpdateEditorContent}
-            editorState={deserialize(AudioMock, {
-              blockType: 'GSBlock',
-              wordMarkType: MARKS.TimedText,
-            })}
+            editorState={
+              this.document &&
+              SlateValue.fromJSON(this.document.editorContentState)
+            }
             plugins={this.plugins}
           />
         </React.Fragment>

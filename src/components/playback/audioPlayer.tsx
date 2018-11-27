@@ -162,6 +162,8 @@ export class AudioPlayer extends React.PureComponent<
             this.setState({ duration: totalDuration })
           }
           ref={(player: ReactPlayer) => {
+            if (!player) return;
+            player.togglePlay = this.togglePlay;
             this.player = player;
             if (playerRef) playerRef(player);
           }}
