@@ -149,7 +149,7 @@ export class AudioTranscriptionContainer extends React.Component<
             <title>WorkSpace - transcription</title>
           </Helmet>
           <AudioPlayer
-            url="https://storage.googleapis.com/speech-file-store/CTE.mp3"
+            url="https://storage.googleapis.com/speech-file-store/Kornguth4_MS.mp3"
             playerRef={player => (this.player = player)}
             containerStyle={{ marginBottom: '0.5rem' }}
             onProgress={this.onPlayBackProgress}
