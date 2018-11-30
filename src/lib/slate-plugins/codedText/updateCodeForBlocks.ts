@@ -48,6 +48,7 @@ export const addCode = ({
     change.moveToRangeOfDocument();
     const originalRange = change.value.selection;
     change.value.inlines.forEach(inline => {
+      console.log(inline);
       if (inline && inline.type === INLINES.BufferedText) {
         change.moveToRangeOfNode(inline);
 

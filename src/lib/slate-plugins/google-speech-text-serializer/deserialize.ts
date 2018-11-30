@@ -1,4 +1,5 @@
 import { Mark, Node, Value } from 'slate';
+import { flatten } from 'ramda';
 
 interface GSpeechTextOutput {
   results: GSpeechTextResult[];
@@ -43,38 +44,37 @@ export function deserialize(gsOutput: GSpeechTextOutput, options: Options) {
     document: {
       object: 'document',
       data: {},
-      nodes: results.slice(0, results.length - 1).map((result, idx) => {
-        const alt = result.alternatives[0];
-        let words = alt.words;
-        if (idx === results.length - 2) {
-          words = words.slice(prevWordsCount);
-        }
-        prevWordsCount += words.length;
+      nodes: flatten(
+        results.slice(0, results.length - 1).map((result, idx) => {
+          const alt = result.alternatives[0];
+          let words = alt.words;
+          if (idx === results.length - 2) {
+            words = words.slice(prevWordsCount);
+          }
+          prevWordsCount += words.length;
 
-        return {
-          object: 'block',
-          data: {
-            confidence: alt.confidence,
-            languageCode: result.languageCode,
-          },
-          type: blockType,
-          nodes: [
+          return [
             {
-              object: 'text',
-              leaves: createWordLeaves(words, options),
-            },
-            {
-              object: 'text',
-              leaves: [
+              object: 'block',
+              data: {
+                confidence: alt.confidence,
+                languageCode: result.languageCode,
+              },
+              type: blockType,
+              nodes: [
                 {
-                  object: 'leaf',
-                  text: '\n',
+                  object: 'text',
+                  leaves: createWordLeaves(words, options),
                 },
               ],
             },
-          ],
-        };
-      }),
+            {
+              object: 'block',
+              type: 'paragraph',
+            },
+          ];
+        })
+      ),
     },
   };
 

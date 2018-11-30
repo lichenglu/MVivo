@@ -7,6 +7,10 @@
  * @return {Object}
  */
 
+interface SoftBreakOpts {
+  shift: boolean;
+}
+
 function SoftBreak(options = {}) {
   return {
     onKeyDown(event, change, next) {

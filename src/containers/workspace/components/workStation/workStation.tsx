@@ -41,6 +41,8 @@ interface WorkStationProps {
   editorState?: Value | null;
   plugins?: object[];
   editorConfigs?: EditorProps;
+  allowCoding?: boolean;
+  allowEditing?: boolean;
 }
 
 interface WorkStationState {
@@ -53,10 +55,15 @@ interface WorkStationState {
   allowEditing: boolean;
 }
 
-export class WorkStation extends React.Component<
+export class WorkStation extends React.PureComponent<
   WorkStationProps,
   WorkStationState
 > {
+  public static defaultProps = {
+    allowCoding: true,
+    allowEditing: true,
+  };
+
   public plugins: object[] = [];
   private editor: Editor | null;
 
@@ -67,6 +74,7 @@ export class WorkStation extends React.Component<
     if (props.editorState) {
       editorState = props.editorState;
     }
+
     this.state = {
       editorState,
       codeInput: '',
@@ -77,17 +85,7 @@ export class WorkStation extends React.Component<
       allowEditing: true,
     };
 
-    this.plugins = [
-      BufferedText({ clearOnEscape: true }),
-      CodedText({
-        onClickCodedText: this.onClickCodedText,
-        mixBgColor: true,
-      }),
-      SoftBreak(),
-      RichText({}),
-      HoverMenu({}),
-      ...(this.props.plugins ? this.props.plugins : []),
-    ];
+    this.plugins = this.computePlugins(this.props);
   }
 
   public componentDidUpdate(prevProps: WorkStationProps) {
@@ -96,7 +94,25 @@ export class WorkStation extends React.Component<
         dataSource: [...this.codes],
       });
     }
+
+    if (prevProps.allowCoding !== this.props.allowCoding) {
+      this.plugins = this.computePlugins(this.props);
+    }
   }
+
+  public computePlugins = (props: WorkStationProps) => {
+    return [
+      BufferedText({ clearOnEscape: true }),
+      CodedText({
+        onClickCodedText: this.onClickCodedText,
+        mixBgColor: true,
+      }),
+      SoftBreak({ shift: true }),
+      RichText({}),
+      props.allowCoding ? HoverMenu({}) : null,
+      ...(props.plugins ? props.plugins : []),
+    ].filter(p => !!p);
+  };
 
   public onChangeEditor = ({ value }: Change) => {
     this.setState({ editorState: value }, () => {
@@ -231,22 +247,14 @@ export class WorkStation extends React.Component<
   // all the codes but those codes that the current selected
   // entity contains
   get excludedCodes() {
-    return this.codes.filter(
-      code =>
-        !this.currentCodes
-          ? true
-          : !this.currentCodes.find(c => c.id === code.id)
+    return this.codes.filter(code =>
+      !this.currentCodes ? true : !this.currentCodes.find(c => c.id === code.id)
     );
   }
 
   public render() {
-    const {
-      editorState,
-      dataSource,
-      hasSelectedCodedInline,
-      allowCoding,
-    } = this.state;
-    const { editorConfigs } = this.props;
+    const { editorState, dataSource, hasSelectedCodedInline } = this.state;
+    const { editorConfigs, allowCoding } = this.props;
     return (
       <Container>
         <Editor
@@ -257,6 +265,7 @@ export class WorkStation extends React.Component<
             this.editor = element;
           }}
           onChange={this.onChangeEditor}
+          style={!allowCoding ? { maxHeight: 'none' } : {}}
           {...editorConfigs}
         />
 

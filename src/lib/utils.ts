@@ -25,12 +25,12 @@ export const export2Word = ({
   containerID,
   element,
   docName = 'document',
-  tableStyle,
+  style,
 }: {
-  containerID: string;
   element: HTMLElement | null;
+  containerID?: string;
   docName?: string;
-  tableStyle?: string;
+  style?: string;
 }) => {
   if (!window.Blob) {
     alert('Your legacy browser does not support this action.');
@@ -66,18 +66,36 @@ export const export2Word = ({
     }
   `;
 
+  const _containerID = containerID || Date.now().toString();
+
   const css = `<style>
-  @page ${containerID} {
+  @page ${_containerID} {
     size: 11.0in 8.5in;
     mso-page-orientation: landscape;
   }
-  #${containerID} {
-    page: ${containerID};
+  #${_containerID} {
+    page: ${_containerID};
   }
-  ${tableStyle || defaultTableStyle}
+  ${style === undefined ? defaultTableStyle : style}
   </style>`;
 
-  const html = element.innerHTML;
+  let html = element.innerHTML;
+  if (!containerID) {
+    html = `<div id="${_containerID}">${element.innerHTML}</div>`;
+  }
+
+  html = `
+  <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head>
+      <meta charset='utf-8'>
+      <title>${docName}</title>
+    </head>
+    <body>
+    ${html}
+    </body>
+  </html>
+  `;
+
   const blob = new Blob(['\ufeff', css + html], {
     type: 'application/msword',
   });
