@@ -11,7 +11,7 @@ interface SoftBreakOpts {
   shift: boolean;
 }
 
-function SoftBreak(options = {}) {
+function SoftBreak(options: SoftBreakOpts = { shift: false }) {
   return {
     onKeyDown(event, change, next) {
       if (event.key !== 'Enter') return next();

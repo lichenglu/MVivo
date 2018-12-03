@@ -3,6 +3,7 @@ import isHotkey from 'is-hotkey';
 import $ from 'jquery';
 import { inject, observer } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
+import { uniq as RUniq } from 'ramda';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import ReactPlayer from 'react-player';
@@ -17,12 +18,13 @@ import { export2Word } from '~/lib/utils';
 
 // components
 import { AudioPlayer } from '~/components/playback/audioPlayer';
+import TranscribeBlock from '~/components/transcribeBlock';
 import { WorkStation } from './components/workStation';
 
 // slate related
 import TimedText, { calculateTextColor } from '~/lib/slate-plugins/timedText';
 import { TimeStampContextProvider } from '~/lib/slate-plugins/timedText/timeStateContext';
-import { MARKS } from '~/lib/slate-plugins/utils/constants';
+import { BLOCKS, MARKS } from '~/lib/slate-plugins/utils/constants';
 
 interface AudioTranscriptionProps
   extends RouteCompProps<{ wsID: string; docID: string }> {
@@ -66,6 +68,7 @@ export class AudioTranscriptionContainer extends React.Component<
     manualInputDocument: false,
     playedSeconds: 0,
     allowCoding: true,
+    roster: [],
   };
 
   public get plugins() {
@@ -93,7 +96,7 @@ export class AudioTranscriptionContainer extends React.Component<
           text: 'blah',
           name: 'transcribe',
           editorContentState: deserialize(AudioMock, {
-            blockType: 'GSBlock',
+            blockType: BLOCKS.TranscribeBlock,
             wordMarkType: MARKS.TimedText,
             toJSON: true,
           }),
@@ -221,6 +224,39 @@ export class AudioTranscriptionContainer extends React.Component<
     this.player.seekTo(playedSeconds);
   };
 
+  public onChangeRosterFactory = ({ node, editor }) => (
+    selectedNames,
+    opts
+  ) => {
+    const { roster } = this.state;
+    this.setState({ roster: RUniq([...roster, ...selectedNames]) });
+
+    editor.change(change => {
+      change.moveToRangeOfNode(node).setBlocks({
+        data: {
+          ...node.get('data').toObject(),
+          tags: selectedNames,
+        },
+      });
+    });
+  };
+
+  public renderNode = (props, next) => {
+    const { node, editor } = props;
+
+    if (node.get('type') === BLOCKS.TranscribeBlock) {
+      return (
+        <TranscribeBlock
+          {...props}
+          onChangeRoster={this.onChangeRosterFactory({ node, editor })}
+          roster={this.state.roster}
+        />
+      );
+    }
+
+    return next();
+  };
+
   public render(): JSX.Element | null {
     const { playedSeconds, allowCoding } = this.state;
 
@@ -266,6 +302,9 @@ export class AudioTranscriptionContainer extends React.Component<
             }
             plugins={this.plugins}
             allowCoding={allowCoding}
+            editorConfigs={{
+              renderNode: this.renderNode,
+            }}
           />
         </React.Fragment>
       </TimeStampContextProvider>

@@ -9,3 +9,7 @@ export enum INLINES {
   CodedText = 'CodedText',
   BufferedText = 'BufferedText',
 }
+
+export enum BLOCKS {
+  TranscribeBlock = 'TranscribeBlock',
+}

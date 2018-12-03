@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { hot } from 'react-hot-loader';
+import { hot, setConfig } from 'react-hot-loader';
 import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -40,6 +40,11 @@ const ContentContainer = styled.div`
     }
   }
 `;
+
+setConfig({
+  // set this flag to support SFC if patch is not landed
+  pureSFC: true,
+});
 
 class App extends React.Component {
   get navItems() {

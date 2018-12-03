@@ -1,5 +1,5 @@
-import { Mark, Node, Value } from 'slate';
 import { flatten } from 'ramda';
+import { Mark, Node, Value } from 'slate';
 
 interface GSpeechTextOutput {
   results: GSpeechTextResult[];
