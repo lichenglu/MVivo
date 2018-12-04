@@ -7,14 +7,14 @@ import { uniq as RUniq } from 'ramda';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import ReactPlayer from 'react-player';
-import { Change, Value as SlateValue } from 'slate';
+import { Editor, Node, Value as SlateValue } from 'slate';
 import styled from 'styled-components';
 
 import { CodeModel, RootStore } from '~/stores/root-store';
 
 import AudioMock from '~/fixtures/google_output.json';
 import { deserialize } from '~/lib/slate-plugins/google-speech-text-serializer';
-import { export2Word } from '~/lib/utils';
+import { export2Word, formatSeconds } from '~/lib/utils';
 
 // components
 import { AudioPlayer } from '~/components/playback/audioPlayer';
@@ -76,7 +76,7 @@ export class AudioTranscriptionContainer extends React.Component<
     return [
       TimedText({ type: MARKS.TimedText }),
       {
-        onKeyDown(event: KeyboardEvent, change: Change, next: Function) {
+        onKeyDown(event: KeyboardEvent, editor: Editor, next: Function) {
           if (isHotkey('control+space', event)) {
             event.preventDefault();
             self.togglePlayer();
@@ -193,8 +193,31 @@ export class AudioTranscriptionContainer extends React.Component<
 
   public onDownloadTranscript = () => {
     if (this.document) {
+      const container = $('div.slate-editor').clone();
+      container
+        .find('div.transcribe-block')
+        .filter((idx, elem) => {
+          return (
+            $(elem)
+              .children('.transcribe-block-text')
+              .text()
+              .trim() === ''
+          );
+        })
+        .replaceWith('<br />');
+
+      container.find('[data-speakers]').each((idx, elem) => {
+        const speakers = $(elem).data('speakers');
+        const textContainer = $(elem).next('.transcribe-block-text');
+        const texts = textContainer.find('[data-start]');
+        const range = `${formatSeconds(
+          texts.first().data('start')
+        )} - ${formatSeconds(texts.last().data('end'))}`;
+        const speakerStr = speakers ? `${speakers}` : 'Unnamed';
+        $(elem).text(`${speakerStr} [${range}]:`);
+      });
       export2Word({
-        element: $('div.slate-editor')[0],
+        element: container[0],
         docName: 'Transcript',
       });
     }
@@ -224,20 +247,30 @@ export class AudioTranscriptionContainer extends React.Component<
     this.player.seekTo(playedSeconds);
   };
 
-  public onChangeRosterFactory = ({ node, editor }) => (
-    selectedNames,
-    opts
-  ) => {
-    const { roster } = this.state;
-    this.setState({ roster: RUniq([...roster, ...selectedNames]) });
-
+  public onChangeRosterFactory = ({
+    node,
+    editor,
+  }: {
+    node: Node;
+    editor: Editor;
+  }) => (selectedNames: string[], opts: any[]) => {
     editor.change(change => {
-      change.moveToRangeOfNode(node).setBlocks({
-        data: {
-          ...node.get('data').toObject(),
-          tags: selectedNames,
-        },
-      });
+      change
+        .moveToRangeOfNode(node)
+        .setBlocks({
+          data: {
+            ...node.get('data').toObject(),
+            tags: selectedNames,
+          },
+        })
+        .setValue({
+          data: {
+            roster: RUniq([
+              ...(editor.value.get('data').get('roster') || []),
+              ...selectedNames,
+            ]),
+          },
+        });
     });
   };
 
@@ -249,7 +282,7 @@ export class AudioTranscriptionContainer extends React.Component<
         <TranscribeBlock
           {...props}
           onChangeRoster={this.onChangeRosterFactory({ node, editor })}
-          roster={this.state.roster}
+          roster={editor.value.get('data').get('roster')}
         />
       );
     }

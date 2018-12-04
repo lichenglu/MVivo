@@ -34,7 +34,14 @@ export const RosterMenu = ({ options = [], selected, handleChange }) => (
   </Select>
 );
 
-export default ({ children, attributes, node, roster, onChangeRoster }) => {
+export default ({
+  children,
+  attributes,
+  node,
+  editor,
+  roster,
+  onChangeRoster,
+}) => {
   const [showRosterBtn, toggleRosterBtn] = useState(false);
   const [showRosterMenu, toggleRosterMenu] = useState(false);
 
@@ -53,8 +60,10 @@ export default ({ children, attributes, node, roster, onChangeRoster }) => {
       {...attributes}
       onMouseEnter={() => toggleRosterBtn(true)}
       onMouseLeave={() => toggleRosterBtn(false)}
+      className="transcribe-block"
     >
       <RosterBtn
+        // @ts-ignore
         overlay={
           <RosterMenu
             options={roster}
@@ -67,16 +76,28 @@ export default ({ children, attributes, node, roster, onChangeRoster }) => {
         visible={showRosterMenu}
         active={hasTags || showRosterBtn}
       >
-        <Button onClick={() => toggleRosterMenu(!showRosterMenu)}>
+        <Button
+          onClick={() => {
+            editor.change(change => {
+              change.moveToRangeOfNode(node);
+            });
+            toggleRosterMenu(!showRosterMenu);
+          }}
+          data-speakers={hasTags ? tags.join(', ') : ''}
+        >
           {hasTags
             ? tags
-                .map(t => (t.charAt(0) + t.charAt(t.length - 1)).toUpperCase())
+                .map((t: string) =>
+                  (t.charAt(0) + t.charAt(t.length - 1)).toUpperCase()
+                )
                 .join(', ')
             : '+'}
         </Button>
       </RosterBtn>
 
-      <TextContainer>{children}</TextContainer>
+      <TextContainer className="transcribe-block-text">
+        {children}
+      </TextContainer>
     </Container>
   );
 };

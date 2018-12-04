@@ -115,6 +115,7 @@ export class WorkStation extends React.PureComponent<
   };
 
   public onChangeEditor = ({ value }: Change) => {
+    console.log('changed!');
     this.setState({ editorState: value }, () => {
       this.setState({
         hasSelectedCodedInline: this.state.editorState.inlines.some(
