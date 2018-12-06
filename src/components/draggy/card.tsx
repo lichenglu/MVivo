@@ -1,15 +1,15 @@
 import Color from 'color';
 import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import { Draggable } from 'react-beautiful-dnd-next';
 
 import { ColorGrid } from '../colorGrid';
 
-import { Colors, hoverWithShadow } from '~/themes';
+import { Colors } from '~/themes';
 
 import { trimText } from '~/lib/utils';
 
-const Container = styled.div<{ isDragging: boolean; bgColor: string }>`
+const Container = styled.div<{ isDragging: boolean; bgColor?: string }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -51,7 +51,7 @@ export interface DraggableCardData {
 
 interface DraggableCardProps {
   data: DraggableCardData;
-  index: string | number;
+  index: number;
 }
 
 export class DraggableCard extends React.PureComponent<DraggableCardProps, {}> {
@@ -60,7 +60,7 @@ export class DraggableCard extends React.PureComponent<DraggableCardProps, {}> {
     const { id, color, content, description } = data;
 
     return (
-      <Draggable draggableId={id} index={index}>
+      <Draggable draggableId={id.toString()} index={index}>
         {(provided, snapshot) => (
           <Container
             ref={provided.innerRef}

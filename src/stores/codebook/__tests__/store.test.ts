@@ -73,9 +73,28 @@ it('can updates codes of a specific codebook', () => {
 
 it('can add themes to a specific codebook', () => {
   const codebook = CodeBookModel.create(CODEBOOK);
+  store.addCodeBook(codebook);
+
   const theme = ThemeModel.create({ name: 'theme 1' });
   store.createThemeAndAddTo(codebook.id, theme);
-  expect(store.codeBookBy(codebook.id)!.themeList).toContainEqual(theme);
+
+  expect(store.codeBookBy(codebook.id)).not.toBeFalsy();
+  expect(values(store.codeBookBy(codebook.id)!.themes)).toContainEqual(theme);
+});
+
+it('can reference children from a theme', () => {
+  const codebook = CodeBookModel.create(CODEBOOK);
+  store.addCodeBook(codebook);
+
+  const code = CodeModel.create({ name: 'code 1' });
+  store.createCodeAndAddTo(codebook.id, code);
+
+  const theme = ThemeModel.create({ name: 'theme 1' });
+  theme.adopt([code]);
+  store.createThemeAndAddTo(codebook.id, theme);
+
+  expect(values(theme.children).length).toEqual(1);
+  expect(values(theme.children)).toContainEqual(code);
 });
 
 it('can copy an existing codebook', () => {

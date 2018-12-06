@@ -28,20 +28,23 @@ export const ThemeModel = CodeModel.named('Theme')
         self.children.delete(child);
       }
     },
-    swap(at: number, originalPos: number) {
+    reorder(startIndex: number, endIndex: number) {
       const children = [...values(self.children)];
-      const toBeSwapped = children[at];
-      children[at] = children[originalPos];
-      children[originalPos] = toBeSwapped;
+      const [removed] = children.splice(startIndex, 1);
+      children.splice(endIndex, 0, removed);
 
       this.abandon(values(self.children).map(c => c.id));
       this.adopt(children);
+
+      return children;
     },
     insert(child: any, at: number) {
       const children = [...values(self.children)];
       children.splice(at, 0, child);
       this.abandon(values(self.children).map(c => c.id));
       this.adopt(children);
+
+      return children;
     },
   }));
 

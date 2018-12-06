@@ -20,7 +20,6 @@ export const CodeBookStore = types
 
       if (!code.bgColor && codeBook) {
         code.setBgColor(codeBook.randomColorFromPalette());
-        console.log(code.bgColor);
       }
 
       self.codes.put(code);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd-next';
+import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { Colors } from '~/themes';
@@ -14,7 +14,7 @@ const Container = styled.div`
   margin-right: 8px;
   border: solid 1px ${Colors.borderGray.toString()};
   border-radius: 5px;
-  min-width: 18rem;
+  width: 18rem;
 `;
 
 const Title = styled.p`
@@ -26,6 +26,7 @@ const Title = styled.p`
 
 const ContentContainer = styled.div`
   max-height: calc(100vh - 64px - 49px - 100px);
+  width: 100%;
   flex: 1;
   overflow-y: auto;
 `;
@@ -47,13 +48,13 @@ export class Column extends React.PureComponent<ColumnProps, {}> {
     const { children, title, id } = data;
 
     return (
-      <Droppable droppableId={id}>
+      <Droppable droppableId={id.toString()}>
         {provided => (
           <Container ref={provided.innerRef} {...provided.droppableProps}>
             <Title>{title}</Title>
             <ContentContainer>
               {children.map((child, idx) => (
-                <DraggableCard data={child} key={child.id} index={idx} />
+                <DraggableCard data={child} key={idx} index={idx} />
               ))}
             </ContentContainer>
             {provided.placeholder}

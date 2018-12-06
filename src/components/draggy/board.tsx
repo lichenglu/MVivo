@@ -1,6 +1,6 @@
 import React from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import { DragDropContext } from 'react-beautiful-dnd-next';
 
 import { Column, ColumnData } from './column';
 import { ColumnAddition } from './columnAddition';

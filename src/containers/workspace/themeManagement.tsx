@@ -17,7 +17,7 @@ interface ThemeManagementProps extends RouteCompProps<{ id: string }> {
 
 @inject('rootStore')
 @observer
-export class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
+class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
   get codeBook() {
     return this.workSpace ? this.workSpace.codeBook : null;
   }
@@ -76,11 +76,12 @@ export class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
       originalZone.abandon([draggableId]);
       target.insert(beingDragged, index);
     } else {
-      target.swap(index, originalIdx);
+      target.reorder(originalIdx, index);
     }
   };
 
   public render(): JSX.Element | null {
+    console.log(this.themes);
     return (
       <React.Fragment>
         <Helmet>
@@ -95,3 +96,5 @@ export class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
     );
   }
 }
+
+export { ThemeManagement };
