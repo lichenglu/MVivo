@@ -51,6 +51,18 @@ export const CodeBookModel = types
         }
         self.themes.put(theme);
       },
+      reorderTheme(startIndex: number, endIndex: number) {
+        const children = [...values(self.themes)];
+        const [removed] = children.splice(startIndex, 1);
+        children.splice(endIndex, 0, removed);
+
+        self.themes.clear();
+        for (const theme of children) {
+          self.themes.put(theme);
+        }
+
+        return children;
+      },
       randomColorFromPalette() {
         const randomIdx = Math.floor(
           Math.random() * self.availableColors.length

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { Column, ColumnData } from './column';
@@ -18,6 +18,11 @@ const Container = styled.div`
   overflow-x: auto;
 `;
 
+const ColumnContainer = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
 export class DraggyBoard extends React.PureComponent<DraggyBoardProps, {}> {
   public render() {
     const { columns, onCreate, onDragEnd } = this.props;
@@ -25,9 +30,18 @@ export class DraggyBoard extends React.PureComponent<DraggyBoardProps, {}> {
       <DragDropContext onDragEnd={onDragEnd}>
         <Container>
           {columns && <ColumnAddition onCreate={onCreate} />}
-          {columns.map((column, idx) => (
-            <Column data={column} index={idx} key={column.id} />
-          ))}
+          <Droppable droppableId="board" type="COLUMN" direction="horizontal">
+            {provided => (
+              <ColumnContainer
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {columns.map((column, idx) => (
+                  <Column data={column} index={idx} key={column.id} />
+                ))}
+              </ColumnContainer>
+            )}
+          </Droppable>
         </Container>
       </DragDropContext>
     );

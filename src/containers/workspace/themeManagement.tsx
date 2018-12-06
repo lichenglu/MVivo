@@ -60,6 +60,7 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
     if (!this.codeBook) return;
     const { destination, draggableId, source } = result;
     if (!destination) return;
+
     const { droppableId, index } = destination;
     const { droppableId: originalParentId, index: originalIdx } = source;
     const target = this.codeBook.themes.get(droppableId);
@@ -67,9 +68,15 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
 
     const originalZone = this.codeBook.themes.get(originalParentId);
 
+    if (result.type === 'COLUMN') {
+      this.codeBook.reorderTheme(originalIdx, index);
+      return;
+    }
+
     if (!target) {
       return;
     }
+
     target.adopt([beingDragged]);
 
     if (droppableId !== originalParentId && originalZone) {

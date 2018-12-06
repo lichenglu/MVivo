@@ -1,5 +1,5 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { Colors } from '~/themes';
@@ -10,18 +10,30 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0.5rem;
   margin-right: 8px;
   border: solid 1px ${Colors.borderGray.toString()};
   border-radius: 5px;
   width: 18rem;
+  overflow-y: hidden;
+`;
+
+const Header = styled.div<{ isDragging: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 2.5rem;
+  border-bottom: solid 1px ${Colors.borderGray.toString()};
+  background-color: ${({ isDragging }) =>
+    isDragging ? Colors.surfGreen : '#fff'};
+  color: ${({ isDragging }) => (isDragging ? '#fff' : 'none')};
 `;
 
 const Title = styled.p`
-  text-align: center;
-  border-bottom: solid 1px ${Colors.borderGray.toString()};
-  padding-bottom: 0.5rem;
   width: 100%;
+  margin: auto;
+  flex: 1;
 `;
 
 const ContentContainer = styled.div`
@@ -29,6 +41,7 @@ const ContentContainer = styled.div`
   width: 100%;
   flex: 1;
   overflow-y: auto;
+  padding: 0.5rem;
 `;
 
 export interface ColumnData {
@@ -48,19 +61,32 @@ export class Column extends React.PureComponent<ColumnProps, {}> {
     const { children, title, id } = data;
 
     return (
-      <Droppable droppableId={id.toString()}>
-        {provided => (
-          <Container ref={provided.innerRef} {...provided.droppableProps}>
-            <Title>{title}</Title>
-            <ContentContainer>
-              {children.map((child, idx) => (
-                <DraggableCard data={child} key={idx} index={idx} />
-              ))}
-            </ContentContainer>
-            {provided.placeholder}
+      <Draggable draggableId={title} index={+index}>
+        {(dragProvided, snapshot) => (
+          <Container
+            ref={dragProvided.innerRef}
+            {...dragProvided.dragHandleProps}
+            {...dragProvided.draggableProps}
+          >
+            <Header isDragging={snapshot.isDragging}>
+              <Title>{title}</Title>
+            </Header>
+            <Droppable droppableId={id.toString()}>
+              {provided => (
+                <ContentContainer
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {children.map((child, idx) => (
+                    <DraggableCard data={child} key={idx} index={idx} />
+                  ))}
+                  {provided.placeholder}
+                </ContentContainer>
+              )}
+            </Droppable>
           </Container>
         )}
-      </Droppable>
+      </Draggable>
     );
   }
 }
