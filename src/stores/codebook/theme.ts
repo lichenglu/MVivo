@@ -1,7 +1,9 @@
 import { values } from 'mobx';
-import { types } from 'mobx-state-tree';
+import { getParentOfType, types } from 'mobx-state-tree';
 
-import { Code, CodeModel } from './code';
+import { Code, CodeModel, CodeSnapshot } from './code';
+
+type Codable = CodeSnapshot;
 
 export const ThemeModel = CodeModel.named('Theme')
   .props({
@@ -15,17 +17,31 @@ export const ThemeModel = CodeModel.named('Theme')
       {}
     ),
   })
+  .views(self => ({
+    get store() {
+      const { CodeBookStore } = require('./store');
+      const p = getParentOfType(self, CodeBookStore);
+      return p;
+    },
+  }))
   .actions(self => ({
     // adopt children....
-    adopt(children: any[]) {
+    adopt(children: Codable[]) {
       const castChildren = children as Array<Theme | Code>;
       for (const child of castChildren) {
+        if (self.store) {
+          self.store.setToFamilyTree(self.id, child.id);
+        }
         self.children.put(child);
       }
     },
-    abandon(children: string[]) {
-      for (const child of children) {
-        self.children.delete(child);
+    abandon(children: Codable[]) {
+      const castChildren = children as Array<Theme | Code>;
+      for (const child of castChildren) {
+        if (self.store) {
+          self.store.removeFromFamilyTree(child.id);
+        }
+        self.children.delete(child.id);
       }
     },
     reorder(startIndex: number, endIndex: number) {
@@ -33,7 +49,7 @@ export const ThemeModel = CodeModel.named('Theme')
       const [removed] = children.splice(startIndex, 1);
       children.splice(endIndex, 0, removed);
 
-      this.abandon(values(self.children).map(c => c.id));
+      this.abandon(children);
       this.adopt(children);
 
       return children;
@@ -41,7 +57,8 @@ export const ThemeModel = CodeModel.named('Theme')
     insert(child: any, at: number) {
       const children = [...values(self.children)];
       children.splice(at, 0, child);
-      this.abandon(values(self.children).map(c => c.id));
+
+      this.abandon(children);
       this.adopt(children);
 
       return children;

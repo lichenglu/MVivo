@@ -51,6 +51,9 @@ export const CodeBookModel = types
         }
         self.themes.put(theme);
       },
+      removeTheme(themeID: string) {
+        self.themes.delete(themeID);
+      },
       reorderTheme(startIndex: number, endIndex: number) {
         const children = [...values(self.themes)];
         const [removed] = children.splice(startIndex, 1);

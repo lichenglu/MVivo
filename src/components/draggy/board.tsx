@@ -9,7 +9,12 @@ import { ColumnAddition } from './columnAddition';
 interface DraggyBoardProps {
   columns: ColumnData[];
   onDragEnd: (result: any) => void;
-  onCreate: () => void;
+  onCreate: (
+    data?: {
+      name?: string;
+      definition?: string;
+    }
+  ) => void;
 }
 
 const Container = styled(Scrollbar)`
@@ -25,7 +30,7 @@ const ColumnContainer = styled.div`
 
 export class DraggyBoard extends React.PureComponent<DraggyBoardProps, {}> {
   public render() {
-    const { columns, onCreate, onDragEnd } = this.props;
+    const { columns, onCreate, onDragEnd, onTriggerAction } = this.props;
     return (
       <DragDropContext onDragEnd={onDragEnd}>
         <Container>
@@ -37,7 +42,12 @@ export class DraggyBoard extends React.PureComponent<DraggyBoardProps, {}> {
                 {...provided.droppableProps}
               >
                 {columns.map((column, idx) => (
-                  <Column data={column} index={idx} key={column.id} />
+                  <Column
+                    data={column}
+                    index={idx}
+                    key={column.id}
+                    onTriggerAction={onTriggerAction}
+                  />
                 ))}
               </ColumnContainer>
             )}

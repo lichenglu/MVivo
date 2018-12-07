@@ -6,7 +6,12 @@ import styled from 'styled-components';
 import { Colors } from '~/themes';
 
 interface ColumnAdditionProps {
-  onCreate: () => void;
+  onCreate: (
+    data?: {
+      name?: string;
+      definition?: string;
+    }
+  ) => void;
 }
 
 const Container = styled.div`
@@ -41,10 +46,13 @@ export class ColumnAddition extends React.PureComponent<
   ColumnAdditionProps,
   {}
 > {
+  public handleCreateTheme = () => {
+    this.props.onCreate();
+  };
+
   public render() {
-    const { onCreate } = this.props;
     return (
-      <Container onClick={onCreate}>
+      <Container onClick={this.handleCreateTheme}>
         <Plus type="plus" theme="outlined" />
       </Container>
     );

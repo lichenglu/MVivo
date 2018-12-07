@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Colors } from '~/themes';
 
 import { DraggableCard, DraggableCardData } from './card';
+import { ColumnHeader } from './columnHeader';
 
 const Container = styled.div`
   display: flex;
@@ -15,30 +16,6 @@ const Container = styled.div`
   border-radius: 5px;
   width: 18rem;
   overflow-y: hidden;
-`;
-
-const Header = styled.div<{ isDragging: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-  height: 2.5rem;
-  border-bottom: solid 1px ${Colors.borderGray.toString()};
-  background-color: ${({ isDragging }) =>
-    isDragging ? Colors.blueGray.toString() : Colors.ivoryWhite};
-  color: ${({ isDragging }) => (isDragging ? Colors.ivoryWhite : 'none')};
-  transition: background-color 0.2s ease, color 0.1s ease;
-  &:hover {
-    background-color: ${Colors.blueGray.toString()};
-    color: ${Colors.ivoryWhite};
-  }
-`;
-
-const Title = styled.p`
-  width: 100%;
-  margin: auto;
-  flex: 1;
 `;
 
 const ContentContainer = styled.div<{
@@ -69,27 +46,44 @@ interface ColumnProps {
   data: ColumnData;
   index: string | number;
   dropDisabled?: boolean;
+  dragDisabled?: boolean;
 }
 
 export class Column extends React.PureComponent<ColumnProps, {}> {
   public render() {
-    const { data, index, dropDisabled } = this.props;
+    const {
+      data,
+      index,
+      dropDisabled,
+      dragDisabled,
+      onTriggerAction,
+    } = this.props;
     const { children, title, id } = data;
 
     return (
-      <Draggable draggableId={title} index={+index}>
+      <Draggable
+        draggableId={title}
+        index={+index}
+        isDragDisabled={dragDisabled}
+      >
         {(dragProvided, snapshot) => (
           <Container
             ref={dragProvided.innerRef}
             {...dragProvided.draggableProps}
           >
-            <Header
+            <ColumnHeader
+              title={title}
               isDragging={snapshot.isDragging}
+              isDragDisabled={!!dragDisabled}
+              handleAction={params =>
+                onTriggerAction({ ...params, columnID: id })
+              }
               {...dragProvided.dragHandleProps}
+            />
+            <Droppable
+              droppableId={id.toString()}
+              isDropDisabled={dropDisabled}
             >
-              <Title>{title}</Title>
-            </Header>
-            <Droppable droppableId={id.toString()}>
               {(provided, dropSnapshot) => (
                 <ContentContainer
                   ref={provided.innerRef}
