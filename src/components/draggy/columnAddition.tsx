@@ -19,6 +19,7 @@ const Container = styled.div`
   min-width: 200px;
   margin-right: 8px;
   cursor: pointer;
+  background-color: ${Colors.ivoryWhite};
 
   &:hover {
     i {

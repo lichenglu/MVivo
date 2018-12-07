@@ -26,8 +26,13 @@ const Header = styled.div<{ isDragging: boolean }>`
   height: 2.5rem;
   border-bottom: solid 1px ${Colors.borderGray.toString()};
   background-color: ${({ isDragging }) =>
-    isDragging ? Colors.surfGreen : '#fff'};
-  color: ${({ isDragging }) => (isDragging ? '#fff' : 'none')};
+    isDragging ? Colors.blueGray.toString() : Colors.ivoryWhite};
+  color: ${({ isDragging }) => (isDragging ? Colors.ivoryWhite : 'none')};
+  transition: background-color 0.2s ease, color 0.1s ease;
+  &:hover {
+    background-color: ${Colors.blueGray.toString()};
+    color: ${Colors.ivoryWhite};
+  }
 `;
 
 const Title = styled.p`
@@ -36,12 +41,22 @@ const Title = styled.p`
   flex: 1;
 `;
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.div<{
+  isDraggingOver: boolean;
+  isDropDisabled: boolean;
+}>`
   max-height: calc(100vh - 64px - 49px - 100px);
   width: 100%;
   flex: 1;
   overflow-y: auto;
   padding: 0.5rem;
+
+  transition: background-color 0.1s ease, opacity 0.1s ease;
+  opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : 'inherit')};
+  background-color: ${({ isDraggingOver }) =>
+    isDraggingOver
+      ? Colors.blueGray.lighten(0.4).toString()
+      : Colors.background};
 `;
 
 export interface ColumnData {
@@ -53,11 +68,12 @@ export interface ColumnData {
 interface ColumnProps {
   data: ColumnData;
   index: string | number;
+  dropDisabled?: boolean;
 }
 
 export class Column extends React.PureComponent<ColumnProps, {}> {
   public render() {
-    const { data, index } = this.props;
+    const { data, index, dropDisabled } = this.props;
     const { children, title, id } = data;
 
     return (
@@ -65,17 +81,21 @@ export class Column extends React.PureComponent<ColumnProps, {}> {
         {(dragProvided, snapshot) => (
           <Container
             ref={dragProvided.innerRef}
-            {...dragProvided.dragHandleProps}
             {...dragProvided.draggableProps}
           >
-            <Header isDragging={snapshot.isDragging}>
+            <Header
+              isDragging={snapshot.isDragging}
+              {...dragProvided.dragHandleProps}
+            >
               <Title>{title}</Title>
             </Header>
             <Droppable droppableId={id.toString()}>
-              {provided => (
+              {(provided, dropSnapshot) => (
                 <ContentContainer
                   ref={provided.innerRef}
                   {...provided.droppableProps}
+                  isDraggingOver={dropSnapshot.isDraggingOver}
+                  isDropDisabled={!!dropDisabled}
                 >
                   {children.map((child, idx) => (
                     <DraggableCard data={child} key={idx} index={idx} />

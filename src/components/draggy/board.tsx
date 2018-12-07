@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import Scrollbar from '~/components/scrollbar';
 
 import { Column, ColumnData } from './column';
 import { ColumnAddition } from './columnAddition';
@@ -11,11 +12,10 @@ interface DraggyBoardProps {
   onCreate: () => void;
 }
 
-const Container = styled.div`
+const Container = styled(Scrollbar)`
   display: flex;
   padding: 8px;
   flex: 1;
-  overflow-x: auto;
 `;
 
 const ColumnContainer = styled.div`
