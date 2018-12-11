@@ -1,5 +1,10 @@
 import { values } from 'mobx';
-import { applySnapshot, getSnapshot, types } from 'mobx-state-tree';
+import {
+  applySnapshot,
+  getSnapshot,
+  isValidReference,
+  types,
+} from 'mobx-state-tree';
 
 import { Code, CodeModel } from './code';
 import { CodeBook, CodeBookModel, CodesSnapshot } from './codebook';
@@ -104,6 +109,13 @@ export const CodeBookStore = types
       self.familyTree.delete(childID);
     },
     getParentFromTree(childID: string) {
+      // because the parent (value) with respect to the childID (key) can be stale
+      // so we need to handle the case when the parent cannot be referenced any more
+      if (!isValidReference(() => self.familyTree.get(childID))) {
+        console.log(`Child ${childID}'s parent is not available any more`);
+        this.removeFromFamilyTree(childID);
+        return null;
+      }
       return self.familyTree.get(childID);
     },
   }))

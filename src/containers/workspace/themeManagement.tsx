@@ -42,7 +42,6 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
       if (themeList.length > 0) {
         return this.workSpace.codeBook.themeList.map(
           ({ id, name, children }) => {
-            let c = children;
             // TODO: this is ugly...
             // think of another way to handle
             if (id === 'first_level_theme' && this.orphanedCodes.length > 0) {
@@ -53,7 +52,7 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
             return {
               id,
               title: name,
-              children: convertCodesToDraggable(c),
+              children: convertCodesToDraggable(children),
             };
           }
         );
