@@ -19,6 +19,8 @@ export const CodeBookModel = types
     id: types.identifier,
     name: types.string,
     recycleColor: types.optional(types.boolean, true),
+    // this is for default new theme name
+    nextThemeNumber: types.optional(types.number, 0),
   })
   .actions(self => {
     function sliceAvailableColor(idx: number) {
@@ -59,6 +61,7 @@ export const CodeBookModel = types
       },
       addTheme(theme: Theme) {
         self.themes.put(theme);
+        self.nextThemeNumber = self.nextThemeNumber + 1;
       },
       removeTheme(themeID: string) {
         // we need to adopt the children abandoned by the to-be-deleted theme

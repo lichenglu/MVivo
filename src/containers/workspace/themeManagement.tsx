@@ -51,17 +51,17 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
   // orphanedCodes means codes newly created after some themes have been created
   // we need to automatically put these codes into the theme with the id
   // first_level_theme
-  get orphanedCodes() {
-    if (this.workSpace && this.workSpace.codeBook) {
-      return this.workSpace.codeBook.codeList
-        .filter(
-          code => !this.props.rootStore.codeBookStore.getParentFromTree(code.id)
-        )
-        .map(code => this.props.rootStore.codeBookStore.codes.get(code.id))
-        .filter(code => !!code);
-    }
-    return [];
-  }
+  // get orphanedCodes() {
+  //   if (this.workSpace && this.workSpace.codeBook) {
+  //     return this.workSpace.codeBook.codeList
+  //       .filter(
+  //         code => !this.props.rootStore.codeBookStore.getParentFromTree(code.id)
+  //       )
+  //       .map(code => this.props.rootStore.codeBookStore.codes.get(code.id))
+  //       .filter(code => !!code);
+  //   }
+  //   return [];
+  // }
 
   public onCreateTheme = ({
     name,
@@ -75,7 +75,7 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
     if (this.workSpace && this.codeBook) {
       const theme = ThemeModel.create({
         definition: definition || 'Theme definition',
-        name: name || `Theme ${this.workSpace.codeBook!.themeList.length + 1}`,
+        name: name || `Theme ${this.workSpace.codeBook!.nextThemeNumber + 1}`,
         id,
       });
       this.props.rootStore.codeBookStore.createThemeAndAddTo(

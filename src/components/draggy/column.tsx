@@ -63,7 +63,7 @@ export class Column extends React.PureComponent<ColumnProps, {}> {
 
     return (
       <Draggable
-        draggableId={title}
+        draggableId={id.toString()}
         index={+index}
         isDragDisabled={dragDisabled}
       >
