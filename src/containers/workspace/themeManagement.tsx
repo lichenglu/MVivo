@@ -18,15 +18,6 @@ interface ThemeManagementProps extends RouteCompProps<{ id: string }> {
 @inject('rootStore')
 @observer
 class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
-  public componentDidMount() {
-    if (!this.themes || this.themes.length === 0) {
-      this.onCreateTheme({
-        name: 'First level codes',
-        id: 'first_level_theme',
-      });
-    }
-  }
-
   get codeBook() {
     return this.workSpace ? this.workSpace.codeBook : null;
   }
@@ -42,16 +33,12 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
       if (themeList.length > 0) {
         return this.workSpace.codeBook.themeList.map(
           ({ id, name, children }) => {
-            // TODO: this is ugly...
-            // think of another way to handle
-            if (id === 'first_level_theme' && this.orphanedCodes.length > 0) {
-              this.props.rootStore.codeBookStore.themes
-                .get(id)!
-                .adopt(this.orphanedCodes);
-            }
             return {
               id,
               title: name,
+              editable:
+                this.workSpace.codeBook.firstLevelTheme &&
+                this.workSpace.codeBook.firstLevelTheme.id !== id,
               children: convertCodesToDraggable(children),
             };
           }

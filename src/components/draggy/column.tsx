@@ -39,6 +39,7 @@ const ContentContainer = styled.div<{
 export interface ColumnData {
   id: string | number;
   title: string;
+  editable: boolean;
   children: DraggableCardData[];
 }
 
@@ -58,7 +59,7 @@ export class Column extends React.PureComponent<ColumnProps, {}> {
       dragDisabled,
       onTriggerAction,
     } = this.props;
-    const { children, title, id } = data;
+    const { children, title, editable, id } = data;
 
     return (
       <Draggable
@@ -75,6 +76,7 @@ export class Column extends React.PureComponent<ColumnProps, {}> {
               title={title}
               isDragging={snapshot.isDragging}
               isDragDisabled={!!dragDisabled}
+              editable={editable}
               handleAction={params =>
                 onTriggerAction({ ...params, columnID: id })
               }

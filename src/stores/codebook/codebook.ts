@@ -1,5 +1,5 @@
 import { values } from 'mobx';
-import { getSnapshot, types } from 'mobx-state-tree';
+import { getParent, getSnapshot, types } from 'mobx-state-tree';
 
 import { assignUUID } from '../utils';
 
@@ -13,6 +13,7 @@ export const CodeBookModel = types
     availableColors: types.optional(types.array(types.string), colorPalette),
     codes: types.optional(types.map(types.reference(CodeModel)), {}),
     themes: types.optional(types.map(types.reference(ThemeModel)), {}),
+    firstLevelTheme: types.maybe(types.reference(ThemeModel)),
     colorPalette: types.optional(types.array(types.string), colorPalette),
     description: types.maybe(types.string),
     id: types.identifier,
@@ -31,8 +32,21 @@ export const CodeBookModel = types
     }
 
     return {
+      afterAttach() {
+        if (self.firstLevelTheme) return;
+        const theme = ThemeModel.create({
+          name: 'First Level Codes',
+        });
+        getParent(self, 2).createThemeAndAddTo(self.id, theme);
+        this.addTheme(theme);
+        self.firstLevelTheme = theme;
+      },
       addCode(code: Code) {
         self.codes.put(code);
+
+        if (self.firstLevelTheme) {
+          self.firstLevelTheme.adopt([code]);
+        }
       },
       removeCode(codeID: string) {
         self.codes.delete(codeID);
@@ -44,14 +58,14 @@ export const CodeBookModel = types
         }
       },
       addTheme(theme: Theme) {
-        // if it is the first theme we created, by default
-        // we put all the codes into the theme
-        if (values(self.themes).length === 0) {
-          theme.adopt(values(self.codes));
-        }
         self.themes.put(theme);
       },
       removeTheme(themeID: string) {
+        // we need to adopt the children abandoned by the to-be-deleted theme
+        const targetTheme = self.themes.get(themeID);
+        if (targetTheme && self.firstLevelTheme) {
+          self.firstLevelTheme.adopt(values(targetTheme.children));
+        }
         self.themes.delete(themeID);
       },
       reorderTheme(startIndex: number, endIndex: number) {

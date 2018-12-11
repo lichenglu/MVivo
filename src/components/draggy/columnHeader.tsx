@@ -69,6 +69,7 @@ interface ColumnHeaderProps {
   isDragging: boolean;
   title: string;
   handleAction: (params: AntClickParam) => void;
+  editable: boolean;
   actions?: Array<{ key: string; text: string; important?: boolean }>;
   isDragDisabled?: boolean;
 }
@@ -79,25 +80,28 @@ export const ColumnHeader = ({
   title,
   actions = defaultActions,
   handleAction,
+  editable,
   ...rest
 }: ColumnHeaderProps) => (
   <Header isDragging={isDragging} isDragDisabled={isDragDisabled} {...rest}>
     <Title>{title}</Title>
-    <StyledDropdown
-      key="ellipsis"
-      placement="bottomCenter"
-      overlay={
-        <Menu onClick={handleAction}>
-          {actions.map(action => (
-            <Menu.Item key={action.key}>
-              <Action important={action.important}>{action.text}</Action>
-            </Menu.Item>
-          ))}
-        </Menu>
-      }
-      trigger={['click']}
-    >
-      <Icon type="ellipsis" />
-    </StyledDropdown>
+    {editable && (
+      <StyledDropdown
+        key="ellipsis"
+        placement="bottomCenter"
+        overlay={
+          <Menu onClick={handleAction}>
+            {actions.map(action => (
+              <Menu.Item key={action.key}>
+                <Action important={action.important}>{action.text}</Action>
+              </Menu.Item>
+            ))}
+          </Menu>
+        }
+        trigger={['click']}
+      >
+        <Icon type="ellipsis" />
+      </StyledDropdown>
+    )}
   </Header>
 );
