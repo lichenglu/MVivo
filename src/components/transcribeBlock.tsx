@@ -45,11 +45,11 @@ export default ({
   const [showRosterBtn, toggleRosterBtn] = useState(false);
   const [showRosterMenu, toggleRosterMenu] = useState(false);
 
-  useEffect(() => {
-    if (showRosterBtn === false && showRosterMenu) {
-      toggleRosterMenu(false);
-    }
-  });
+  // useEffect(() => {
+  //   if (showRosterBtn === false && showRosterMenu) {
+  //     toggleRosterMenu(false);
+  //   }
+  // });
 
   const data = node.get('data');
   const tags = data.get('tags');
@@ -59,7 +59,7 @@ export default ({
     <Container
       {...attributes}
       onMouseEnter={() => toggleRosterBtn(true)}
-      onMouseLeave={() => toggleRosterBtn(false)}
+      onMouseLeave={() => !showRosterMenu && toggleRosterBtn(false)}
       className="transcribe-block"
     >
       <RosterBtn
@@ -68,7 +68,13 @@ export default ({
           <RosterMenu
             options={roster}
             selected={tags}
-            handleChange={onChangeRoster}
+            handleChange={vals => {
+              if (vals.length > 0) {
+                toggleRosterMenu(false);
+                toggleRosterBtn(false);
+              }
+              onChangeRoster(vals);
+            }}
           />
         }
         placement="bottomRight"
