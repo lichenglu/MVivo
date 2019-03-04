@@ -17,7 +17,7 @@
     "ramda": "^0.25.0",
     "randomcolor": "^0.5.3",
     "react": "^16.6.0",
-    "react-beautiful-dnd": "^10.0.2",
+    "react-beautiful-dnd": "^10.0.4",
     "react-contexify": "^3.0.3",
     "react-dom": "^16.6.0",
     "react-flip-move": "^3.0.3",

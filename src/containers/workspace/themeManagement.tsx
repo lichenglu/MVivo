@@ -48,9 +48,9 @@ class ThemeManagement extends React.Component<ThemeManagementProps, {}> {
     return [];
   }
 
-  // orphanedCodes means codes newly created after some themes have been created
-  // we need to automatically put these codes into the theme with the id
-  // first_level_theme
+  // // orphanedCodes means codes newly created after some themes have been created
+  // // we need to automatically put these codes into the theme with the id
+  // // first_level_theme
   // get orphanedCodes() {
   //   if (this.workSpace && this.workSpace.codeBook) {
   //     return this.workSpace.codeBook.codeList
