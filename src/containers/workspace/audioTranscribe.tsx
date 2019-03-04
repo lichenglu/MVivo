@@ -307,7 +307,7 @@ export class AudioTranscriptionContainer extends React.Component<
 
           <ToolBarContainer>
             <AudioPlayer
-              url="https://storage.googleapis.com/speech-file-store/PattonPodcast_Part1redo.mp3"
+              url="https://storage.googleapis.com/speech-file-store/yinhong_ob1.MP3"
               playerRef={player => (this.player = player)}
               containerStyle={{ marginBottom: '0.5rem' }}
               onProgress={this.onPlayBackProgress}
