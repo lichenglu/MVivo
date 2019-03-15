@@ -115,7 +115,6 @@ export class WorkStation extends React.PureComponent<
   };
 
   public onChangeEditor = ({ value }: Change) => {
-    console.log('changed!');
     this.setState({ editorState: value }, () => {
       this.setState({
         hasSelectedCodedInline: this.state.editorState.inlines.some(
@@ -248,8 +247,11 @@ export class WorkStation extends React.PureComponent<
   // all the codes but those codes that the current selected
   // entity contains
   get excludedCodes() {
-    return this.codes.filter(code =>
-      !this.currentCodes ? true : !this.currentCodes.find(c => c.id === code.id)
+    return this.codes.filter(
+      code =>
+        !this.currentCodes
+          ? true
+          : !this.currentCodes.find(c => c.id === code.id)
     );
   }
 

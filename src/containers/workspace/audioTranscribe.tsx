@@ -109,35 +109,6 @@ export class AudioTranscriptionContainer extends React.Component<
     }
   }
 
-  public componentDidUpdate(
-    prevProps: AudioTranscriptionProps,
-    prevState: AudioTranscriptionState
-  ) {
-    if (prevState.playedSeconds !== this.state.playedSeconds) {
-      const { playedSeconds: currentTime } = this.state;
-      $(`span.timestamped-text`).each(function() {
-        // if the word's parent is a coded-text inline
-        // then we don't change the color, because inline
-        // has its own style
-        if (
-          $(this)
-            .parents('span.coded-text')
-            .get(0)
-        ) {
-          return;
-        }
-
-        // otherwise, we change words' colors in three different
-        // ways
-        const startTimeStr = $(this).attr('data-start');
-        if (startTimeStr === undefined) return;
-        const startTime = parseFloat(startTimeStr);
-        const color = calculateTextColor(currentTime, startTime);
-        $(this).css('color', color);
-      });
-    }
-  }
-
   public togglePlayer = () => {
     if (!this.player) return;
     this.player.togglePlay();
@@ -307,7 +278,7 @@ export class AudioTranscriptionContainer extends React.Component<
 
           <ToolBarContainer>
             <AudioPlayer
-              url="https://storage.googleapis.com/speech-file-store/yinhong_ob1.MP3"
+              url="https://storage.googleapis.com/speech-file-store/yinhong_ob2.MP3"
               playerRef={player => (this.player = player)}
               containerStyle={{ marginBottom: '0.5rem' }}
               onProgress={this.onPlayBackProgress}
