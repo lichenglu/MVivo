@@ -11,6 +11,9 @@ import { CodeModel, RootStore } from '~/stores/root-store';
 // components
 import { WorkStation } from './components/workStation';
 
+// services
+import { TFAsiaLAModel } from '~/services/tensorflow';
+
 interface WorkStationProps
   extends RouteCompProps<{ wsID: string; docID: string }> {
   rootStore: RootStore;
@@ -34,6 +37,14 @@ export class WorkStationContainer extends React.Component<
   public state = {
     manualInputDocument: false,
   };
+
+  public async componentDidMount() {
+    const modelURL =
+      'https://storage.googleapis.com/speech-file-store/rnn_asia_la.json';
+    const asiaModel = new TFAsiaLAModel(modelURL);
+    await asiaModel.loadModel();
+    console.log(asiaModel.model.predict('hello world'));
+  }
 
   public onCreateCode = (data: {
     name: string;
