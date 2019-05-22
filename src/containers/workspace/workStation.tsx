@@ -11,6 +11,14 @@ import { CodeModel, RootStore } from '~/stores/root-store';
 // components
 import { WorkStation } from './components/workStation';
 
+// services
+import { AutoCode } from '~/lib/slate-plugins';
+import {
+  MLModelProtocol,
+  SequenceClassificationModel,
+} from '~/services/tensorflow';
+import tokenizer from '~/services/tensorflow/tokenizer.json';
+
 interface WorkStationProps
   extends RouteCompProps<{ wsID: string; docID: string }> {
   rootStore: RootStore;
@@ -18,10 +26,11 @@ interface WorkStationProps
 
 interface WorkStationState {
   manualInputDocument: boolean;
+  mlModel?: MLModelProtocol;
 }
 
 // TODO:
-// 1. Asked to upload text file if not available
+// 1. Ask users to upload a text file if not available
 // 2. Add more text file, unlink text file
 // 3. Link/unlink more code book
 // 4. Update workSpace info
@@ -33,7 +42,26 @@ export class WorkStationContainer extends React.Component<
 > {
   public state = {
     manualInputDocument: false,
+    mlModel: undefined,
   };
+
+  public async componentDidMount() {
+    const modelURL = 'http://0.0.0.0:8000/model.json';
+    const asiaModel = new SequenceClassificationModel({
+      labels: [
+        'Personal advice',
+        'Vocatives (addressing individual)',
+        'Complementing, expressing appreciation',
+        'Negative Activating',
+        'Asking questions',
+      ],
+      maxSequenceLength: 55,
+      src: modelURL,
+      tokenizer,
+    });
+    await asiaModel.loadModel();
+    this.setState({ mlModel: asiaModel });
+  }
 
   public onCreateCode = (data: {
     name: string;
@@ -97,13 +125,16 @@ export class WorkStationContainer extends React.Component<
   }
 
   public render(): JSX.Element | null {
-    return (
+    const { mlModel } = this.state;
+
+    return mlModel ? (
       <React.Fragment>
         <Helmet>
           <title>WorkSpace - work station</title>
         </Helmet>
         {this.hasDocument ? (
           <WorkStation
+            plugins={[AutoCode({ model: mlModel })]}
             codeList={this.codeList}
             onCreateCode={this.onCreateCode}
             onDeleteCode={this.onDeleteCode}
@@ -114,6 +145,6 @@ export class WorkStationContainer extends React.Component<
           'No such document found'
         )}
       </React.Fragment>
-    );
+    ) : null;
   }
 }

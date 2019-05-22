@@ -8,6 +8,7 @@ import { AudioTranscriptionContainer } from './audioTranscribe';
 import { DocumentManagement } from './documentManagement';
 import { WorkSpaceEditPanel } from './edit';
 import { Summary } from './summary';
+import { ThemeManagement } from './themeManagement';
 import { WorkStationContainer } from './workStation';
 
 export * from './components';
@@ -39,6 +40,11 @@ export default () => (
       exact={true}
       path={routeConstants.audioTrans}
       component={AudioTranscriptionContainer}
+    />
+    <Route
+      exact={true}
+      path={routeConstants.workspaceTheme}
+      component={ThemeManagement}
     />
   </Switch>
 );

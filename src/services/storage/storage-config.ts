@@ -1,20 +1,21 @@
 interface StorageConfig {
-  name?: string
+  name?: string;
 
-  storeName?: string
+  storeName?: string;
 
-  driver?: string | string[]
+  driver?: string | string[];
 
-  size?: number
+  size?: number;
 
-  version?: number
+  version?: number;
 
-  description?: string
+  description?: string;
 }
 /**
  * The default Reactotron configuration.
  */
+const testing = process.env.NODE_ENV === 'testing';
 export const DEFAULT_STORAGE_CONFIG: StorageConfig = {
-  name: 'MVivo',
-  storeName: 'mvivo_core'
-}
+  name: testing ? 'MVivo_test' : 'MVivo',
+  storeName: testing ? 'mvivo_core_test' : 'mvivo_core',
+};

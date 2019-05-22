@@ -48,7 +48,7 @@ export const RootStoreModel = types
         return null;
       } else {
         const codeBook = CodeBookModel.create(data);
-        self.codeBookStore.codeBooks.put(codeBook);
+        self.codeBookStore.addCodeBook(codeBook);
         return codeBook;
       }
     },

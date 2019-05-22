@@ -28,18 +28,16 @@ import { INLINES } from '~/lib/slate-plugins/utils/constants';
 interface WorkStationProps {
   codeList?: CodeSnapshot[];
   codeMap?: Map<string, CodeSnapshot>;
-  onCreateCode: (
-    data: {
-      name: string;
-      definition?: string;
-      bgColor?: string;
-      tint?: string;
-    }
-  ) => CodeSnapshot | null;
+  onCreateCode: (data: {
+    name: string;
+    definition?: string;
+    bgColor?: string;
+    tint?: string;
+  }) => CodeSnapshot | null;
   onDeleteCode: (codeID: string) => boolean;
   onUpdateEditorContent: (contentState: Value) => void;
-  editorState?: Value | null;
   plugins?: object[];
+  editorState?: Value | null;
   editorConfigs?: EditorProps;
   allowCoding?: boolean;
   allowEditing?: boolean;
@@ -247,11 +245,8 @@ export class WorkStation extends React.PureComponent<
   // all the codes but those codes that the current selected
   // entity contains
   get excludedCodes() {
-    return this.codes.filter(
-      code =>
-        !this.currentCodes
-          ? true
-          : !this.currentCodes.find(c => c.id === code.id)
+    return this.codes.filter(code =>
+      !this.currentCodes ? true : !this.currentCodes.find(c => c.id === code.id)
     );
   }
 

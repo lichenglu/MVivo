@@ -4,72 +4,10 @@ import { Value as SlateValue } from 'slate';
 import HTMLSerializer from 'slate-html-serializer';
 import PlainSerializer from 'slate-plain-serializer';
 
-import { CodeBook, CodeBookModel } from './codebook';
-import { assignUUID, EditorContentState } from './utils';
-
-import { generateGradient, gradients } from '~/lib/colorPalette';
 import { HTML_RULES } from '~/lib/slate-plugins';
 
-export const DocumentModel = types
-  .model('Document', {
-    id: types.identifier,
-    name: types.string,
-    text: types.string,
-    editorContentState: types.maybe(EditorContentState),
-  })
-  .actions(self => ({
-    updateEditorState(contentState: SlateValue) {
-      self.editorContentState = contentState;
-    },
-  }))
-  .preProcessSnapshot(assignUUID);
-
-export const WorkSpaceModel = types
-  .model('WorkSpace', {
-    bookmarked: types.optional(types.boolean, false),
-    codeBook: types.maybe(types.reference(CodeBookModel)),
-    cover: types.maybe(
-      types.model({
-        from: types.string,
-        to: types.string,
-        degree: types.number,
-      })
-    ),
-    description: types.optional(types.string, ''),
-    documents: types.optional(types.map(types.reference(DocumentModel)), {}),
-    id: types.identifier,
-    name: types.string,
-  })
-  .actions(self => ({
-    setCodeBook(book?: CodeBook) {
-      self.codeBook = book;
-    },
-    addDocument(documentT?: Document) {
-      if (documentT) {
-        self.documents.put(documentT);
-      }
-    },
-    bookmark(toggle: boolean) {
-      self.bookmarked = toggle;
-    },
-    afterCreate() {
-      if (!self.cover) {
-        self.cover = gradients[Math.floor(Math.random() * gradients.length)];
-      }
-    },
-  }))
-  .views(self => ({
-    get coverCSS() {
-      if (self.cover) {
-        return generateGradient(self.cover);
-      }
-      return null;
-    },
-    get documentList() {
-      return values(self.documents).map((doc: Document) => getSnapshot(doc));
-    },
-  }))
-  .preProcessSnapshot(assignUUID);
+import { DocumentModel, DocumentSnapshot } from './document';
+import { WorkSpace, WorkSpaceModel } from './workspace';
 
 export const WorkSpaceStore = types
   .model('WorkSpaceStore', {
@@ -142,8 +80,3 @@ export const WorkSpaceStore = types
       }
     },
   }));
-
-export type Document = typeof DocumentModel.Type;
-export type WorkSpace = typeof WorkSpaceModel.Type;
-export type DocumentSnapshot = typeof DocumentModel.SnapshotType;
-export type WorkSpaceSnapshot = typeof WorkSpaceModel.SnapshotType;

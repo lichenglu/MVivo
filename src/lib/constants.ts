@@ -7,4 +7,5 @@ export const routeConstants = {
   audioTrans: '/workspaces/:wsID/transcribe',
   workStationEdit: '/workspaces/:id/edit',
   workspaceSummary: '/workspaces/:id/summary',
+  workspaceTheme: '/workspaces/:id/themes',
 };

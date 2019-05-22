@@ -9,8 +9,8 @@ import { Document, RootStore } from '~/stores/root-store';
 import { getCodeSummary, migrateCodedInlines } from '~/lib/slate-plugins';
 
 // components
-import { APATable, CheckList, PivotTable } from '~/components/codebook';
 import { Editor } from 'slate';
+import { APATable, CheckList, PivotTable } from '~/components/codebook';
 
 interface SummaryProps extends RouteCompProps<{ id: string }> {
   rootStore: RootStore;
@@ -33,7 +33,7 @@ const mergeCodeSummary = (key: string, l: any, r: any) => {
 
 @inject('rootStore')
 @observer
-export class Summary extends React.Component<SummaryProps, SummaryState> {
+class Summary extends React.Component<SummaryProps, SummaryState> {
   public state = {
     checkedCodes: this.codeList.map(c => c.id),
     showAPA: false,
@@ -65,9 +65,15 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
       }, {});
 
       return this.workSpace.codeBook.codeList.map(code => {
+        const parent =
+          this.props.rootStore.codeBookStore.getParentFromTree(code.id) || {};
+        const { children, ...parentData } = parent;
+        const firstLevelTheme = this.workSpace!.codeBook!.firstLevelTheme;
+
         return {
           ...code,
           ...summary[code.id],
+          parent: parentData.id === firstLevelTheme!.id ? null : parentData,
         };
       });
     }
@@ -102,7 +108,6 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
             'This codebook is shared by more than one workspace! Do you want to make a copy of this codebook so that the changes only apply to this project'
           )
         ) {
-          // TODO:
           // 1. make a copy of codebook
           const copy = rootStore.codeBookStore.copyCodeBookBy(curCodeBookID, {
             name: `Copied from ${curCodeBookName}`,
@@ -161,6 +166,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
 
   public render(): JSX.Element | null {
     const { showAPA } = this.state;
+    console.log(this.filteredCodes);
     return (
       <React.Fragment>
         <Helmet>
@@ -184,3 +190,5 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     );
   }
 }
+
+export { Summary };

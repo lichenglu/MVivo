@@ -14,6 +14,7 @@ export default {
   bloodOrange: '#fb5f26',
   surfGreen: '#a3d9c4',
   blue: '#1088ae',
+  blueGray: Color('#9cadb7'),
   get surfGreenDark() {
     return Color(this.surfGreen).alpha(0.8);
   },
