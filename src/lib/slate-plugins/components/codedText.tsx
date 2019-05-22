@@ -109,6 +109,7 @@ export const CodedTextComponent = inject('rootStore')(
         bgColor={bgColor}
         selected={selected}
         onClick={onClick}
+        className="coded-text"
       >
         <CodeName onClick={onClickSummary}>
           {`[${trimText(

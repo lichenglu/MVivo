@@ -4,6 +4,7 @@ export const routeConstants = {
   root: '/workspaces',
   workspaceDocs: '/workspaces/:id/documents',
   workStation: '/workspaces/:wsID/documents/:docID',
+  audioTrans: '/workspaces/:wsID/transcribe',
   workStationEdit: '/workspaces/:id/edit',
   workspaceSummary: '/workspaces/:id/summary',
   workspaceTheme: '/workspaces/:id/themes',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Change, Inline, Value } from 'slate';
-import { Editor } from 'slate-react';
+import { Editor, EditorProps } from 'slate-react';
 
 import { CodeSnapshot } from '~/stores';
 
@@ -38,6 +38,9 @@ interface WorkStationProps {
   onUpdateEditorContent: (contentState: Value) => void;
   plugins?: object[];
   editorState?: Value | null;
+  editorConfigs?: EditorProps;
+  allowCoding?: boolean;
+  allowEditing?: boolean;
 }
 
 interface WorkStationState {
@@ -46,12 +49,19 @@ interface WorkStationState {
   dataSource: CodeSnapshot[];
   hasSelectedCodedInline: boolean;
   currentInlineCodeIDs: string[];
+  allowCoding: boolean;
+  allowEditing: boolean;
 }
 
-export class WorkStation extends React.Component<
+export class WorkStation extends React.PureComponent<
   WorkStationProps,
   WorkStationState
 > {
+  public static defaultProps = {
+    allowCoding: true,
+    allowEditing: true,
+  };
+
   public plugins: object[] = [];
   private editor: Editor | null;
 
@@ -62,25 +72,18 @@ export class WorkStation extends React.Component<
     if (props.editorState) {
       editorState = props.editorState;
     }
+
     this.state = {
       editorState,
       codeInput: '',
       dataSource: this.codes,
       hasSelectedCodedInline: false,
       currentInlineCodeIDs: [],
+      allowCoding: true,
+      allowEditing: true,
     };
 
-    this.plugins = [
-      BufferedText({ clearOnEscape: true }),
-      CodedText({
-        onClickCodedText: this.onClickCodedText,
-        mixBgColor: true,
-      }),
-      SoftBreak(),
-      RichText({}),
-      HoverMenu({}),
-      ...(props.plugins || []),
-    ];
+    this.plugins = this.computePlugins(this.props);
   }
 
   public componentDidUpdate(prevProps: WorkStationProps) {
@@ -89,7 +92,25 @@ export class WorkStation extends React.Component<
         dataSource: [...this.codes],
       });
     }
+
+    if (prevProps.allowCoding !== this.props.allowCoding) {
+      this.plugins = this.computePlugins(this.props);
+    }
   }
+
+  public computePlugins = (props: WorkStationProps) => {
+    return [
+      BufferedText({ clearOnEscape: true }),
+      CodedText({
+        onClickCodedText: this.onClickCodedText,
+        mixBgColor: true,
+      }),
+      SoftBreak({ shift: true }),
+      RichText({}),
+      props.allowCoding ? HoverMenu({}) : null,
+      ...(props.plugins ? props.plugins : []),
+    ].filter(p => !!p);
+  };
 
   public onChangeEditor = ({ value }: Change) => {
     this.setState({ editorState: value }, () => {
@@ -231,6 +252,7 @@ export class WorkStation extends React.Component<
 
   public render() {
     const { editorState, dataSource, hasSelectedCodedInline } = this.state;
+    const { editorConfigs, allowCoding } = this.props;
     return (
       <Container>
         <Editor
@@ -241,25 +263,29 @@ export class WorkStation extends React.Component<
             this.editor = element;
           }}
           onChange={this.onChangeEditor}
+          style={!allowCoding ? { maxHeight: 'none' } : {}}
+          {...editorConfigs}
         />
 
-        <SideContainer>
-          <AutoComplete
-            onSelect={this.onSelectOption}
-            onSearch={this.onSearchCode}
-            onFocus={() => this.onSearchCode('')}
-            dataSource={dataSource}
-            placeholder="Type to search codes or create a new one"
-            allowClear
-          />
-          <UsedCodeTags
-            codes={
-              hasSelectedCodedInline ? this.currentCodes : this.sortedCodes
-            }
-            onClick={this.onSelectCode}
-            onClose={this.onDeleteCode}
-          />
-        </SideContainer>
+        {allowCoding && (
+          <SideContainer>
+            <AutoComplete
+              onSelect={this.onSelectOption}
+              onSearch={this.onSearchCode}
+              onFocus={() => this.onSearchCode('')}
+              dataSource={dataSource}
+              placeholder="Type to search codes or create a new one"
+              allowClear
+            />
+            <UsedCodeTags
+              codes={
+                hasSelectedCodedInline ? this.currentCodes : this.sortedCodes
+              }
+              onClick={this.onSelectCode}
+              onClose={this.onDeleteCode}
+            />
+          </SideContainer>
+        )}
       </Container>
     );
   }

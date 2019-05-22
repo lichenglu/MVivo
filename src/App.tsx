@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { hot } from 'react-hot-loader';
+import { hot, setConfig } from 'react-hot-loader';
 import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
@@ -18,8 +18,10 @@ import WorkSpace from './containers/workspace';
 import { routeConstants } from './lib/constants';
 
 const Container = styled.div`
-  min-width: 100vw;
+  max-width: 100vw;
   min-height: 100vh;
+  max-width: 100vw;
+  // max-height: 100vh;
   display: flex;
   flex-direction: column;
 `;
@@ -38,6 +40,11 @@ const ContentContainer = styled.div`
     }
   }
 `;
+
+setConfig({
+  // set this flag to support SFC if patch is not landed
+  pureSFC: true,
+});
 
 class App extends React.Component {
   get navItems() {
