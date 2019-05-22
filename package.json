@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "antd": "^3.10.2",
+    "@tensorflow/tfjs": "^1.1.2",
+    "antd": "^3.10.1",
     "apisauce": "^1.0.0",
     "color": "^3.1.0",
     "immutable": "^3.8.2",
