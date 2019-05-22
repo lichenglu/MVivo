@@ -13,7 +13,7 @@ interface RootComponentState {
   rootStore?: RootStore;
 }
 
-class RootComponent extends React.PureComponent<{}, RootComponentState> {
+export class RootComponent extends React.PureComponent<{}, RootComponentState> {
   public async componentDidMount() {
     this.setState({
       rootStore: await setupRootStore(),

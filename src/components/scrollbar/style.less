@@ -1,0 +1,19 @@
+// variables
+@scroll-bar-color: #080808;
+@scroll-bar-height: 1rem;
+
+.mvivo-custom-scroll {
+  .ps__rail-x:hover > .ps__thumb-x,
+  .ps__rail-x:focus > .ps__thumb-x,
+  .ps__rail-x.ps--clicking .ps__thumb-x {
+    background-color: @scroll-bar-color;
+    height: @scroll-bar-height;
+  }
+
+  .ps__rail-y:hover > .ps__thumb-y,
+  .ps__rail-y:focus > .ps__thumb-y,
+  .ps__rail-y.ps--clicking .ps__thumb-y {
+    background-color: @scroll-bar-color;
+    width: @scroll-bar-height;
+  }
+}

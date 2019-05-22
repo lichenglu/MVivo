@@ -1,10 +1,32 @@
 {
-    "presets": [
-      "@babel/preset-react"
-    ],
-    "plugins": [
-      "transform-class-properties",
-      "react-hot-loader/babel",
-      ["import", { "libraryName": "antd", "style": true }]
-    ]
+  "env": {
+    "development": {
+      "presets": [
+        "@babel/preset-react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "react-hot-loader/babel",
+        ["import", { "libraryName": "antd", "style": true }]
+      ]
+    },
+    "production": {
+      "presets": [
+        "@babel/preset-react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        ["import", { "libraryName": "antd", "style": true }]
+      ]
+    },
+    "testing": {
+      "presets": [
+        "@babel/preset-react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        ["import", { "libraryName": "antd", "style": true }]
+      ]
+    }
+  }
 }
