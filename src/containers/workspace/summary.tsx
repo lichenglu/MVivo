@@ -68,11 +68,12 @@ class Summary extends React.Component<SummaryProps, SummaryState> {
         const parent =
           this.props.rootStore.codeBookStore.getParentFromTree(code.id) || {};
         const { children, ...parentData } = parent;
+        const firstLevelTheme = this.workSpace!.codeBook!.firstLevelTheme;
 
         return {
           ...code,
           ...summary[code.id],
-          parent: parentData,
+          parent: parentData.id === firstLevelTheme!.id ? null : parentData,
         };
       });
     }
@@ -165,6 +166,7 @@ class Summary extends React.Component<SummaryProps, SummaryState> {
 
   public render(): JSX.Element | null {
     const { showAPA } = this.state;
+    console.log(this.filteredCodes);
     return (
       <React.Fragment>
         <Helmet>
