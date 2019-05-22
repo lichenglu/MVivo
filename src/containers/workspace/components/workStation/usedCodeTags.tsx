@@ -1,6 +1,5 @@
 import { Tag } from 'antd';
 import React from 'react';
-import FlipMove from 'react-flip-move';
 import { withHandlers } from 'recompose';
 import styled from 'styled-components';
 

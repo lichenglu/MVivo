@@ -43,10 +43,12 @@ export const Breadcrumbs = ({
   breadcrumbs: JSX.Element[];
 }) => (
   <Breadcrumb>
-    {breadcrumbs.map((breadcrumb: JSX.Element, index: number) => (
-      <Breadcrumb.Item key={breadcrumb.key || index}>
-        <NavLink to={breadcrumb.props.match.url}>{breadcrumb}</NavLink>
-      </Breadcrumb.Item>
-    ))}
+    {breadcrumbs.map(
+      ({ breadcrumb, match, location, someCustomProp }, index: number) => (
+        <Breadcrumb.Item key={breadcrumb.key || index}>
+          <NavLink to={match.url}>{breadcrumb}</NavLink>
+        </Breadcrumb.Item>
+      )
+    )}
   </Breadcrumb>
 );
