@@ -1,2 +1,2 @@
-export * from './tf-model';
-export * from './tf-asia-la';
+export * from './model';
+export * from './seqClassification';

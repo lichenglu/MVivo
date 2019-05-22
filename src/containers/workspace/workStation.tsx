@@ -13,7 +13,11 @@ import { WorkStation } from './components/workStation';
 
 // services
 import { AutoCode } from '~/lib/slate-plugins';
-import { TFAsiaLAModel } from '~/services/tensorflow';
+import {
+  MLModelProtocol,
+  SequenceClassificationModel,
+} from '~/services/tensorflow';
+import tokenizer from '~/services/tensorflow/tokenizer.json';
 
 interface WorkStationProps
   extends RouteCompProps<{ wsID: string; docID: string }> {
@@ -22,11 +26,11 @@ interface WorkStationProps
 
 interface WorkStationState {
   manualInputDocument: boolean;
-  mlModel?: TFAsiaLAModel;
+  mlModel?: MLModelProtocol;
 }
 
 // TODO:
-// 1. Asked to upload text file if not available
+// 1. Ask users to upload a text file if not available
 // 2. Add more text file, unlink text file
 // 3. Link/unlink more code book
 // 4. Update workSpace info
@@ -43,7 +47,18 @@ export class WorkStationContainer extends React.Component<
 
   public async componentDidMount() {
     const modelURL = 'http://0.0.0.0:8000/model.json';
-    const asiaModel = new TFAsiaLAModel(modelURL);
+    const asiaModel = new SequenceClassificationModel({
+      labels: [
+        'Personal advice',
+        'Vocatives (addressing individual)',
+        'Complementing, expressing appreciation',
+        'Negative Activating',
+        'Asking questions',
+      ],
+      maxSequenceLength: 55,
+      src: modelURL,
+      tokenizer,
+    });
     await asiaModel.loadModel();
     this.setState({ mlModel: asiaModel });
   }

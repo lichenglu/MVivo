@@ -1,9 +1,9 @@
-import { TFAsiaLAModel } from '~/services/tensorflow/tf-asia-la';
+import { SequenceClassificationModel } from '~/services/tensorflow/seqClassification';
 
 import { Change } from 'slate';
 
 interface AutoCodeOptions {
-  model?: TFAsiaLAModel;
+  model?: SequenceClassificationModel;
   debounce?: number;
 }
 
