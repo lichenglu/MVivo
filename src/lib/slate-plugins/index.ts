@@ -22,6 +22,7 @@ export interface SlatePlugin {
 export * from './bufferedText';
 export { default as BufferedText } from './bufferedText';
 export * from './codedText';
+export { default as AutoCode } from './autocode';
 export { default as CodedText } from './codedText';
 export { default as SoftBreak } from './softbreak';
 export { default as RichText } from './richText';

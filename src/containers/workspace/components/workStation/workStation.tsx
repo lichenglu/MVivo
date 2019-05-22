@@ -16,9 +16,9 @@ import { UsedCodeTags } from './usedCodeTags';
 import {
   BufferedText,
   CodedText,
-  RichText,
-  HoverMenu,
   getCodeSummary,
+  HoverMenu,
+  RichText,
   SoftBreak,
   updateCodeForBlocks,
   updateSelectedCode,
@@ -28,16 +28,15 @@ import { INLINES } from '~/lib/slate-plugins/utils/constants';
 interface WorkStationProps {
   codeList?: CodeSnapshot[];
   codeMap?: Map<string, CodeSnapshot>;
-  onCreateCode: (
-    data: {
-      name: string;
-      definition?: string;
-      bgColor?: string;
-      tint?: string;
-    }
-  ) => CodeSnapshot | null;
+  onCreateCode: (data: {
+    name: string;
+    definition?: string;
+    bgColor?: string;
+    tint?: string;
+  }) => CodeSnapshot | null;
   onDeleteCode: (codeID: string) => boolean;
   onUpdateEditorContent: (contentState: Value) => void;
+  plugins?: object[];
   editorState?: Value | null;
 }
 
@@ -80,6 +79,7 @@ export class WorkStation extends React.Component<
       SoftBreak(),
       RichText({}),
       HoverMenu({}),
+      ...(props.plugins || []),
     ];
   }
 
@@ -224,11 +224,8 @@ export class WorkStation extends React.Component<
   // all the codes but those codes that the current selected
   // entity contains
   get excludedCodes() {
-    return this.codes.filter(
-      code =>
-        !this.currentCodes
-          ? true
-          : !this.currentCodes.find(c => c.id === code.id)
+    return this.codes.filter(code =>
+      !this.currentCodes ? true : !this.currentCodes.find(c => c.id === code.id)
     );
   }
 

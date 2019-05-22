@@ -12,6 +12,7 @@ import { CodeModel, RootStore } from '~/stores/root-store';
 import { WorkStation } from './components/workStation';
 
 // services
+import { AutoCode } from '~/lib/slate-plugins';
 import { TFAsiaLAModel } from '~/services/tensorflow';
 
 interface WorkStationProps
@@ -21,6 +22,7 @@ interface WorkStationProps
 
 interface WorkStationState {
   manualInputDocument: boolean;
+  mlModel?: TFAsiaLAModel;
 }
 
 // TODO:
@@ -36,14 +38,14 @@ export class WorkStationContainer extends React.Component<
 > {
   public state = {
     manualInputDocument: false,
+    mlModel: undefined,
   };
 
   public async componentDidMount() {
-    const modelURL =
-      'https://storage.googleapis.com/speech-file-store/rnn_asia_la.json';
+    const modelURL = 'http://0.0.0.0:8000/model.json';
     const asiaModel = new TFAsiaLAModel(modelURL);
     await asiaModel.loadModel();
-    console.log(asiaModel.model.predict('hello world'));
+    this.setState({ mlModel: asiaModel });
   }
 
   public onCreateCode = (data: {
@@ -108,13 +110,16 @@ export class WorkStationContainer extends React.Component<
   }
 
   public render(): JSX.Element | null {
-    return (
+    const { mlModel } = this.state;
+
+    return mlModel ? (
       <React.Fragment>
         <Helmet>
           <title>WorkSpace - work station</title>
         </Helmet>
         {this.hasDocument ? (
           <WorkStation
+            plugins={[AutoCode({ model: mlModel })]}
             codeList={this.codeList}
             onCreateCode={this.onCreateCode}
             onDeleteCode={this.onDeleteCode}
@@ -125,6 +130,6 @@ export class WorkStationContainer extends React.Component<
           'No such document found'
         )}
       </React.Fragment>
-    );
+    ) : null;
   }
 }
