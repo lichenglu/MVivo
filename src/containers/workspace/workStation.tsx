@@ -46,7 +46,7 @@ export class WorkStationContainer extends React.Component<
   };
 
   public async componentDidMount() {
-    const modelURL = 'http://0.0.0.0:8000/model.json';
+    const modelURL = 'http://0.0.0.0:1234/ml-models/model.json';
     const asiaModel = new SequenceClassificationModel({
       labels: [
         'Personal advice',

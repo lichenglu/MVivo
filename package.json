@@ -78,6 +78,7 @@
     "less": "^2.7.3",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-inlinesvg": "0.1.1",
+    "parcel-plugin-static-files-copy": "^2.1.1",
     "parcel-plugin-sw-cache": "^0.2.7",
     "prettier": "^1.17.1",
     "react-hot-loader": "^4.8.7",
@@ -96,5 +97,9 @@
   },
   "alias": {
     "react-dom": "@hot-loader/react-dom"
+  },
+  "staticFiles": {
+    "staticPath": "./src/fixtures",
+    "watcherGlob": "**"
   }
 }
