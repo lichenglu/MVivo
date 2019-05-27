@@ -73,15 +73,16 @@ const enhance = compose(
           accessor: 'examples',
           id: 'examples',
           Cell: row =>
-            row.value &&
-            row.value.map((example: string, idx: number) => (
-              <p
-                key={`${idx}_${example.slice(0, 5)}`}
-                style={{ whiteSpace: 'pre-wrap' }}
-              >
-                {example}
-              </p>
-            )),
+            row.value
+              ? row.value.map((example: string, idx: number) => (
+                  <p
+                    key={`${idx}_${example.slice(0, 5)}`}
+                    style={{ whiteSpace: 'pre-wrap' }}
+                  >
+                    {example}
+                  </p>
+                ))
+              : null,
         },
         {
           Header: 'Count',
@@ -95,7 +96,7 @@ const enhance = compose(
             // You can even render the cell differently if it's an aggregated cell
             return <span>{row.value} examples</span>;
           },
-          Cell: row => row.value || 0,
+          Cell: row => row.value || null,
           maxWidth: 100,
         },
       ];

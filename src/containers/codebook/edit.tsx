@@ -70,6 +70,7 @@ export class CodeBookEdit extends React.Component<
 
   public render(): JSX.Element | null {
     const { showAPA } = this.state;
+    console.log(this.filteredCodes);
     return (
       <React.Fragment>
         <Helmet>
