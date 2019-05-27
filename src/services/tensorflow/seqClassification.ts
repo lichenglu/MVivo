@@ -36,7 +36,7 @@ export class SequenceClassificationModel extends MLModel
       );
       throw new Error('[predict] model is required, but is now undefined');
     }
-    const prediction = this.model
+    const prediction = await this.model
       .predict(this.textToSequence(text))
       // @ts-ignore
       .data();
