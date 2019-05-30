@@ -1033,6 +1033,14 @@
     "@parcel/utils" "^1.11.0"
     physical-cpu-count "^2.0.0"
 
+"@researchgate/react-intersection-observer@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@researchgate/react-intersection-observer/-/react-intersection-observer-1.0.0.tgz#62305bea44e6dd2ca610e1d7c1a1b8bd2e997c10"
+  integrity sha512-p/FIwxiXpE2TBQ1UvSEkrRh8txDsYkLk10yCD4c0ir3X16vszntCWi43abYI4A0U0+ipCNbgUzmk8QvREXgebA==
+  dependencies:
+    invariant "^2.2.4"
+    prop-types "^15.6.2"
+
 "@tensorflow/tfjs-converter@1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-1.1.2.tgz#2400ac77b30f973f1fcb26c912b28271f7f4d605"

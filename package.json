@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@hot-loader/react-dom": "^16.8.6",
+    "@researchgate/react-intersection-observer": "^1.0.0",
     "@tensorflow/tfjs": "^1.1.2",
     "antd": "^3.18.2",
     "apisauce": "^1.0.2",

@@ -1,7 +1,7 @@
 import { Button, Dropdown, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
-import TrackVisibility from 'react-on-screen';
 import styled from 'styled-components';
+import { ViewableMonitor } from './viewableMonitor';
 
 const Container = styled.div`
   display: flex;
@@ -45,6 +45,7 @@ export default ({
 }) => {
   const [showRosterBtn, toggleRosterBtn] = useState(false);
   const [showRosterMenu, toggleRosterMenu] = useState(false);
+  const [intersected, toggleIntersection] = useState(false);
 
   // useEffect(() => {
   //   if (showRosterBtn === false && showRosterMenu) {
@@ -55,56 +56,66 @@ export default ({
   const data = node.get('data');
   const tags = data.get('tags');
   const hasTags = tags && tags.length > 0;
-
   return (
-    <Container
-      {...attributes}
-      onMouseEnter={() => toggleRosterBtn(true)}
-      onMouseLeave={() => !showRosterMenu && toggleRosterBtn(false)}
-      className="transcribe-block"
-    >
-      <RosterBtn
-        // @ts-ignore
-        overlay={
-          <RosterMenu
-            options={roster}
-            selected={tags}
-            handleChange={vals => {
-              if (vals.length > 0) {
-                toggleRosterMenu(false);
-                toggleRosterBtn(false);
-              }
-              onChangeRoster(vals);
-            }}
-          />
-        }
-        placement="bottomRight"
-        trigger={['click']}
-        visible={showRosterMenu}
-        active={hasTags || showRosterBtn}
-      >
-        <Button
-          onClick={() => {
-            editor.change(change => {
-              change.moveToRangeOfNode(node);
-            });
-            toggleRosterMenu(!showRosterMenu);
-          }}
-          data-speakers={hasTags ? tags.join(', ') : ''}
-        >
-          {hasTags
-            ? tags
-                .map((t: string) =>
-                  (t.charAt(0) + t.charAt(t.length - 1)).toUpperCase()
-                )
-                .join(', ')
-            : '+'}
-        </Button>
-      </RosterBtn>
+    <ViewableMonitor>
+      {({ isIntersecting }) => {
+        // we don't want to render the block if it has not been scrolled to
+        if (!intersected && !isIntersecting) return null;
+        // set intersected to true so that we won't re-render it when scrolling around
+        if (!intersected && isIntersecting) toggleIntersection(true);
 
-      <TextContainer className="transcribe-block-text">
-        {children}
-      </TextContainer>
-    </Container>
+        return (
+          <Container
+            {...attributes}
+            onMouseEnter={() => toggleRosterBtn(true)}
+            onMouseLeave={() => !showRosterMenu && toggleRosterBtn(false)}
+            className="transcribe-block"
+          >
+            <RosterBtn
+              // @ts-ignore
+              overlay={
+                <RosterMenu
+                  options={roster}
+                  selected={tags}
+                  handleChange={vals => {
+                    if (vals.length > 0) {
+                      toggleRosterMenu(false);
+                      toggleRosterBtn(false);
+                    }
+                    onChangeRoster(vals);
+                  }}
+                />
+              }
+              placement="bottomRight"
+              trigger={['click']}
+              visible={showRosterMenu}
+              active={hasTags || showRosterBtn}
+            >
+              <Button
+                onClick={() => {
+                  editor.change(change => {
+                    change.moveToRangeOfNode(node);
+                  });
+                  toggleRosterMenu(!showRosterMenu);
+                }}
+                data-speakers={hasTags ? tags.join(', ') : ''}
+              >
+                {hasTags
+                  ? tags
+                      .map((t: string) =>
+                        (t.charAt(0) + t.charAt(t.length - 1)).toUpperCase()
+                      )
+                      .join(', ')
+                  : '+'}
+              </Button>
+            </RosterBtn>
+
+            <TextContainer className="transcribe-block-text">
+              {children}
+            </TextContainer>
+          </Container>
+        );
+      }}
+    </ViewableMonitor>
   );
 };
